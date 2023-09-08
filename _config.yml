@@ -115,5 +115,5 @@ theme: particlex
 deploy:
   type: git
   #repo: git@github.com:1294566108/1294566108.github.io.git
-  repo: https://github.com/1294566108/1294566108.github.io.git
+  repo: http://github.com/1294566108/1294566108.github.io.git
   branch: release
