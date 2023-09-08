@@ -2257,7 +2257,7 @@
   dependencies:
     "picocolors" "^1.0.0"
 
-"hexo-pagination@3.0.0":
+"hexo-pagination@^3.0.0", "hexo-pagination@3.0.0":
   "integrity" "sha512-8oo1iozloZo7TojPVYg4IxL3SJKCBdSJ908fTlIxIK7TWJIKdYnQlW31+12DBJ0NhVZA/lZisPObGF08wT8fKw=="
   "resolved" "https://registry.npmmirror.com/hexo-pagination/-/hexo-pagination-3.0.0.tgz"
   "version" "3.0.0"
