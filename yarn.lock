@@ -614,7 +614,7 @@ hexo-deployer-git@^4.0.0:
 
 hexo-deployer-heroku@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npmmirror.com/hexo-deployer-heroku/-/hexo-deployer-heroku-1.0.0.tgz#bc71a26cba842b5d420cffc68e42601dfdcb2e18"
+  resolved "https://registry.npmmirror.com/hexo-deployer-heroku/-/hexo-deployer-heroku-1.0.0.tgz"
   integrity sha512-0q+cbekYo5WlLY+2xlnE4lC32Bnh0IB0uDLv3jRA8Me5funB/bYKdYLTkbEEHl2OucSb/wt11h11W9atD05jbA==
   dependencies:
     hexo-fs "^4.1.1"
@@ -741,6 +741,14 @@ hexo-server@^3.0.0:
     open "^8.0.9"
     picocolors "^1.0.0"
     serve-static "^1.14.1"
+
+hexo-theme-flexblock@^2.12.0:
+  version "2.12.0"
+  resolved "https://registry.npmmirror.com/hexo-theme-flexblock/-/hexo-theme-flexblock-2.12.0.tgz#a806495c811c100f617a15ca141803e59b6e557a"
+  integrity sha512-1j9J63TX861va4tamJUHrcQmV4D9V5tRU/bdW32YEnA8desSAxO1HWnjbrFEX5qgbdtXesa+AaR5qOYDgnvlew==
+  dependencies:
+    hexo-renderer-ejs "^2.0.0"
+    hexo-renderer-stylus "^2.1.0"
 
 hexo-theme-landscape@^1.0.0:
   version "1.0.0"
