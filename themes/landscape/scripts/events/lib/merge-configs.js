@@ -88,6 +88,6 @@ module.exports = (hexo) => {
 };
 
 const configFromRoot = (hexo) => {
-  const configPath = path.join(hexo.base_dir, '_config.particlex.yml');
+  const configPath = path.join(hexo.base_dir, '_config.landscape.yml');
   return fs.existsSync(configPath);
 };
