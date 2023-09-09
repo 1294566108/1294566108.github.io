@@ -145,8 +145,8 @@ post:
 code_block:
   # Toolbar include: "code copy", "code block collapse" and "code language"
   tools:
-    enable: false            # Option values: true | false
-    style: default           # Option values: default | mac
+    enable: true            # Option values: true | false
+    style: mac           # Option values: default | mac
   highlight_theme: default   # Option values: default | obsidian
 
 # ---------------------------------------------------------------------------------------
@@ -154,13 +154,13 @@ code_block:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/toc.html
 # ---------------------------------------------------------------------------------------
 toc:
-  enable: false      # Option values: true | false
+  enable: true      # Option values: true | false
 
   # Automatically add list number to toc
-  number: false      # Option values: true | false
+  number: true      # Option values: true | false
 
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
-  expand_all: false  # Option values: true | false
+  expand_all: true  # Option values: true | false
 
   # If true, auto open TOC every time when you enter the article page
   init_open: true    # Option values: true | false
@@ -176,10 +176,10 @@ website_count:
   # busuanzi
   # See: http://ibruce.info/2015/04/04/busuanzi/
   busuanzi_count:
-    enable: false     # Option values: true | false
-    site_uv: false    # Option values: true | false
-    site_pv: false    # Option values: true | false
-    page_pv: false    # Option values: true | false
+    enable: true     # Option values: true | false
+    site_uv: true    # Option values: true | false
+    site_pv: true    # Option values: true | false
+    page_pv: true    # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Local Search
@@ -189,7 +189,7 @@ website_count:
 # ---------------------------------------------------------------------------------------
 local_search:
   enable: true   # Option values: true | false
-  preload: false  # Preload the search data when the page loads. Option values: true | false
+  preload: true  # Preload the search data when the page loads. Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Comment plugin
