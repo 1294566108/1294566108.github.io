@@ -87,13 +87,13 @@ social_contact:
     # at the same time change your link to the image link.
     # e.g. [ weixin: img | https://x.com/images/wechat.png ] or [ weixin: img | ./images/wechat.png ]
     github:          https://github.com/1294566108
-    weixin:          # WeChat
+    weixin:          img | /images/wechat.jpg
+    email:           y1294566108@gmail.com
     qq:              # QQ
     weibo:           # WeiBo
     zhihu:           # ZhiHu
     twitter:         # Twitter
     facebook:        # Facebook
-    email:           # Email
 
 # ---------------------------------------------------------------------------------------
 # Home page article block display settings
