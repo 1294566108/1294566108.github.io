@@ -2,6 +2,7 @@
 title: about
 date: 2023-09-09 14:09:03
 comment: true
+mathjax: true
 ---
 
 ## About me
