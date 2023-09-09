@@ -22,7 +22,7 @@ base_info:
 # ---------------------------------------------------------------------------------------
 style:
   # Theme primary color
-  primary_color: "#54a0ff"
+  primary_color: "#27ae60"
 
   # Your blog website logo image
   # You can use local image, image external link or don't fill
