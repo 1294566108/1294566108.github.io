@@ -325,3 +325,8 @@ inject:
       # - /js/custom-1.js
       # - /js/custom-2.js
     # - ...
+math:
+  per_page: true
+  mathjax:
+    enable: true
+    mhchem: false
