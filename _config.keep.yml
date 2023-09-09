@@ -145,7 +145,7 @@ post:
 code_block:
   # Toolbar include: "code copy", "code block collapse" and "code language"
   tools:
-    enable: true            # Option values: true | false
+    enable: false            # Option values: true | false
     style: mac           # Option values: default | mac
   highlight_theme: default   # Option values: default | obsidian
 
