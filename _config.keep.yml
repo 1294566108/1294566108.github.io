@@ -102,7 +102,7 @@ social_contact:
 home_article:
   # Show category in home page article block
   category:
-    enable: false  # Option values: true | false
+    enable: true  # Option values: true | false
     limit: 3       # Max number of categories shown in home page article block
   # Show tags in home page article block
   tag:
@@ -116,7 +116,7 @@ home_article:
 post:
   # Author label in the post
   author_label:
-    enable: false       # Option values: true | false
+    enable: true       # Option values: true | false
 
     # If true, show Lv1, Lv2, Lv3 ...
     # If false, show custom_label_list
@@ -145,7 +145,7 @@ post:
 code_block:
   # Toolbar include: "code copy", "code block collapse" and "code language"
   tools:
-    enable: false            # Option values: true | false
+    enable: true            # Option values: true | false
     style: mac           # Option values: default | mac
   highlight_theme: default   # Option values: default | obsidian
 
@@ -196,7 +196,7 @@ local_search:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/comment.html
 # ---------------------------------------------------------------------------------------
 comment:
-  enable: false   # Option values: true | false
+  enable: true   # Option values: true | false
   use: valine     # Option values: valine | gitalk | twikoo | waline | giscus
 
   # Valine
