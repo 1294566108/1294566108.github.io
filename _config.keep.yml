@@ -68,11 +68,11 @@ style:
 menu:
   Home: /
   Archives: /archives
-  # Tags: /tags
-  # Categories: /categories
-  # Links: /links
+  Tags: /tags
+  Categories: /categories
+  Links: /links
   About: /about
-  # Changelog: /changelog
+  Changelog: /changelog
   # ......
 
 # ---------------------------------------------------------------------------------------

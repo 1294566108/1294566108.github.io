@@ -5,9 +5,11 @@ comment: true
 mathjax: true
 ---
 
-## About me
+###  🔭 About Me
+- Contributor of SOFASTACK/SOFAJRaft
+- Contributor of Apache/RocketMQ
+- Student of OSPP-2023
 
-XPoet「 Keep core developer 」...
-...
-...
-...
+###  🌏 My interests
+- Distributed System
+- Distributed Consistency Algorithm
