@@ -129,8 +129,8 @@ post:
   # Dependencies: hexo-wordcount (`npm install hexo-wordcount`)
   # See: https://github.com/willin/hexo-wordcount
   word_count:
-    wordcount: false     # Word count, one article. Option values: true | false
-    min2read: false      # Time to read, one article. Option values: true | false
+    wordcount: true     # Word count, one article. Option values: true | false
+    min2read: true      # Time to read, one article. Option values: true | false
 
   # Post datetime
   datetime_format: "YYYY-MM-DD HH:mm:ss"  # Datetime format. e.g. "YYYY-MM-DD HH:mm:ss"

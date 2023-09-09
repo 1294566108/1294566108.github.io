@@ -42,14 +42,14 @@ style:
     header_transparent: false  # Option values: true | false
 
     # First screen background image (You can use local image or image external link)
-    background_img: /images/bg.svg
+    background_img: /images/bg.png
 
     # First screen description
     # You can use the "||" to begin a newline, maximum is two lines.
-    description: Keep writing and Keep loving.
+    description:
 
     # If enable hitokoto, first screen description is different every time when you enter the site
-    hitokoto: true      # Option values: true | false
+    hitokoto: false      # Option values: true | false
 
   # Page scroll style settings
   scroll:
@@ -57,7 +57,7 @@ style:
     progress_bar: false  # Option values: true | false
 
     # Show percent when page scroll
-    percent: false       # Option values: true | false
+    percent: true       # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Navigation menu
@@ -71,7 +71,7 @@ menu:
   # Tags: /tags
   # Categories: /categories
   # Links: /links
-  # About: /about
+  About: /about
   # Changelog: /changelog
   # ......
 
@@ -80,13 +80,13 @@ menu:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/social_contact.html
 # ---------------------------------------------------------------------------------------
 social_contact:
-  enable: false      # Option values: true | false
+  enable: true      # Option values: true | false
   links:
     # Fill in your social platform links here, e.g. [ github: https://github.com/XPoet ]
     # If you want to click open the picture, you need to add a prefix "img |",
     # at the same time change your link to the image link.
     # e.g. [ weixin: img | https://x.com/images/wechat.png ] or [ weixin: img | ./images/wechat.png ]
-    github:          # GitHub
+    github:          https://github.com/1294566108
     weixin:          # WeChat
     qq:              # QQ
     weibo:           # WeiBo
@@ -102,11 +102,11 @@ social_contact:
 home_article:
   # Show category in home page article block
   category:
-    enable: false  # Option values: true | false
+    enable: true  # Option values: true | false
     limit: 3       # Max number of categories shown in home page article block
   # Show tags in home page article block
   tag:
-    enable: false  # Option values: true | false
+    enable: true  # Option values: true | false
     limit: 5       # Max number of tags shown in home page article block
 
 # ---------------------------------------------------------------------------------------
@@ -129,8 +129,8 @@ post:
   # Dependencies: hexo-wordcount (`npm install hexo-wordcount`)
   # See: https://github.com/willin/hexo-wordcount
   word_count:
-    wordcount: false     # Word count, one article. Option values: true | false
-    min2read: false      # Time to read, one article. Option values: true | false
+    wordcount: true     # Word count, one article. Option values: true | false
+    min2read: true      # Time to read, one article. Option values: true | false
 
   # Post datetime
   datetime_format: "YYYY-MM-DD HH:mm:ss"  # Datetime format. e.g. "YYYY-MM-DD HH:mm:ss"
@@ -145,8 +145,8 @@ post:
 code_block:
   # Toolbar include: "code copy", "code block collapse" and "code language"
   tools:
-    enable: false            # Option values: true | false
-    style: default           # Option values: default | mac
+    enable: true            # Option values: true | false
+    style: mac           # Option values: default | mac
   highlight_theme: default   # Option values: default | obsidian
 
 # ---------------------------------------------------------------------------------------
@@ -154,13 +154,13 @@ code_block:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/toc.html
 # ---------------------------------------------------------------------------------------
 toc:
-  enable: false      # Option values: true | false
+  enable: true      # Option values: true | false
 
   # Automatically add list number to toc
-  number: false      # Option values: true | false
+  number: true      # Option values: true | false
 
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
-  expand_all: false  # Option values: true | false
+  expand_all: true  # Option values: true | false
 
   # If true, auto open TOC every time when you enter the article page
   init_open: true    # Option values: true | false
@@ -176,10 +176,10 @@ website_count:
   # busuanzi
   # See: http://ibruce.info/2015/04/04/busuanzi/
   busuanzi_count:
-    enable: false     # Option values: true | false
-    site_uv: false    # Option values: true | false
-    site_pv: false    # Option values: true | false
-    page_pv: false    # Option values: true | false
+    enable: true     # Option values: true | false
+    site_uv: true    # Option values: true | false
+    site_pv: true    # Option values: true | false
+    page_pv: true    # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Local Search
@@ -188,25 +188,25 @@ website_count:
 # See: https://github.com/theme-next/hexo-generator-searchdb
 # ---------------------------------------------------------------------------------------
 local_search:
-  enable: false   # Option values: true | false
-  preload: false  # Preload the search data when the page loads. Option values: true | false
+  enable: true   # Option values: true | false
+  preload: true  # Preload the search data when the page loads. Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Comment plugin
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/comment.html
 # ---------------------------------------------------------------------------------------
 comment:
-  enable: false   # Option values: true | false
+  enable: true   # Option values: true | false
   use: valine     # Option values: valine | gitalk | twikoo | waline | giscus
 
   # Valine
   # See: https://github.com/xCss/Valine
   #      https://valine.js.org
   valine:
-    appid:           # Your leancloud application appid
-    appkey:          # Your leancloud application appkey
+    appid:           wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz
+    appkey:          iWemAUfKcKQ7rjJlZg65tx15
     server_urls:     # Your Server URL
-    placeholder:     # Input box placeholder
+    placeholder:     欢迎评论
 
   # Gitalk
   # See: https://github.com/gitalk/gitalk
@@ -260,7 +260,7 @@ rss:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/lazyload.html
 # ---------------------------------------------------------------------------------------
 lazyload:
-  enable: false  # Option values: true | false
+  enable: true  # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # CDN
@@ -275,15 +275,15 @@ cdn:
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/pjax.html
 # ---------------------------------------------------------------------------------------
 pjax:
-  enable: false  # Option values: true | false
+  enable: true  # Option values: true | false
 
 # ---------------------------------------------------------------------------------------
 # Footer settings
 # Docs: https://keep-docs.xpoet.cn/tutorial/configuration-guide/footer.html
 # ---------------------------------------------------------------------------------------
 footer:
-  since: 2020           # The starting year of your website, Can be null
-  word_count: false     # Option values: true | false
+  since: 2023           # The starting year of your website, Can be null
+  word_count: true     # Option values: true | false
 
   icp:
     enable: false                    # Option values: true | false
@@ -291,7 +291,7 @@ footer:
     url: https://beian.miit.gov.cn   # Your ICP link url, Can be null
 
   site_deploy:
-    enable: false        # Option values: true | false
+    enable: true        # Option values: true | false
     provider: github     # Option values: github | vercel | netlify | gitee | aliyun | tencent_cloud | upyun
     url:                 # Your deployment provider url, Can be null
 
@@ -315,13 +315,13 @@ inject:
   enable: false  # Option values: true | false
   css:
     -
-    # e.g.
-    # - /css/custom-1.css
-    # - /css/custom-2.css
+      # e.g.
+      # - /css/custom-1.css
+      # - /css/custom-2.css
     # - ...
   js:
     -
-    # e.g.
-    # - /js/custom-1.js
-    # - /js/custom-2.js
+      # e.g.
+      # - /js/custom-1.js
+      # - /js/custom-2.js
     # - ...
