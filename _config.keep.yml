@@ -87,7 +87,7 @@ social_contact:
     # at the same time change your link to the image link.
     # e.g. [ weixin: img | https://x.com/images/wechat.png ] or [ weixin: img | ./images/wechat.png ]
     github:          https://github.com/1294566108
-    weixin:          img | /images/wechat.jpg
+    weixin:          img | https://cdn.staticaly.com/gh/1294566108/1294566108.github.io@release/images/wechat.431ccmzcvlw0.webp
     email:           y1294566108@gmail.com
     qq:              # QQ
     weibo:           # WeiBo
