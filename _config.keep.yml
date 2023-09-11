@@ -42,7 +42,7 @@ style:
     header_transparent: false  # Option values: true | false
 
     # First screen background image (You can use local image or image external link)
-    background_img: /images/bg.png
+    background_img: https://cdn.staticaly.com/gh/1294566108/1294566108.github.io@release/images/bg.3ikmvhii1ce0.png
 
   # First screen description
     # You can use the "||" to begin a newline, maximum is two lines.
