@@ -9,17 +9,17 @@ tags: SOFA-JRaft
 
 # 线性一致性概述
 
-### 概念
+## 概念
 
 如果说你对线性一致性（Linearizability）概念不太熟，那一定知道强一致性（strong consistency），或者说原子一致性（atomic consistency），也可以理解为的 CAP 理论中的 C。
 
-### Raft线性一致性的实现
+## Raft线性一致性的实现
 
-#### 线性一致性写
+### 线性一致性写
 
 所有的 read/write 都会来到 Leader，write 会有 Log 被序列化，依次顺序往后 commit，并 apply 然后在返回，那么一旦一个 write 被 committed，那么其前面的 write 的 Log 一定就被 committed 了。 所有的 write 都是有严格的顺序的，一旦被 committed 就可见了，所以 Raft 是线性一致性写。
 
-#### 线性一致性读
+### 线性一致性读
 
 线性一致性读有很多种方法可以去实现，例如以下介绍了四种实现线性一致性读的办法：
 
@@ -39,7 +39,7 @@ Jepsen 是由 Kyle Kingsbury 采用函数式编程语言 Clojure 编写的验证
 
 > 下面的内容是作者自己踩坑总结出来的部署流程，介绍了如何手动部署一套Jepsen框架对JRaft代码进行一致性验证。
 
-### 打开gitpod/linux
+## 打开gitpod/linux
 
 运行ubuntu容器，其中1个control节点，5个jraft-test节点。
 
@@ -87,7 +87,7 @@ ff02::2 ip6-allrouters
 172.17.0.7      jraft5
 ```
 
-### 设置Docker-SSH免密登录
+## 设置Docker-SSH免密登录
 
 安装SSH服务
 
@@ -103,7 +103,7 @@ apt-get install openssh-server //安装ssh服务
 ps -e | grep ssh  //检查是否开启ssh
 ```
 
-#### jraft-test节点
+### jraft-test节点
 
 在Test-Node的docker容器内，编辑文件/etc/ssh/sshd_config，添加一行PermitRootLogin yes表示ssh允许root登录。
 
@@ -124,7 +124,7 @@ service ssh restart
 passwd root
 ```
 
-#### control节点
+### control节点
 
 ```shell
 ssh-keygen //生成公钥私钥
@@ -141,7 +141,7 @@ ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft5
 ssh-keygen -p -f /root/.ssh/id_rsa -m pem -t rsa
 ```
 
-### Ubuntu工具安装
+## Ubuntu工具安装
 
 control节点安装：
 
@@ -213,7 +213,7 @@ export PATH=${JAVA_HOME}/bin:$PATH
 source /etc/profile
 ```
 
-### 安装clojure-control
+## 安装clojure-control
 
 **此操作在control节点完成：**
 复制链接中的shell脚本：[https://raw.githubusercontent.com/killme2008/clojure-control/master/bin/control](https://raw.githubusercontent.com/killme2008/clojure-control/master/bin/control)
@@ -239,7 +239,7 @@ export CONTROL_ROOT=1
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin
 ```
 
-### 下载jraft测试代码
+## 下载jraft测试代码
 
 **克隆远程仓库代码：**
 
@@ -253,7 +253,7 @@ git clone jraft仓库（自测仓库/官方仓库）
 mvn clean install -DskipTests=true
 ```
 
-### 部署atomic-server
+## 部署atomic-server
 
 **此操作在control节点执行：**
 
@@ -262,7 +262,7 @@ control run jraft build
 control run jraft deploy
 ```
 
-### 开启测试
+## 开启测试
 
 **bash开启测试**
 configuration-test
@@ -312,7 +312,7 @@ partition-test
 partition-majority-test
 ```
 
-### 潜在问题及解决方案
+## 潜在问题及解决方案
 
 如果出现报错：
 
