@@ -8,13 +8,14 @@ mathjax: true
 ### 🌱 Basic Information
 - Undergraduate student of GDUT
 - Graduation in 2025 
-- Likes reading, instrumental performance, coding
+- Likes reading, coding and instrumental performance
 
 ###  🔭 About Me
 - Contributor of SOFASTACK/SOFAJRaft
 - Contributor of Apache/RocketMQ
 - Student of OSPP-2023
+- Backend Development Intern of RED(小红书)
 
-###  🌏 My interests
-- Distributed System
+###  🌏 Focus On
+- Distributed Message System
 - Distributed Consistency Algorithm
