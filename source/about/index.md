@@ -14,7 +14,7 @@ mathjax: true
 - Contributor of SOFASTACK/SOFAJRaft
 - Contributor of Apache/RocketMQ
 - Student of OSPP-2023
-- Backend Development Intern of RED(小红书)
+- Backend Development Intern of RED
 
 ###  🌏 Focus On
 - Distributed Message System

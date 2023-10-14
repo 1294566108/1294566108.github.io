@@ -1,5 +1,5 @@
 ---
-title: 回顾 GSoC-2023RocketMQ 社区的一次申请
+title: 回顾 GSoC-2023 RocketMQ 社区的一次申请
 date: 2023-10-14 22:37:03
 tags: 开源之夏
 ---
