@@ -56,7 +56,7 @@ tags: 开源之夏
 在GSoC官网里面还一个有趣的统计，具体内容如下图，GSoC 在全世界录取人数最多的 top12 所学校均来自印度。
 ![image.png](https://s2.loli.net/2023/10/14/75yY138t2AqhBJg.png)
 
-在阅读源码之前，还要一件更重要的事情，那就是熟悉现有产品的使用。于是我尝试着部署一台 rocketmq 4.x 版本的 broker 服务端，然后使用原有的 rocketmq-spring 4.X SDK 进行测试，以此来熟悉 rocketmq-spring 的使用过程。接着，我又部署了 5.0 版本的 broker 到另一台服务器上，使用 rocketmq-clients 5.0 SDK 客户端的代码进行测试。在完成这些操作之后，才来到我们的核心环节，代码阅读与编写。
+接下来还要完成一件重要的事情，就是熟悉现有产品的使用。于是我尝试着部署一台 rocketmq 4.x 版本的 broker 服务端，然后使用原有的 rocketmq-spring 4.X SDK 进行测试，以此来熟悉 rocketmq-spring 的使用过程。接着，我又部署了 5.0 版本的 broker 到另一台服务器上，使用 rocketmq-clients 5.0 SDK 客户端的代码进行测试。在完成这些操作之后，才来到我们的核心环节，代码阅读与编写。
 
 总体来说，这次开发任务也并不轻松，因为要同时参考 rocketmq-clients 与 rocketmq-spring 两个仓库的代码。所以在后面将近一个多月的时间里，看着源码反复琢磨着新的代码该如何书写。在按照自己的思路写完后，需要编写测试类，对每种消息的发送与接收配合 V5 broker 进行检验，保证自己书写的代码能正常使用。
 
@@ -75,7 +75,7 @@ tags: 开源之夏
 
 第二天问了导师，虽然选题没有中选，但是我的提案在这个项目下的 Ranking 是排名第一的，所以还是有机会继续完成剩下的工作。所以还是很庆幸，之前努力也算有了回应。
 
-其实说到 GSoC 中选率也是比较感人的，能中选的算得上很强的大佬了。这里以 Apache RocketMQ 和 Apache Dubbo 两个社区为例：
+其实说到 GSoC 中选率也是比较感人的，这里以 Apache RocketMQ 和 Apache Dubbo 两个社区为例：
 ![image.png](https://s2.loli.net/2023/10/15/Q9eufKb4G3WpJdl.png)
 ![image.png](https://s2.loli.net/2023/10/15/9Ul5dsxXtgRKcjH.png)
 上图是 Apache Rocketmq 社区和 Apache Dubbo 社区放置到 GSoC 上的选题，今年这两个社区中选的人数都是两人。所以要是落选了也不必患得患失。如果有幸中选，那恭喜你已经被社区认可了！在 GSoC 中，想要中选，首先要获得导师的认可，其次谷歌会给到组织/社区一个名额，比如给了 Apache 组织15个名额，在经过导师的排序之后，还要经过组织/社区的排序筛选，最后如果你在组织中的排名位于名额之内，那么你就入选了，但是如果排名超出名额数以外，那么你可能就落选了。
