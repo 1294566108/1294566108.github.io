@@ -15,14 +15,17 @@ Spring Messaging 是Spring Framework 4中添加的模块，是Spring与消息系
 
 ## 模块与适配
 
-按照 Spring Boot 的规范，原有的 4.X SDK 划分为四个子模块，我们 v5 SDK 也将延用分成四个子模块的方式完成开发，在这一点上，会参考 4.X 的模块设计。<br />![image.png](https://cdn.nlark.com/yuque/0/2023/png/25620162/1697387941724-eb0b85d5-0519-4002-b62b-9bfb6e7c2e34.png#averageHue=%23eef0f4&clientId=ub125c5f9-33da-4&from=paste&height=194&id=u7597b39a&originHeight=363&originWidth=693&originalType=binary&ratio=1.875&rotation=0&showTitle=false&size=60312&status=done&style=none&taskId=ufe606334-5aea-40d0-8112-16d02215730&title=&width=369.6)
+按照 Spring Boot 的规范，原有的 4.X SDK 划分为四个子模块，我们 v5 SDK 也将延用分成四个子模块的方式完成开发，在这一点上，会参考 4.X 的模块设计。<br />
+![image.png](https://s2.loli.net/2023/10/20/wXyg8U7FT29KNYH.png)
 
 - rocketmq-v5-client-spring-boot-parent （父pom文件，定义相关的依赖管理和Plugin，供其它几个模块引用）
 - rocketmq-v5-client-spring-boot (定义 auto-configuration 实现，具体RocketMQ相关的自动配置和 Bean 创建代码都集中在这里)
 - rocketmq-v5-client-spring-starter (将 rocketmq-v5-client-spring-boot 和其它的依赖打包生成全量的依赖，用户引用它即可完成所有 rocketmq-spring 的客户端操作)
 - rocketmq-v5-client-spring-samples (使用示例，展示如何使用 spring-boot 方式发送和消费消息)
 
-为了更方便理解模块之间的依赖关系，我做了一个模块依赖图，图示如下，其中rocketmq-grpc-spring-boot-parent 等含有 grpc 写法皆代表 v5 模块，就不再更改了。<br />![image.png](https://cdn.nlark.com/yuque/0/2023/png/25620162/1697388054241-08253c4e-6430-4d72-8870-a44eccb3d589.png#averageHue=%23dce4e8&clientId=ub125c5f9-33da-4&from=paste&height=476&id=uab7765bb&originHeight=892&originWidth=1331&originalType=binary&ratio=1.875&rotation=0&showTitle=false&size=569159&status=done&style=none&taskId=udd4cda05-ef93-44ce-988b-6c1230e0855&title=&width=709.8666666666667)<br />可以看到，我们在rocketmq-spring-all项目顶级模块之下，又开发了rocketmq-grpc-spring-boot-parent 新模块，他是我们其他 maven 子模块的父模块。所有的子模块都继承于父模块，项目中所有要使用到的 jar 包的版本都集中由父工程管理。 rocketmq-grpc-spring-boot-starter 会发布到maven仓库中，用户需要使用时只需要引入这个 starter 即可使用。
+为了更方便理解模块之间的依赖关系，我做了一个模块依赖图，图示如下，其中rocketmq-grpc-spring-boot-parent 等含有 grpc 写法皆代表 v5 模块，就不再更改了。<br />
+![image.png](https://s2.loli.net/2023/10/20/j6NI8dAEhTMyRSu.png)
+<br />可以看到，我们在rocketmq-spring-all项目顶级模块之下，又开发了rocketmq-grpc-spring-boot-parent 新模块，他是我们其他 maven 子模块的父模块。所有的子模块都继承于父模块，项目中所有要使用到的 jar 包的版本都集中由父工程管理。 rocketmq-grpc-spring-boot-starter 会发布到maven仓库中，用户需要使用时只需要引入这个 starter 即可使用。
 <a name="bBD1O"></a>
 
 # 设计思路
@@ -358,7 +361,8 @@ t) throws BeansException {
 
 ### remoting SDK消息发送
 
-首先我们先来分析一下基于rocketmq 4.x remoting SDK的消息发送封装类型：<br />![](https://cdn.nlark.com/yuque/0/2023/png/25620162/1697784558970-f902ba5f-0712-4ee6-9b84-e674c653300f.png#averageHue=%23ebedf2&clientId=ud3ed0db8-f6ac-4&from=paste&id=u4170e8c1&originHeight=1176&originWidth=1204&originalType=url&ratio=2&rotation=0&showTitle=false&status=done&style=none&taskId=u90d94f72-aadf-45e9-b206-748676b8da1&title=)
+首先我们先来分析一下基于rocketmq 4.x remoting SDK的消息发送封装类型：<br />
+![image.png](https://s2.loli.net/2023/10/20/Lni1RPfHUCYe85x.png)
 <a name="TNV84"></a>
 
 #### 同步消息的发送
@@ -449,7 +453,9 @@ SendReceipt send(Message message, Transaction transaction) throws ClientExceptio
 CompletableFuture <SendReceipt> sendAsync(Message message);
 ```
 
-但是，实际上在rocketmq-client-java中，我们可以发送不同类型的消息，**官方文档**有很清楚的记录：<br />![image.png](https://cdn.nlark.com/yuque/0/2023/png/25620162/1678815467073-0fbff046-26c7-4e6f-ad84-2cc726a8d4b4.png#averageHue=%23ededed&clientId=u4b1f5728-cd06-4&from=paste&height=155&id=M9gBW&originHeight=291&originWidth=421&originalType=binary&ratio=1.875&rotation=0&showTitle=false&size=19238&status=done&style=none&taskId=u024db69d-1e8b-46da-92bc-258cb2a3a3a&title=&width=224.53333333333333)![image.png](https://cdn.nlark.com/yuque/0/2023/png/25620162/1678815512595-73750cd8-0c5d-4cd3-b10f-7d14e494c6d6.png#averageHue=%23f0f0f0&clientId=u4b1f5728-cd06-4&from=paste&height=157&id=Q14Xn&originHeight=295&originWidth=438&originalType=binary&ratio=1.875&rotation=0&showTitle=false&size=16448&status=done&style=none&taskId=ub0ade7c0-8266-40c1-a42c-adad2a52ca3&title=&width=233.6)
+但是，实际上在rocketmq-client-java中，我们可以发送不同类型的消息，**官方文档**有很清楚的记录：<br />
+![image.png](https://s2.loli.net/2023/10/20/pMzsRKXW1y7x2bL.png)
+![image.png](https://s2.loli.net/2023/10/20/GxtjpOb3ZUBzsY4.png)
 
 基于rocketmq-client-java 5.0 SDK，我们需要整合的消息发送方法可以具体分为以下几类：<br />（1）Producer发送普通消息（NormalMessage）
 
@@ -533,7 +539,8 @@ final Message message = provider.newMessageBuilder()
 final CompletableFuture<SendReceipt> future = producer.sendAsync(message);
 ```
 
-那么接下来，我们将围绕以上的五种消息，将消息发送整合到现有的 rocketmq-spring 框架中来。我们可以首先做一个简略的基于v5 SDK整合的思维导图：<br />![](https://cdn.nlark.com/yuque/0/2023/png/25620162/1697785106955-91cf54f3-10cb-40ff-8cd2-50772e984d18.png#averageHue=%23eeeff3&clientId=ud3ed0db8-f6ac-4&from=paste&id=ue8f73455&originHeight=1118&originWidth=1190&originalType=url&ratio=2&rotation=0&showTitle=false&status=done&style=none&taskId=u48a17001-4cb0-4395-a0e2-0f3be6fe8d9&title=)
+那么接下来，我们将围绕以上的五种消息，将消息发送整合到现有的 rocketmq-spring 框架中来。我们可以首先做一个简略的基于v5 SDK整合的思维导图：<br />
+![image.png](https://s2.loli.net/2023/10/20/wZjsbBoYMlr3yUD.png)
 <a name="VwLJs"></a>
 
 #### 同步消息的发送
@@ -571,7 +578,7 @@ final CompletableFuture<SendReceipt> future = producer.sendAsync(message);
     }
 ```
 
-这个方法与remoting SDK类似，remoting SDK调用了消息转换的方法createRocketMqMessage，而我们这里并不需要一个<org.apache.rocketmq.common.message.Message>类型的消息实体对象，而是需要一个<org.apache.rocketmq.client.apis.message.Message>类型的消息实体对象，所以这里我又自定义了一个构建基于 v5-SDK 的消息构造方法：**createRocketMqMessage**。<br />下面是 **createRocketMqMessage **方法具体源码：
+这个方法与remoting SDK类似，remoting SDK调用了消息转换的方法createRocketMqMessage，而我们这里并不需要一个<org.apache.rocketmq.common.message.Message>类型的消息实体对象，而是需要一个<org.apache.rocketmq.client.apis.message.Message>类型的消息实体对象，所以这里我又自定义了一个构建基于 v5-SDK 的消息构造方法：**createRocketMqMessage**。<br />下面是 **createRocketMqMessage** 方法具体源码：
 
 ``` java
     private org.apache.rocketmq.client.apis.message.Message createRocketMQMessage(String destination, Message<?> message, Duration messageDelayTime, String messageGroup) {
@@ -581,7 +588,7 @@ final CompletableFuture<SendReceipt> future = producer.sendAsync(message);
     }
 ```
 
-这里面调用了 RocketMQUtil 中的静态方法 convertToClientMessage 用来构造一个真正的<org.apache.rocketmq.client.apis.message>消息实例。<br />下面是** convertToClientMessage **方法代码：
+这里面调用了 RocketMQUtil 中的静态方法 convertToClientMessage 用来构造一个真正的<org.apache.rocketmq.client.apis.message>消息实例。<br />下面是 **convertToClientMessage** 方法代码：
 
 ``` java
     public static org.apache.rocketmq.client.apis.message.Message convertToClientMessage(
@@ -598,7 +605,7 @@ final CompletableFuture<SendReceipt> future = producer.sendAsync(message);
     }
 ```
 
-在获取了消息负载的byte数组后，我们需要封装消息实体了。<br />下面是方法 **getAndWrapMessage **源码：<br />在这个方法里面，我们首先进行了判空操作解析了 destination 中的 topic 和 tag，取出MessageHeaders 中的属性并放到 message 的 properties 属性中，最后建造者模式调用build 方法构造了我们所需要的 message 类。
+在获取了消息负载的byte数组后，我们需要封装消息实体了。<br />下面是方法 **getAndWrapMessage** 源码：<br />在这个方法里面，我们首先进行了判空操作解析了 destination 中的 topic 和 tag，取出MessageHeaders 中的属性并放到 message 的 properties 属性中，最后建造者模式调用build 方法构造了我们所需要的 message 类。
 
 ``` java
     public static org.apache.rocketmq.client.apis.message.Message getAndWrapMessage(
