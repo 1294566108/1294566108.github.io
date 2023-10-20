@@ -1,5 +1,8 @@
-<a name="PmvMF"></a>
-
+---
+title: Integrate RocketMQ 5.0 client with Spring - 记录本次开发的思考与实践
+date: 2023-10-20 20:11:50
+tags: 开源之夏
+---
 # 前言
 
 RocketMQ-Spring 目前已经支持了4.x Remoting SDK，我们还需要支持RocketMQ 5.0 gRPC SDK，即是对 rocketmq-clients-SDK 进行封装和整合，最终以 rocketmq-spring-v5-starter 的形式呈现给用户。
