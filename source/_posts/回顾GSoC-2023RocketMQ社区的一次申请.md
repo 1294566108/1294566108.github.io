@@ -4,7 +4,7 @@ date: 2023-10-14 22:37:03
 tags: 开源之夏
 ---
 > GSoC-2023：[官网链接](https://summerofcode.withgoogle.com/)  [组织列表](https://summerofcode.withgoogle.com/programs/2023/organizations)  [时间列表](https://developers.google.com/open-source/gsoc/timeline?hl=zh-cn)
-> GSoC-2023：Integrate RocketMQ 5.0 client with Spring [选题链接](https://issues.apache.org/jira/browse/GSOC-108)
+> GSoC-2023：Integrate RocketMQ 5.0 client with Spring [选题链接](https://issues.apache.org/jira/browse/GSOC-122)
 > 本次选题相关 ISSUE：[Rocketmq-Clients Issue](https://github.com/apache/rocketmq-clients/issues/275)  [Rocketmq-Spring Issue](https://github.com/apache/rocketmq-spring/issues/553)
 
 # 前言
