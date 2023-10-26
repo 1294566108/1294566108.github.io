@@ -1,5 +1,5 @@
 ---
-title: Flexible Paxos：重新审视法定人数交集-论文中译
+title: Flexible Paxos：重新审视法定人数交集-中译
 date: 2023-10-26 15:33:50
 tags: 分布式共识算法
 ---
