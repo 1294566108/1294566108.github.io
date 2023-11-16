@@ -79,7 +79,7 @@ Propser 有两个重要属性，提案编号 N, 提案 V, 简记 Proposer(N, V)�
 
 > 那么，动态调节 Q1 和 Q2 的意义在哪里？我们知道 prepare 阶段事实上可以看作 Leader 选举，accept 阶段则可以看成日志同步，即涉及 IO 操作。我们是否可以考虑把Q1调大，而Q2调小，来减小 IO 操作带来的压力；又或者我们不再局限于多数派模型，动态设置更灵活的两阶段成员数量，来更好的支持异地容灾呢？
 
-我们来举一个具体的例子来更好的理解 Flexible Paxos 的优势。<br />现在有一个 n=5 的集群节点，按照以往的 majority 模式，我们 prepare 和 accept 阶段需要的成员数都是3。如果我们设置FPaxos 「n=5，prepare=4，accept=2」，此时的IO依赖于两个节点存活响应，那么我们是不是IO的压力就小了，日志同步这种慢操作所依赖的节点更少了。<br />另外一个比较经典的例子，像异地容灾，在多数派模型下，[2,2,2] 这样的 3 AZ 场景，无论是 prepare 阶段还是 accept 阶段，他最多只能接受挂掉一个 zone，因为 6 节点的多数派是 4。那其实 [2,2,2] 相较于 [2,2,1] 是没有增加额外的容灾能力的，后者也最多只允许宕掉一个 zone。但是如果我们引入了 Flexible Paxos 就不一样了。如果我们将 [2,2,2] 的 Q1 设置为 4，Q2 设置为 3，这样我们能抗住挂掉一个 AZ，这时还剩下 4 个节点，即使宕掉的 AZ 中有 Leader，仍然可以重新选举出一个新的 Leader，并且在accept 阶段还可以另外支持宕掉一个节点，毕竟Q2=3。
+我们来举一个具体的例子来更好的理解 Flexible Paxos 的优势。<br />现在有一个 n=5 的集群节点，按照以往的 majority 模式，我们 prepare 和 accept 阶段需要的成员数都是3。如果我们设置FPaxos 「n=5，prepare=4，accept=2」，此时的IO依赖于两个节点存活响应，那么我们是不是IO的压力就小了，日志同步这种慢操作所依赖的节点更少了。<br />另外一个比较经典的例子，AWS曾经提出了可用区（Availability+Zone）的概念，在每个区域 （Region）都有多个可用区。AZ之间物理隔离，独立供电，一个AZ故障，不会影响另外一个AZ，但AZ之间是连通，且网络耗时低。简单可以将AZ理解为独立机房或逻辑机房，这样可以利用AZ的隔离性，对业务进行跨AZ部署，实现高可用。在这样的异地容灾背景下，如果使用多数派模型，像 [2,2,2] 这样的 3 AZ 场景，无论是 prepare 阶段还是 accept 阶段，他最多只能接受挂掉一个 zone，因为 6 节点的多数派是 4。那其实 [2,2,2] 相较于 [2,2,1] 是没有增加额外的容灾能力的，后者也最多只允许宕掉一个 zone。但是如果我们引入了 Flexible Paxos 就不一样了。如果我们将 [2,2,2] 的 Q1 设置为 4，Q2 设置为 3，这样我们能抗住挂掉一个 AZ，这时还剩下 4 个节点，即使宕掉的 AZ 中有 Leader，仍然可以重新选举出一个新的 Leader，并且在accept 阶段还可以另外支持宕掉一个节点，毕竟Q2=3。
 <a name="ZEcYX"></a>
 
 # Flexible Raft
@@ -89,7 +89,7 @@ Propser 有两个重要属性，提案编号 N, 提案 V, 简记 Proposer(N, V)�
 
 ## 使用规则
 
-Flexible Raft 的功能使用方法很简单，这里以 jraft-example 模块下我提供给社区的 Flexible Raft 功能测试用例模块为例子：FlexibleRaftServer 中，我们只需要使用 **nodeOptions.enableFlexibleRaft(true) **打开 Flexible Raft 开关，然后调用 **nodeOptions.setFactor(6, 4) **对读写 factor 因子进行设置，这样就能够启动 Flexible Raft了。
+Flexible Raft 的功能使用方法很简单，这里以 jraft-example 模块下我提供给社区的 Flexible Raft 功能测试用例模块为例子：FlexibleRaftServer 中，我们只需要使用 **nodeOptions.enableFlexibleRaft(true)** 打开 Flexible Raft 开关，然后调用 **nodeOptions.setFactor(6, 4)** 对读写 factor 因子进行设置，这样就能够启动 Flexible Raft了。
 
 ``` java
     public FlexibleRaftServer(final String dataPath, final String groupId, final PeerId serverId,
