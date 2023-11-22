@@ -3063,9 +3063,9 @@ hexo-theme-flexblock@^2.12.0:
     hexo-renderer-ejs "^2.0.0"
     hexo-renderer-stylus "^2.1.0"
 
-hexo-theme-keep@^3.8.5:
-  version "3.8.5"
-  resolved "https://registry.npmmirror.com/hexo-theme-keep/-/hexo-theme-keep-3.8.5.tgz#806a16ef4fc409f5397a23141ba10c659f67652d"
+hexo-theme-keep@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmmirror.com/hexo-theme-keep/-/hexo-theme-keep-4.0.1.tgz#4ade9d89ad3cf91e4065c018c083e1a3fbe7dcfc"
 
 hexo-theme-landscape@^1.0.0:
   version "1.0.0"
