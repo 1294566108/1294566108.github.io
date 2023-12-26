@@ -4129,7 +4129,11 @@ moment-timezone@^0.5.34:
   dependencies:
     moment "^2.29.4"
 
-moment@^2.19.1, moment@^2.29.1, moment@^2.29.4, moment@^2.8.4, moment@latest:
+moment@^2.19.1, moment@^2.29.1, moment@^2.29.4, moment@^2.30.0, moment@^2.8.4:
+  version "2.30.0"
+  resolved "https://registry.npmmirror.com/moment/-/moment-2.30.0.tgz#c2a65bb962bdf2a9c49c69b5358c41f6c66ad10e"
+
+moment@latest:
   version "2.29.4"
   resolved "https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz"
 
