@@ -3077,9 +3077,9 @@ hexo-theme-nexmoe@^4.1.5:
   dependencies:
     hexo-generator-json-content "^4.2.3"
 
-hexo-theme-reimu@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.npmmirror.com/hexo-theme-reimu/-/hexo-theme-reimu-0.0.6.tgz"
+hexo-theme-reimu@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmmirror.com/hexo-theme-reimu/-/hexo-theme-reimu-0.0.9.tgz#8ff6bc2e7e9caca252d9703f88fbb1059a04e8a2"
 
 hexo-util@^2.0.0, hexo-util@^2.1.0, hexo-util@^2.5.0, hexo-util@^2.7.0, hexo-util@latest:
   version "2.7.0"
