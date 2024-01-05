@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            海量数据处理场景 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        海量数据处理场景
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-09-10 21:01:55</span>
+                <span class="mobile">2023-09-10 21:01</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Fri Jan 05 2024 17:02:02 GMT+0000">2024-01-05 17:02:02</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%9C%BA%E6%99%AF%E9%A2%98/">场景题</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h1 id="大文件找top100单词"><a href="#大文件找top100单词" class="headerlink" title="大文件找top100单词"></a>大文件找top100单词</h1><blockquote>
+<p>本文整理自网络上各种常见海量数据处理场景题</p>
+</blockquote>
+<h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>有一个 1GB 大小的文件，文件里每一行是一个词，每个词的大小不超过 16B，内存大小限制是 1MB，要求返回频数最高的 100 个词(Top 100)。</p>
+<h3 id="解答思路"><a href="#解答思路" class="headerlink" title="解答思路"></a>解答思路</h3><p>由于内存限制，我们无法直接将大文件所有词一次性全部读到内存中。因此，可以采用分治策略，把一个大文件分解成n个小文件，保证每个文件的大小小于内存大小限制（这里是 1MB），进而直接将单个小文件读取到内存中进行处理。<br><strong>1.哈希取余</strong><br>遍历大文件的每个词word，执行 hash(word) % 5000，将结果为 i 的词存放到文件 file(i) 中。遍历结束后，我们可以得到 5000 个小文件。每个小文件的大小为 200KB 左右。如果有的小文件大小仍然超过 1MB，则采用同样的方式继续进行分解，直到小于1MB为止。<br><strong>2.统计频数</strong><br>接着统计每个小文件 file(i) 中出现频数最高的 100 个词。最简单的方式是使用 HashMap 来实现。其中 key 为词，value 为该词出现的频率。遍历到词 word，如果在 HashMap 中不存在，则执行 map.put(word, 1)；存在则执行 map.put(word, map.get(word)+1)，将该词频数加 1。<br><strong>3.小顶堆</strong><br>接下来，我们构建一个堆大小为 100 的小顶堆来找出所有词中出现频数最高的 top100 单词。依次遍历每个小文件，遍历到的词的出现次数大于堆顶词的出现次数，则用新词替换堆顶的词，然后调整小顶堆，遍历结束后，小顶堆上的词就是出现频数最高的 100 个词。<br><strong>注意：若要找出最小top100单词的方法与之类似，将小顶堆换成大顶堆就好了。</strong><br>从序列中选择最大的K个数（小顶堆）<br>场景：要选择最大的k个数。<br>做法：【构造小顶堆（一共k个数）】，每次取数组中剩余数与 【堆顶的元素（k个数中的最小值）】 进行比较。如果新数比堆顶元素大，则删除堆顶元素，并添加这个新数到堆中；如果新数比堆顶元素小，则说明堆中的k个数都比新数大，所以不用进行操作。<br>从序列中选择最小的K个数（大顶堆）<br>场景：要选择最小的k个数。<br>做法：【构造大顶堆（一共k个数）】，每次取数组中剩余数与 【堆顶的元素（k个数中的最大数）】 进行比较。如果新数比堆顶元素小，则删除堆顶元素，并添加这个新数到堆中；如果新数比堆顶元素大，则说明堆中的k个数都比新数小，所以不用进行操作。</p>
+<h1 id="大量数据中找出不重复整数"><a href="#大量数据中找出不重复整数" class="headerlink" title="大量数据中找出不重复整数"></a>大量数据中找出不重复整数</h1><h3 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h3><p>在 2 亿个整数中找出不重复的整数，内存不足以容纳这 2 亿个整数。</p>
+<h3 id="解答思路-1"><a href="#解答思路-1" class="headerlink" title="解答思路"></a>解答思路</h3><h4 id="方法一：分治法"><a href="#方法一：分治法" class="headerlink" title="方法一：分治法"></a>方法一：分治法</h4><p>与前面的题目方法类似，先将 2 亿个数划分到多个小文件，用 HashSet&#x2F;HashMap 找出每个小文件中不重复的整数，再合并每个子结果，即为最终结果。</p>
+<h4 id="方法二：位图法"><a href="#方法二：位图法" class="headerlink" title="方法二：位图法"></a>方法二：位图法</h4><p>位图是指用一个或多个 bit 来标记某个元素对应的值。因为使用bit为单位存储数据可以大大节省存储空间。对于这道题，我们可以用 2 个 bit 来表示各个数字的状态：</p>
+<ul>
+<li>00 表示这个数字没出现过；</li>
+<li>01 表示这个数字出现过一次（即为题目所找的不重复整数）；</li>
+<li>10 表示这个数字出现了多次。</li>
+</ul>
+<p>2亿个整数，总共所需内存为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2亿个整数 × 4字节/整数 = 8亿字节</span><br><span class="line">1GB等于1,073,741,824字节。</span><br><span class="line">8亿字节 ÷ 1,073,741,824字节/GB ≈ 0.745GB。</span><br></pre></td></tr></table></figure>
+
+<p>因此，如果此题的可用内存超过 0.75GB 时，可以采用位图法。<br>遍历 2 亿个整数，查看位图中对应的位，如果是 00，则变为 01，如果是 01 则变为 10，如果是 10 则保持不变。遍历结束后，查看位图，把对应位是 01 的整数输出即可。</p>
+<h1 id="大量数据中判断一个数是否存在"><a href="#大量数据中判断一个数是否存在" class="headerlink" title="大量数据中判断一个数是否存在"></a>大量数据中判断一个数是否存在</h1><h3 id="题目描述-2"><a href="#题目描述-2" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定 40 亿个不重复的没排过序的 unsigned int 型整数，然后再给定一个数，如何快速判断这个数是否在这 40 亿个整数当中？</p>
+<h3 id="解答思路-2"><a href="#解答思路-2" class="headerlink" title="解答思路"></a>解答思路</h3><h4 id="方法一：分治法-1"><a href="#方法一：分治法-1" class="headerlink" title="方法一：分治法"></a>方法一：分治法</h4><p>分治法解决，与前面类似，不再赘述。</p>
+<h4 id="方法二：位图法-1"><a href="#方法二：位图法-1" class="headerlink" title="方法二：位图法"></a>方法二：位图法</h4><p>40 亿个不重复整数，我们用 40 亿个 bit 来表示，初始位均为 0，那么总共需要内存：4,000,000,000b≈512M。<br>我们读取这 40 亿个整数，将对应的 bit 设置为 1。接着读取要查询的数，查看相应位是否为 1，如果为 1 表示存在，如果为 0 表示不存在。</p>
+<h1 id="大量数据中找出中位数"><a href="#大量数据中找出中位数" class="headerlink" title="大量数据中找出中位数"></a>大量数据中找出中位数</h1><h3 id="题目描述-3"><a href="#题目描述-3" class="headerlink" title="题目描述"></a>题目描述</h3><p>从 5 亿个数中找出中位数。数据排序后，位置在最中间的数就是中位数。当样本数为奇数时，中位数为 第 (N+1)&#x2F;2 个数；当样本数为偶数时，中位数为 第 N&#x2F;2 个数与第 1+N&#x2F;2 个数的均值。</p>
+<h3 id="解答思路-3"><a href="#解答思路-3" class="headerlink" title="解答思路"></a>解答思路</h3><p>如果这道题没有内存大小限制，则可以把所有数读到内存中排序后找出中位数。但是最好的排序算法的时间复杂度都为 O(NlogN)。这里使用其他方法。</p>
+<h4 id="方法一：双堆法"><a href="#方法一：双堆法" class="headerlink" title="方法一：双堆法"></a>方法一：双堆法</h4><p>维护两个堆，一个大顶堆，一个小顶堆。大顶堆中最大的数<strong>小于等于</strong>小顶堆中最小的数；保证这两个堆中的元素个数的差不超过 1。<br>若数据总数为<strong>偶数</strong>，当这两个堆建好之后，<strong>中位数就是这两个堆顶元素的平均值</strong>。当数据总数为<strong>奇数</strong>时，根据两个堆的大小，<strong>中位数一定在数据多的堆的堆顶</strong>。<br>以上这种方法，需要把所有数据都加载到内存中。当数据量很大时，就不能这样了，因此，这种方法<strong>适用于数据量较小的情况</strong>。5 亿个数，每个数字占用 4B，总共需要 2G 内存。如果可用内存不足 2G，就不能使用这种方法了。</p>
+<h4 id="方法二：分治法"><a href="#方法二：分治法" class="headerlink" title="方法二：分治法"></a>方法二：分治法</h4><p>分治法的思想是把一个大的问题逐渐转换为规模较小的问题来求解。<br>顺序读取这 5 亿个数字，对于读取到的数字 number，如果它对应的二进制中最高位为1，则把这个数字写到 file(1) 中，否则写入 file(0) 中。通过这一步，可以把这 5 亿个数划<strong>分为两部分</strong>，而且 file(0) 中的数都大于 file(1) 中的数（最高位是符号位）。<br>划分之后，可以非常容易地知道中位数是在 file(0) 还是 file(1) 中。假设 file(1) 中有 1 亿个数，那么中位数一定在 file(0) 中，且是在 file(0) 中，从小到大排列的第 1.5 亿个数与它后面的一个数的平均值。<br>由于5 亿数的中位数是第 2.5 亿与右边相邻一个数求平均值。若 file(1) 有一亿个数，那么中位数就是 file(0) 中从第 1.5 亿个数开始的两个数求得的平均值。<br>对于 file(0) 可以用次高位的二进制继续将文件一分为二，如此划分下去，<strong>直到划分后的文件可以被加载到内存中，把数据加载到内存中以后直接排序，找出中位数。</strong><br>当数据总数为偶数，如果划分后两个文件中的数据有相同个数，那么中位数就是数据较小的文件中的最大值与数据较大的文件中的最小值的平均值。</p>
+<h1 id="大文件查询频度排序"><a href="#大文件查询频度排序" class="headerlink" title="大文件查询频度排序"></a>大文件查询频度排序</h1><h3 id="题目描述-4"><a href="#题目描述-4" class="headerlink" title="题目描述"></a>题目描述</h3><p>有 10 个文件，每个文件大小为 1G，每个文件的每一行存放的都是用户的 query，每个文件的 query 都可能重复。要求按照 query 的频度排序。</p>
+<h3 id="解答思路-4"><a href="#解答思路-4" class="headerlink" title="解答思路"></a>解答思路</h3><p>如果 query 的重复度比较大，可以考虑一次性把所有 query 读入内存中处理；如果 query 的重复率不高，那么可用内存不足以容纳所有的 query，这时候就需要采用分治法或其他的方法来解决。</p>
+<h4 id="方法一：HashMap-法"><a href="#方法一：HashMap-法" class="headerlink" title="方法一：HashMap 法"></a>方法一：HashMap 法</h4><p>如果 query 重复率高，说明不同 query 总数比较小，可以考虑把所有的 query 都加载到内存中的 HashMap 中。接着就可以按照 query 出现的次数进行排序。</p>
+<h4 id="方法二：分治法-1"><a href="#方法二：分治法-1" class="headerlink" title="方法二：分治法"></a>方法二：分治法</h4><p>分治法需要根据数据量大小以及可用内存的大小来确定问题划分的规模。我们顺序遍历 10 个文件中的 query，通过 Hash 函数 hash(query) % 10 把这些 query 划分到 10 个小文件中。之后对每个小文件使用 HashMap 统计 query 出现次数，根据次数排序并写入到零外一个单独文件中。<br>接着对所有文件按照 query 的次数进行排序，这里可以使用<strong>归并排序</strong>（由于无法把所有 query 都读入内存，因此需要使用<strong>外排序</strong>）。</p>
+<p><strong>如何理解外排序？</strong><br>例如，有一个含有 10000 个记录的文件，但是内存的可使用容量仅为 1000 个记录，毫无疑问需要使用外部排序算法，具体分为两步：</p>
+<ul>
+<li>将整个文件其等分为 10 个临时文件（每个文件中含有 1000 个记录），然后将这 10 个文件依次进入内存，采取适当的内存排序算法对其中的记录进行排序，将得到的有序文件（初始归并段）移至外存。</li>
+<li>对得到的 10 个初始归并段进行如图 1 的两两归并，直至得到一个完整的有序文件。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/15/tFekd3o6zRa85m4.png"
+                      alt="image.png"
+                ><br><strong>注意：</strong> 在实际归并的过程中，由于内存容量的限制不能满足同时将 2 个归并段全部完整的读入内存进行归并，只能不断地取 2 个归并段中的每一小部分进行归并，通过不断地读数据和向外存写数据，直至 2 个归并段完成归并变为 1 个大的有序文件。</li>
+</ul>
+
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/%E5%9C%BA%E6%99%AF%E9%A2%98/"><i class="icon fas fa-hashtag"></i>场景题</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/09/11/JRaft-jepsen-%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E6%B5%8B%E8%AF%95/"
+                                   title="JRaft-jepsen 线性一致性测试"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">JRaft-jepsen 线性一致性测试</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/09/09/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9-SRE%E5%90%8E%E5%8F%B0%E5%AE%9E%E4%B9%A0%E7%94%9F%E4%B8%80%E9%9D%A2/"
+                                   title="哔哩哔哩-SRE后台实习生一面"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">哔哩哔哩-SRE后台实习生一面</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E6%89%BEtop100%E5%8D%95%E8%AF%8D"><span class="nav-number">1.</span> <span class="nav-text">大文件找top100单词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF"><span class="nav-number">1.0.2.</span> <span class="nav-text">解答思路</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E6%89%BE%E5%87%BA%E4%B8%8D%E9%87%8D%E5%A4%8D%E6%95%B4%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">大量数据中找出不重复整数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-1"><span class="nav-number">2.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">方法一：分治法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%8D%E5%9B%BE%E6%B3%95"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">方法二：位图法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E6%95%B0%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">3.</span> <span class="nav-text">大量数据中判断一个数是否存在</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">3.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-2"><span class="nav-number">3.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95-1"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">方法一：分治法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%8D%E5%9B%BE%E6%B3%95-1"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">方法二：位图法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E6%89%BE%E5%87%BA%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">大量数据中找出中位数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">4.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-3"><span class="nav-number">4.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%8F%8C%E5%A0%86%E6%B3%95"><span class="nav-number">4.0.2.1.</span> <span class="nav-text">方法一：双堆法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">4.0.2.2.</span> <span class="nav-text">方法二：分治法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E6%9F%A5%E8%AF%A2%E9%A2%91%E5%BA%A6%E6%8E%92%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">大文件查询频度排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-4"><span class="nav-number">5.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-4"><span class="nav-number">5.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9AHashMap-%E6%B3%95"><span class="nav-number">5.0.2.1.</span> <span class="nav-text">方法一：HashMap 法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95-1"><span class="nav-number">5.0.2.2.</span> <span class="nav-text">方法二：分治法</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E6%89%BEtop100%E5%8D%95%E8%AF%8D"><span class="nav-number">1.</span> <span class="nav-text">大文件找top100单词</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF"><span class="nav-number">1.0.2.</span> <span class="nav-text">解答思路</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E6%89%BE%E5%87%BA%E4%B8%8D%E9%87%8D%E5%A4%8D%E6%95%B4%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">大量数据中找出不重复整数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-1"><span class="nav-number">2.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">方法一：分治法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%8D%E5%9B%BE%E6%B3%95"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">方法二：位图法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E6%95%B0%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">3.</span> <span class="nav-text">大量数据中判断一个数是否存在</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-2"><span class="nav-number">3.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-2"><span class="nav-number">3.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95-1"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">方法一：分治法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E4%BD%8D%E5%9B%BE%E6%B3%95-1"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">方法二：位图法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E4%B8%AD%E6%89%BE%E5%87%BA%E4%B8%AD%E4%BD%8D%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">大量数据中找出中位数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-3"><span class="nav-number">4.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-3"><span class="nav-number">4.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E5%8F%8C%E5%A0%86%E6%B3%95"><span class="nav-number">4.0.2.1.</span> <span class="nav-text">方法一：双堆法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95"><span class="nav-number">4.0.2.2.</span> <span class="nav-text">方法二：分治法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E6%9F%A5%E8%AF%A2%E9%A2%91%E5%BA%A6%E6%8E%92%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">大文件查询频度排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0-4"><span class="nav-number">5.0.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94%E6%80%9D%E8%B7%AF-4"><span class="nav-number">5.0.2.</span> <span class="nav-text">解答思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9AHashMap-%E6%B3%95"><span class="nav-number">5.0.2.1.</span> <span class="nav-text">方法一：HashMap 法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%88%86%E6%B2%BB%E6%B3%95-1"><span class="nav-number">5.0.2.2.</span> <span class="nav-text">方法二：分治法</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
