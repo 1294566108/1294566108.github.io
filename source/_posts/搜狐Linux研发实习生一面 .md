@@ -1,5 +1,5 @@
 ---
-title: 搜狐Linux研发实习生一面
+title: 搜狐Linux研发实习生面经
 date: 2023-09-09 04:14:06
 tags: 面经
 mathjax: true
