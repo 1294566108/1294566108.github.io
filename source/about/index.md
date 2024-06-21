@@ -5,15 +5,11 @@ comment: true
 mathjax: true
 ---
 
-### 🌱 Basic Information
-- Undergraduate student of GDUT
-- Graduation in 2025 
-- Likes reading, coding and instrumental performance
-
 ###  🔭 About Me
 - Contributor of SOFASTACK/SOFAJRaft
 - Contributor of Apache/RocketMQ
 - Student of OSPP-2023
+- Student of GSoC-2024
 - Backend Development Intern of RED
 
 ###  🌏 Focus On
