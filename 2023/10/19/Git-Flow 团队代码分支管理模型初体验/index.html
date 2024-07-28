@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            Git-Flow 团队代码分支管理模型初体验 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        Git-Flow 团队代码分支管理模型初体验
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-10-19 17:04:03</span>
+                <span class="mobile">2023-10-19 17:04</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Sun Jul 28 2024 16:51:21 GMT+0000">2024-07-28 16:51:21</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Git/">Git</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h1><blockquote>
+<p>我们知道，Git最初是由Linux开发者Linus用了仅仅两周时间纯C语言编写而成。在日常工作中git是不可或缺的工具。除了需要熟练掌握Git命令，我们还需要了解究竟如何将 Git Flow 这一款适用于代码分支管理到模型应用到团队中，这也是本文的目的。</p>
+<p>大约在13年前（2010年），Vincent Driessen 提出了赫赫有名的 <strong>Git 分支管理模型</strong>。开发者如果要开发一个新的功能（feature），需要从develop分支checkout一个新的feature分支，然后做自己的修改。修改完成后，还需要merge回develop分支。接下来针对Git 分支管理模型，我们在<a class="link"   target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/" >原文<i class="fas fa-external-link-alt"></i></a>的基础上，进行一些讨论与分析。</p>
+</blockquote>
+<p>除了像git这样的分布式版本控制系统，n年前还有过 svn、cvs 等等一系列版本控制系统，它们的区别在于：<strong>前者是分布式，后者是集中式</strong>。在传统的 CVS 或 Subversion 中，合并分支是一件让人担惊受怕的事情。<br>集中式的版本控制系统每次在写代码时都需要从服务器中拉取一份下来，并且如果服务器丢失了，那么所有的就都丢失了。分布式与集中式的区别在于，每个人的电脑都是服务器，你可以自由在本地回滚，提交，当你想把自己的代码提交到主仓库时，只需要合并推送到主仓库就可以了。<br><strong>集中式它们都有一个主版本号，所有的版本迭代都以这个版本号为主；而分布式因为每个客户端都是服务器，git没有固定的版本号，但是有一个由哈希算法算出的id，用来回滚用的。</strong> 同时后者也有一个master仓库，这个仓库是一切分支仓库的主仓库，我们可以推送提交到master并合并到主仓库上，主仓库的版本号会迭代一次，我们客户端上的git版本号无论迭代多少次，都跟master无关，只有合并时，master才会迭代一次。 </p>
+<h1 id="分支管理模型概览"><a href="#分支管理模型概览" class="headerlink" title="分支管理模型概览"></a><strong>分支管理模型概览</strong></h1><p><strong>我们首先用四段话来概括Vincent Driessen提出的模型的核心内容：</strong></p>
+<ol>
+<li><strong>对于feature分支：</strong> 我们首先需要从 develop 分支 <strong>checkout 一个新的feature分支</strong>，然后做自己的开发&#x2F;修改。操作完成后，再 <strong>merge 回 develop 分支</strong>。</li>
+<li><strong>对于develop分支：</strong> 开发人员将 feature&#x2F;release 等等辅助分支合并回 develop 分支前，需要成功跑完CI流水线，然后进行合并。develop 分支集成其他分支所做的一切修改。</li>
+<li><strong>对于release分支：</strong> 我们需要切一个 release 分支，创建一条新的CD流水线。release 成功结束后，一般会 merge 回 master 分支，<strong>并在master分支打下版本Tag。</strong></li>
+<li><strong>对于hotfix分支：</strong>如果 release 之后发现有bug，需要紧急处理，这时我们就需要<strong>热修复</strong>，从 master 分支的某个 tag 切出来，修复好问题后再 <strong>merge 回 master</strong>，打下新的版本 tag，而且还要同步 <strong>merge 回 develop</strong>。</li>
+</ol>
+<p><strong>模型图如下：</strong><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/19/JalgCMvFuZ6msoz.png"
+                      alt="image.png"
+                ></p>
+<h1 id="主线分支"><a href="#主线分支" class="headerlink" title="主线分支"></a><strong>主线分支</strong></h1><p>Git 中央存储库中包含两个重要的分支，<strong>一个是master，另一个是develop</strong>。它们在项目的生命周期中都一直存在。<br>这两个分支有如下特性：</p>
+<ol>
+<li><strong>origin&#x2F;master分支</strong>反映的一直都是<strong>发布就绪的状态</strong>。master分支上的代码也是生产服务的代码。原则上，master分支的代码都是可发布的，所以我们对merge到master的代码有严格的要求。</li>
+<li><strong>origin&#x2F;develop分支</strong>反映<strong>当前项目的修改状态。</strong> 该分支集成其他分支所做的一切修改。甚至可以运行一个自动化脚本，每天晚上将各个分支的修改merge到develop分支。当develop分支中的代码趋于稳定，准备发新版的时候，应该将其merger到master分支，并标记本次发布的版本号。</li>
+</ol>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/19/K5WIeTgwnEAf82S.png"
+                      alt="image.png"
+                ></p>
+<h1 id="辅助分支"><a href="#辅助分支" class="headerlink" title="辅助分支"></a><strong>辅助分支</strong></h1><p><strong>如 master 和 develop 旁边的其他分支，它们的生命周期有限，最终会从代码库中被移除。</strong> 而我们使用这些分支，主要来帮助各个团队之间并行开发，或者是为新版本发布做准备，亦或修复当前生产环境的bug。<br>我们使用的分支有以下几种：<strong>Feature branches、Release branches 与 Hotfix branches。</strong> 各个分支根据不同的目的被创建，对它们的操作也遵循严格的规则。比如分支如何创建、开发完成之后merge到的对象等。另外，这些分支其实都是普通的git分支。只是根据我们使用的目的策略给他们赋予了不同的功能。<br>接下来我们来详细介绍这三种辅助分支。</p>
+<h2 id="Feature-分支"><a href="#Feature-分支" class="headerlink" title="Feature 分支"></a><strong>Feature 分支</strong></h2><p><strong>Feature 分支主要用来开新功能。</strong> 一般来说，只要功能还没有开发完善，它就应该一直存在。<strong>但最终应该被 merge 回 develop 分支或者丢弃</strong>。Feature 分支遵循以下规则：</p>
+<ol>
+<li>从 develop 分支上创建 feature 分支</li>
+<li>feature 分支最终 merge 回 develop 分支</li>
+<li>分支的命名规则：除了master、develop、release- 、or hotfix- 的任何名字，一般可以用feature-为前缀命名。</li>
+</ol>
+<p><strong>Feature 分支通常只存在于开发人员的版本库中，而不应该存在于 origin 仓库中。</strong> 但考虑到团队成员协作开发的情况，彼此之间需要定期 merge 对方的代码，这是就需要借助 develop 分支来实现了。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/19/BzJsHuqAfjLYkwS.png"
+                      alt="image.png"
+                ></p>
+<h3 id="创建feature分支"><a href="#创建feature分支" class="headerlink" title="创建feature分支"></a>创建feature分支</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> checkout -b feature-<span class="number">1020</span> develop</span><br></pre></td></tr></table></figure>
+<h3 id="合并feature分支"><a href="#合并feature分支" class="headerlink" title="合并feature分支"></a>合并feature分支</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> checkout develop            <span class="comment">#切换到develop分支</span></span><br><span class="line">git merge --<span class="literal">no</span>-<span class="literal">off</span> feature-<span class="number">1020</span> <span class="comment">#合并feature-1020的代码到本地master分支</span></span><br><span class="line">git branch -d feature-<span class="number">1020</span>      <span class="comment">#删除本地feature分支</span></span><br><span class="line">git push origin develop         <span class="comment">#推送到远程develop仓库</span></span><br></pre></td></tr></table></figure>
+<h2 id="Release-分支"><a href="#Release-分支" class="headerlink" title="Release 分支"></a><strong>Release 分支</strong></h2><p><strong>Release 分支主要用来为代码发布做准备。</strong> 在合并代码之前，它允许做小的 bug 修改、为版本发布做准备工作（指定版本号、建数据表等）。通过在 Release 分支上做这些操作，可以保证 develop 分支是干净的，不影响当前新功能的开发。Release 分支遵循下面的规则：</p>
+<ol>
+<li>从 develop上创建release分支</li>
+<li>release 必须 merge 回 develop 和 master</li>
+<li>分支需要以 release-* 来命令<br>当完成本次发版计划的所有功能，并且新功能也到达了预期的状态，那么就是时候创建 release 分支了。这个时候，本次计划发版的所有功能分支，都应该被 merge 回develop 分支。其他的不在本次版本计划中，需要等到下次创建 release 分支的时候再进行 merge。在创建 release 分支的时候，即已经确定了本次发版的版本号。</li>
+</ol>
+<h3 id="创建release分支"><a href="#创建release分支" class="headerlink" title="创建release分支"></a>创建release分支</h3><p>release 分支从 develop 分支中创建。举例说明：当前生产环境的版本是1.1.5，接下来我们计划要发新版。当开发状态基本满足发版的需求时，我们决定本次的版本号为1.2。因为我们创建 release 分支，并给分支指定一个版本号：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b release<span class="number">-1.2</span> develop             <span class="comment">#新建并签出release-1.2分支</span></span><br><span class="line">./bump-<span class="built_in">version</span>.sh <span class="number">1.2</span>                           <span class="comment">#执行虚构的shell脚本，修改部分文件，以反映当前新的版本号</span></span><br><span class="line">git commit -<span class="keyword">a</span> -m <span class="string">&quot;Bumped version number to 1.2&quot;</span> <span class="comment">#提交当前release-1.2分支版本修改的变更</span></span><br></pre></td></tr></table></figure>
+<p>这里 bump-version.sh 是虚构的一个shell脚本，用来修改部分文件，以反映当前新的版本号（这当然也可以手工来修改这些文件）。<br>直到新版上线之前，release分支都始终应该存在。在这段期间里，还可以继续修改bug（当然是在relase分支上修改，而不是develop）。这个时候，给release分支增加新的功能是被明确禁止的，新的功能必须merge到develop分支，等到下一次版本发布。</p>
+<h3 id="完成release分支"><a href="#完成release分支" class="headerlink" title="完成release分支"></a>完成release分支</h3><p>当 release 分支的状态已经完全可以发版时，我们还需要执行以下操作：</p>
+<ol>
+<li>release 分支<strong>需要merge到master分支上。</strong> 因为 master 分支上的提交才真正表示一个新的发布版本。</li>
+<li>给 master 分支上的这次提交打tag，方便未来参考该历史版本。</li>
+<li>代码还<strong>需要 merge 回 develop 分支，</strong> 这样可以保证未来的版本也包含了 release 中的修改。</li>
+</ol>
+<p><strong>合并到master：</strong></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout <span class="keyword">master</span>             <span class="title">//签出master</span>分支</span><br><span class="line">git merge --no-ff release-<span class="number">1.2</span>   //合并release-<span class="number">1.2</span>分支提交的代码</span><br><span class="line">git <span class="keyword">tag</span> <span class="title">-a</span> <span class="number">1.2</span>                  //为本次提交打上<span class="keyword">tag</span></span><br></pre></td></tr></table></figure>
+
+<p>为了保存release中所作的修改，我们还需要将release分支merge到develop：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> checkout develop            //签出develop分支</span><br><span class="line"><span class="attribute">git</span> merge --no-ff release-<span class="number">1</span>.<span class="number">2</span>   //合并release-<span class="number">1</span>.<span class="number">2</span>分支变更到develop</span><br></pre></td></tr></table></figure>
+
+<p>这的merge操作可能会导致冲突（因为我们在release中做了修改）。如果真是这样，修复它，然后重新提交。<br>现在所有工作已经完成，release分支已经不再被需要了。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> branch -d release-<span class="number">1</span>.<span class="number">2</span>       //删除release-<span class="number">1</span>.<span class="number">2</span>分支</span><br></pre></td></tr></table></figure>
+<h2 id="Hotfix分支"><a href="#Hotfix分支" class="headerlink" title="Hotfix分支"></a><strong>Hotfix分支</strong></h2><p><strong>Hotfix分支主要用来修复当前线上出现的Bug。</strong> 和release分支的相同点在于，也是为新的发布版本做准备。但对于该版本，前期却是没有任何计划的。<strong>当生产环境的版本出现不期望的状况并需要立即修复时，Hotfix应运而生。</strong><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/19/jl3EnrsHXiU4QYR.png"
+                      alt="image.png"
+                ><br>当生产环境出现严重的bug，必须立即去解决。hotfix是从当前生产环境的master分支上的tag标签生成的。hotfix分支遵循下面的规则：</p>
+<ol>
+<li>从master分支上创建</li>
+<li>最终merge到master和develop分支</li>
+<li>分支命名规则为：hotfix-*<br>Hotfix分支的核心在于：当前开发团队仍然可以继续开发，由另外一个人来快速修复bug。</li>
+</ol>
+<h3 id="创建hotfix分支"><a href="#创建hotfix分支" class="headerlink" title="创建hotfix分支"></a>创建hotfix分支</h3><p>Hotfix从master分支上创建。举个例子，当前生产服务的运行版本是1.2。比较麻烦的是，服务上出现了一个bug，我们需要立即修复。 我们就可以创建一个hotfix分支，着手修改这个bug：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b hotfix-<span class="number">1.2</span>.<span class="number">1</span> <span class="keyword">master</span>                <span class="title">#创建并切换到hotfix-1</span>.<span class="number">2.1</span>分支</span><br><span class="line">./bump-<span class="keyword">version</span>.sh <span class="number">1.2</span>.<span class="number">1</span></span><br><span class="line">git commit -a -m &#x27;Bumped <span class="keyword">version</span> <span class="keyword">number</span> to <span class="number">1.2</span>.<span class="number">1</span>&#x27;  <span class="comment">#提交当前分支版本修改的变更</span></span><br></pre></td></tr></table></figure>
+
+<p>创建分支之后，不要忘记去做版本修改。然后我们就可以在hotfix分支上一步一步修复这个bug了。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> commit -m <span class="string">&#x27;Fixed server production problem&#x27;</span>    <span class="comment">#提交修改bug后的分支变更</span></span><br></pre></td></tr></table></figure>
+<h3 id="hotfix分支完成修复"><a href="#hotfix分支完成修复" class="headerlink" title="hotfix分支完成修复"></a>hotfix分支完成修复</h3><p>当修复完成后，代码需要 merge 到 master 分支和 develop 分支，这样后续的版本中也会包含该修改。这跟 release 分支的操作是完全相同的。</p>
+<ol>
+<li><p>首先，切换到 master 分支，merge 做的修改，然后打标签。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout <span class="keyword">master</span>              <span class="title">#切换到master</span>分支</span><br><span class="line">git merge --no-ff hotfix-<span class="number">1.2</span>.<span class="number">1</span>   <span class="comment">#合并分支</span></span><br><span class="line">git <span class="keyword">tag</span> <span class="title">-a</span> <span class="number">1.2</span>.<span class="number">1</span>                 <span class="comment">#打标签</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接下来，将修改merge到develop分支：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> checkout develop             <span class="comment">#切换到develop分支</span></span><br><span class="line">git merge --<span class="literal">no</span>-ff hotfix-<span class="number">1</span>.<span class="number">2</span>.<span class="number">1</span>   <span class="comment">#合并当前修改到develop分支</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 对于这个规则，存在一个例外情况：当前有一个待发布的 release 分支已经存在了。<strong>如果可以延迟到伴随这个 release 发版，才修复这个问题，hotfix 分支就需要 merge 到 release 分支上，而不是develop。</strong> 因为当release分支完成之后，最终修改还是会 merge 到 develop 分支上（如果当前的服务非常需要这个修复，不能等到下次发版，你就还需要merge到develop分支上了，<strong>也就是始终要保证develop包含master分支</strong>）。</p>
+</li>
+<li><p>最终从代码库中移除分支：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> branch -d hotfix-<span class="number">1</span>.<span class="number">2</span>.<span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/Git/"><i class="icon fas fa-hashtag"></i>Git</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/10/20/Integrate%20RocketMQ%205.0%20client%20with%20Spring%20-%20%E8%AE%B0%E5%BD%95%E6%9C%AC%E6%AC%A1%E5%BC%80%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83%E4%B8%8E%E5%AE%9E%E8%B7%B5/"
+                                   title="Integrate RocketMQ 5.0 client with Spring - 记录本次开发的思考与实践"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Integrate RocketMQ 5.0 client with Spring - 记录本次开发的思考与实践</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/10/14/%E5%9B%9E%E9%A1%BEGSoC-2023RocketMQ%E7%A4%BE%E5%8C%BA%E7%9A%84%E4%B8%80%E6%AC%A1%E7%94%B3%E8%AF%B7/"
+                                   title="GSoC-2023 RocketMQ 社区的申请全过程"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">GSoC-2023 RocketMQ 社区的申请全过程</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">分支管理模型概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E7%BA%BF%E5%88%86%E6%94%AF"><span class="nav-number">3.</span> <span class="nav-text">主线分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E5%88%86%E6%94%AF"><span class="nav-number">4.</span> <span class="nav-text">辅助分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-%E5%88%86%E6%94%AF"><span class="nav-number">4.1.</span> <span class="nav-text">Feature 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAfeature%E5%88%86%E6%94%AF"><span class="nav-number">4.1.1.</span> <span class="nav-text">创建feature分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6feature%E5%88%86%E6%94%AF"><span class="nav-number">4.1.2.</span> <span class="nav-text">合并feature分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Release-%E5%88%86%E6%94%AF"><span class="nav-number">4.2.</span> <span class="nav-text">Release 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArelease%E5%88%86%E6%94%AF"><span class="nav-number">4.2.1.</span> <span class="nav-text">创建release分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90release%E5%88%86%E6%94%AF"><span class="nav-number">4.2.2.</span> <span class="nav-text">完成release分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotfix%E5%88%86%E6%94%AF"><span class="nav-number">4.3.</span> <span class="nav-text">Hotfix分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAhotfix%E5%88%86%E6%94%AF"><span class="nav-number">4.3.1.</span> <span class="nav-text">创建hotfix分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hotfix%E5%88%86%E6%94%AF%E5%AE%8C%E6%88%90%E4%BF%AE%E5%A4%8D"><span class="nav-number">4.3.2.</span> <span class="nav-text">hotfix分支完成修复</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">分支管理模型概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E7%BA%BF%E5%88%86%E6%94%AF"><span class="nav-number">3.</span> <span class="nav-text">主线分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E5%88%86%E6%94%AF"><span class="nav-number">4.</span> <span class="nav-text">辅助分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-%E5%88%86%E6%94%AF"><span class="nav-number">4.1.</span> <span class="nav-text">Feature 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAfeature%E5%88%86%E6%94%AF"><span class="nav-number">4.1.1.</span> <span class="nav-text">创建feature分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6feature%E5%88%86%E6%94%AF"><span class="nav-number">4.1.2.</span> <span class="nav-text">合并feature分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Release-%E5%88%86%E6%94%AF"><span class="nav-number">4.2.</span> <span class="nav-text">Release 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BArelease%E5%88%86%E6%94%AF"><span class="nav-number">4.2.1.</span> <span class="nav-text">创建release分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90release%E5%88%86%E6%94%AF"><span class="nav-number">4.2.2.</span> <span class="nav-text">完成release分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotfix%E5%88%86%E6%94%AF"><span class="nav-number">4.3.</span> <span class="nav-text">Hotfix分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAhotfix%E5%88%86%E6%94%AF"><span class="nav-number">4.3.1.</span> <span class="nav-text">创建hotfix分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hotfix%E5%88%86%E6%94%AF%E5%AE%8C%E6%88%90%E4%BF%AE%E5%A4%8D"><span class="nav-number">4.3.2.</span> <span class="nav-text">hotfix分支完成修复</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

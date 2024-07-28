@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            Integrate RocketMQ 5.0 client with Spring - 记录本次开发的思考与实践 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        Integrate RocketMQ 5.0 client with Spring - 记录本次开发的思考与实践
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-10-20 20:11:50</span>
+                <span class="mobile">2023-10-20 20:11</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Sun Jul 28 2024 16:51:21 GMT+0000">2024-07-28 16:51:21</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/">开源之夏</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>RocketMQ-Spring 目前已经支持了4.x Remoting SDK，我们还需要支持RocketMQ 5.0 gRPC SDK，即是对 rocketmq-clients-SDK 进行封装和整合，最终以 rocketmq-spring-v5-starter 的形式呈现给用户。<br><a name="bBac3"></a></p>
+<h2 id="Spring-中的消息框架"><a href="#Spring-中的消息框架" class="headerlink" title="Spring 中的消息框架"></a>Spring 中的消息框架</h2><p>Spring Messaging 是Spring Framework 4中添加的模块，是Spring与消息系统集成的一个扩展性的支持。它实现了从基于JmsTemplate的简单的使用JMS接口到异步接收消息的一整套完整的基础架构，Spring AMQP提供了该协议所要求的类似的功能集。 在与Spring Boot的集成后，它拥有了自动配置能力，能够在测试和运行时与相应的消息传递系统进行集成。<br />单纯对于客户端而言，Spring Messaging 提供了一套抽象的 API 或者说是约定的标准，对消息发送端和消息接收端的模式进行规定，不同的消息中间件提供商可以在这个模式下提供自己的Spring实现：在消息发送端需要实现的是一个 <strong>XXXTemplate</strong> <strong>形式的 Java Bean</strong>，结合 Spring Boot 的自动化配置选项提供多个不同的发送消息方法；在消息的消费端是一个 <strong>XXXMessageListener 接口</strong>（实现方式通常会使用一个注解来声明一个消息驱动的 POJO），提供回调方法来监听和消费消息，这个接口同样可以使用Spring Boot的自动化选项和一些定制化的属性。参考 Spring Messaging 的既有实现，RocketMQ的 spring-boot-starter 中遵循了相关的设计模式并结合 RocketMQ 自身的功能特点提供了相应的API (如，顺序，异步和事务半消息等)。<br><a name="HK0Gx"></a></p>
+<h2 id="模块与适配"><a href="#模块与适配" class="headerlink" title="模块与适配"></a>模块与适配</h2><p>按照 Spring Boot 的规范，原有的 4.X SDK 划分为四个子模块，我们 v5 SDK 也将延用分成四个子模块的方式完成开发，在这一点上，会参考 4.X 的模块设计。<br /><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/wXyg8U7FT29KNYH.png"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>rocketmq-v5-client-spring-boot-parent （父pom文件，定义相关的依赖管理和Plugin，供其它几个模块引用）</li>
+<li>rocketmq-v5-client-spring-boot (定义 auto-configuration 实现，具体RocketMQ相关的自动配置和 Bean 创建代码都集中在这里)</li>
+<li>rocketmq-v5-client-spring-starter (将 rocketmq-v5-client-spring-boot 和其它的依赖打包生成全量的依赖，用户引用它即可完成所有 rocketmq-spring 的客户端操作)</li>
+<li>rocketmq-v5-client-spring-samples (使用示例，展示如何使用 spring-boot 方式发送和消费消息)</li>
+</ul>
+<p>为了更方便理解模块之间的依赖关系，我做了一个模块依赖图，图示如下，其中rocketmq-grpc-spring-boot-parent 等含有 grpc 写法皆代表 v5 模块，就不再更改了。<br /><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/j6NI8dAEhTMyRSu.png"
+                      alt="image.png"
+                ><br><br />可以看到，我们在rocketmq-spring-all项目顶级模块之下，又开发了rocketmq-grpc-spring-boot-parent 新模块，他是我们其他 maven 子模块的父模块。所有的子模块都继承于父模块，项目中所有要使用到的 jar 包的版本都集中由父工程管理。 rocketmq-grpc-spring-boot-starter 会发布到maven仓库中，用户需要使用时只需要引入这个 starter 即可使用。<br><a name="bBD1O"></a></p>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p><a name="v0wL4"></a></p>
+<h2 id="添加maven依赖"><a href="#添加maven依赖" class="headerlink" title="添加maven依赖"></a>添加maven依赖</h2><p>项目需在 pom.xml 文件中引入SDK5.0 依赖 rocketmq-client-java 依赖，并且设置 rocketmq-client-java-version 最新版本</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.rocketmq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>rocketmq-client-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;rocketmq-client-java-version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p><a name="CSLKP"></a></p>
+<h2 id="适配spring-boot自动化配置"><a href="#适配spring-boot自动化配置" class="headerlink" title="适配spring-boot自动化配置"></a>适配spring-boot自动化配置</h2><p><a name="MsXpd"></a></p>
+<h3 id="支持适配新客户端实体"><a href="#支持适配新客户端实体" class="headerlink" title="支持适配新客户端实体"></a>支持适配新客户端实体</h3><p>目前 rocketmq-spring 中基于 4.x SDK 实现的自动配置类主要是两个bean：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">PRODUCER_BEAN_NAME</span> <span class="operator">=</span> <span class="string">&quot;defaultMQProducer&quot;</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">CONSUMER_BEAN_NAME</span> <span class="operator">=</span> <span class="string">&quot;defaultLitePullConsumer&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>引入 v5-sdk 之后，在 template 中需要加入 IOC 容器进行管理的有以下几个bean：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ProducerBuilder producerBuilder;</span><br><span class="line"><span class="keyword">private</span> SimpleConsumerBuilder simpleConsumerBuilder;</span><br><span class="line"><span class="keyword">private</span> Producer producer;</span><br><span class="line"><span class="keyword">private</span> SimpleConsumer simpleConsumer;</span><br></pre></td></tr></table></figure>
+
+<p>在确定好我们需要进行控制反转注入ioc容器的bean有哪些后，就要考虑如何将他们交给ioc容器管理。按照目前rocketmq-spring给出的@Configuration+@Bean注解的方式，我们同样可以利用这些注解来进行对producer、pushConsumer和simpleConsumer进行管理。<br />但是 PushConsumer 需要交给 DefaultListenerContainer 容器进行管理，而不是放到 <br />RocketMQGRpcTemplate容器中。这里为什么要让 IOC 容器管理额外的 builder 对象（像ProducerBuilder、SimpleConsumerBuilder 以及DefaultListenerContainer容器中的 PushConsumerBuilder），⽽不是只管理调⽤build()⽅法之后构建的3个真正的⽣产消费者实体bean， 乃是基于以下的考量： <br />我们在RocketMQAutoConfiguration这个⾃动配置类中，需要构造producer和consumer，但是此时我 们的producer尚不是⼀个完整的producer，因为如果⽤户要发送事务消息，是需要设置⼀个 TransactionChecker.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ProducerBuilder <span class="title function_">setTransactionChecker</span><span class="params">(TransactionChecker checker)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，如果我们在 RocketMQAutoConfiguration ⾥⾯构建bean时，就调⽤build⽅法去构建⼀个完整的 producer 对象，那么⽤户在使⽤我们的核⼼类 RocketmqTemplate 使⽤⽣产者发送事务消息时就只 能传⼊⼀个 TransactionChecker 的实现类作为参数去设置Producer的transactionChecker 属性，⽽ Producer ⼀旦被 build 构建，我们是⽆法再去修改的，所以在 RocketMQAutoConfiguration ⾥⾯构建 bean 时只能构建⼀个ProducerBuilder，等待⽤户实现的 TransactionChecker 参数设置进去。 <br />同理的，我们的pushConsumer也是需要⼀个回调函数去处理 MessageView 的逻辑，所以这⾥也是需要先构建好⼀个builder，最后等到所有参数注⼊完成后才可以再去调⽤build⽅法⽣成⼀个真正的实例。<br><a name="nz0eP"></a></p>
+<h3 id="装配Producer"><a href="#装配Producer" class="headerlink" title="装配Producer"></a>装配Producer</h3><p>我们需要实现对 5.0SDK 中的Producer进⾏管理：<br />(1)引⼊Producer属性的配置类<br />我们通过在RocketMQProperties类中定义我们的Producer实例引⼊的配置⽂件的配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Producer</span> &#123;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The property of &quot;access-key&quot;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">private</span> String accessKey;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The property of &quot;secret-key&quot;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">private</span> String secretKey;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Proxy address and port list</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">private</span> String endpoints;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * topic is used to prefetch the route</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">private</span> String topic;</span><br><span class="line"><span class="comment">//此处省略对应的getter/setter代码</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="fMooc"></a></p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><p>首先我们需要对 5.0 SDK 中的 producer 进行管理，通过 RocketMQProperties 引入的参数直接对 producer 进行构造。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * description:gRPC-SDK ProducerBuilder</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(PRODUCER_BUILDER_BEAN_NAME)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(ProducerBuilderImpl.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;rocketmq&quot;, value = &#123;&quot;producer.endpoints&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> ProducerBuilder <span class="title function_">producerBuilder</span><span class="params">(RocketMQProperties rocketMQProperties)</span> &#123;</span><br><span class="line">    RocketMQProperties.<span class="type">Producer</span> <span class="variable">rocketMQProducer</span> <span class="operator">=</span> rocketMQProperties.getProducer();</span><br><span class="line">    log.info(<span class="string">&quot;Init Producer Args: &quot;</span> + rocketMQProducer);</span><br><span class="line">    <span class="type">String</span> <span class="variable">topic</span> <span class="operator">=</span> rocketMQProducer.getTopic();</span><br><span class="line">    <span class="type">String</span> <span class="variable">endPoints</span> <span class="operator">=</span> rocketMQProducer.getEndpoints();</span><br><span class="line">    Assert.hasText(endPoints, <span class="string">&quot;[rocketmq.producer.endpoints] must not be null&quot;</span>);</span><br><span class="line">    <span class="type">ClientConfiguration</span> <span class="variable">clientConfiguration</span> <span class="operator">=</span> RocketMQUtil.createProducerClientConfiguration(rocketMQProducer);</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ClientServiceProvider</span> <span class="variable">provider</span> <span class="operator">=</span> ClientServiceProvider.loadService();</span><br><span class="line">    ProducerBuilder producerBuilder;</span><br><span class="line">    producerBuilder = provider.newProducerBuilder()</span><br><span class="line">            .setClientConfiguration(clientConfiguration)</span><br><span class="line">            <span class="comment">// Set the topic name(s), which is optional but recommended. It makes producer could prefetch the topic</span></span><br><span class="line">            <span class="comment">// route before message publishing.</span></span><br><span class="line">            .setTopics(rocketMQProducer.getTopic())</span><br><span class="line">            .setMaxAttempts(rocketMQProducer.getMaxAttempts());</span><br><span class="line">    log.info(String.format(<span class="string">&quot;a producer init on proxy %s&quot;</span>, endPoints));</span><br><span class="line">    <span class="keyword">return</span> producerBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，由于需要⽀持 v5 版本的 producer，与原有 4.x 的内部类 Producer 不同，换新了以下字段：</p>
+<ul>
+<li>Endpoints字段：我们知道endpoints是接⼊点地址，需要设置成Proxy的地址和端⼝列表。RocketMQ Proxy的出现，解决了4.X版本客户端多语⾔客户端实现Remoing协议难度⼤、复杂、功能不⼀致、维护⼯作⼤的问题。使⽤业界熟悉的gRPC协议， 各个语⾔代码统⼀、简单，使得多语⾔使⽤RocketMQ更⽅便容易。</li>
+<li>Topic字段：在4.x SDK的Producer中，我们通常在messge中设置topic，⽽不在producer中直接设置topic。但是在5.0 SDK中，我们既可以在producer，也可以在message中指定topic。这样做的好处是，⽣产者能够在发送消息之前预先获取该主题的路由信息，并缓存到本地。这样，当⽣产者要发送消息时，它就可以直接从本地缓存中获取路由信息，避免了每次发送消息都需要进⾏路由查找的问题，从⽽提升了发送消息的效率和性能。</li>
+</ul>
+<p>(2)加⼊配置属性注解在RocketMQProperties上加⼊注解@ConfigurationProperties(prefix &#x3D; “rocketmq”)，能够引⼊配置⽂件中的⽤户⾃定义属性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;rocketmq&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RocketMQProperties</span> &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(3)注⼊bean<br />我们需要在 RocketMQAutoConfiguration 中配置交给 IOC 容器管理的 bean，这⾥的 bean 只能是⼀个 ProducerBuilder，⽽不是 Producer，具体原因在上⽂已经阐述。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * description:gRPC-SDK PushConsumer</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(PUSH_CONSUMER_BEAN_NAME)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(PushConsumerBuilder.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(name = &quot;rocketmq.sdk-version&quot;, havingValue = &quot;grpc&quot;)</span></span><br><span class="line"><span class="comment">//@ConditionalOnProperty(prefix = &quot;rocketmq&quot;, value = &#123;&quot;producer.endpoints&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> PushConsumerBuilder <span class="title function_">pushConsumerBuilder</span><span class="params">(RocketMQProperties rocketMQProperties)</span> &#123;</span><br><span class="line">    <span class="comment">//此处getConsumer返回一个pushConsumer,getPullConsumer返回一个pullConsumer</span></span><br><span class="line">    RocketMQProperties.<span class="type">PushConsumer</span> <span class="variable">rocketMQPushConsumer</span> <span class="operator">=</span> rocketMQProperties.getConsumer();</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ClientServiceProvider</span> <span class="variable">provider</span> <span class="operator">=</span> ClientServiceProvider.loadService();</span><br><span class="line">    <span class="type">SessionCredentialsProvider</span> <span class="variable">sessionCredentialsProvider</span> <span class="operator">=</span></span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">StaticSessionCredentialsProvider</span>(rocketMQPushConsumer.getAccessKey(), rocketMQPushConsumer.getSecretKey());</span><br><span class="line">    <span class="type">ClientConfiguration</span> <span class="variable">clientConfiguration</span> <span class="operator">=</span> ClientConfiguration.newBuilder()</span><br><span class="line">            .setEndpoints(rocketMQPushConsumer.getEndpoints())</span><br><span class="line">            .setCredentialProvider(sessionCredentialsProvider)</span><br><span class="line">            .build();</span><br><span class="line">    <span class="type">FilterExpression</span> <span class="variable">filterExpression</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FilterExpression</span>(rocketMQPushConsumer.getTag(), FilterExpressionType.TAG);</span><br><span class="line">    <span class="keyword">final</span> PushConsumerBuilder builderImpl;</span><br><span class="line">    builderImpl = provider.newPushConsumerBuilder()</span><br><span class="line">            .setClientConfiguration(clientConfiguration)</span><br><span class="line">            <span class="comment">// Set the consumer group name.</span></span><br><span class="line">            .setConsumerGroup(rocketMQPushConsumer.getGroup())</span><br><span class="line">            <span class="comment">// Set the subscription for the consumer.</span></span><br><span class="line">            .setSubscriptionExpressions(Collections.singletonMap(rocketMQPushConsumer.getTopic(), filterExpression));</span><br><span class="line">    <span class="keyword">return</span> builderImpl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(4)配置加载执⾏的先后顺序<br />我们可以看到在RocketMQAutoConfiguration这个类上有以下注解，表明RocketMQAutoConfiguration 需要在TransactionConfiguration之前被加载和执⾏</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@AutoConfigureBefore(&#123;TransactionConfiguration.class&#125;)</span></span><br></pre></td></tr></table></figure>
+
+<p>(5)引⼊事务处理注解<br />我们也需要⼀个⾃定义的 TransactionConfiguration 配置类，⽤来注⼊我们刚刚所说的，⽣产者所需要的 TransactionChecker 来执⾏回调函数。⾸先我们实现SmartInitializingSingleton 接⼝，在bean初始化完成后执⾏⼀些初始化操作：获取被@RocketMQTransactionListener 标记的类，这个类是需要⽤户实现<br />TransactionChecker 接⼝的，handleTransactionChecker ⽅法会⾃动将这个实现类给注⼊到 rocketmqTemplate 管理的 ProducerBuilder 对象中。<br />这⾥的 template 是根据 @RocketMQTransactionListener注解中的rocketMQTemplateBeanName 值来从容器上下⽂中提取的，template 是可拓展的，也就是我们所说的 @ExtTemplateConfiguration</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">        <span class="meta">@Configuration</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TransactionConfiguration</span> <span class="keyword">implements</span> <span class="title class_">ApplicationContextAware</span>,</span><br><span class="line">                SmartInitializingSingleton &#123;</span><br><span class="line">            <span class="keyword">private</span> ConfigurableApplicationContext applicationContext;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setApplicationContext</span><span class="params">(ApplicationContext applicationContex</span></span><br><span class="line"><span class="params">t)</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">                <span class="built_in">this</span>.applicationContext = (ConfigurableApplicationContext) applica</span><br><span class="line">                tionContext;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//获取被@RocketMQTransactionListener标记的类</span></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterSingletonsInstantiated</span><span class="params">()</span> &#123;</span><br><span class="line">                Map&lt;String, Object&gt; beans = <span class="built_in">this</span>.applicationContext.getBeansWithAn</span><br><span class="line">                <span class="title function_">notation</span><span class="params">(TransactionListener.class)</span></span><br><span class="line">                        .entrySet().stream().filter(entry -&gt; !ScopedProxyUtils.isS</span><br><span class="line">                                <span class="title function_">copedTarget</span><span class="params">(entry.getKey()</span>))</span><br><span class="line">                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::ge</span><br><span class="line">                                tValue));</span><br><span class="line">                beans.forEach(<span class="built_in">this</span>::handleTransactionChecker);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleTransactionChecker</span><span class="params">(String beanName, Object bean)</span> &#123;</span><br><span class="line">                Class&lt;?&gt; clazz = AopProxyUtils.ultimateTargetClass(bean);</span><br><span class="line">                <span class="keyword">if</span> (!TransactionChecker.class.isAssignableFrom(bean.getClass())) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(clazz + <span class="string">&quot; is not instance of &quot;</span></span><br><span class="line">                            + TransactionChecker.class.getName());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">TransactionListener</span> <span class="variable">annotation</span> <span class="operator">=</span> clazz.getAnnotation(TransactionLi</span><br><span class="line">                        stener.class);</span><br><span class="line">                <span class="keyword">if</span> (Objects.isNull(annotation)) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;The transactionListener annot</span></span><br><span class="line"><span class="string">                            ation is missing&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//获取注解上的template,默认为RocketMQGRpcTemplate</span></span><br><span class="line">                <span class="type">RocketMQGRpcTemplate</span> <span class="variable">rocketMQTemplate</span> <span class="operator">=</span> (RocketMQGRpcTemplate) app</span><br><span class="line">                licationContext.getBean(annotation.rocketMQTemplateBeanName());</span><br><span class="line">                <span class="keyword">if</span> ((rocketMQTemplate.getProducerBuilder()) != <span class="literal">null</span>) &#123;</span><br><span class="line">                    rocketMQTemplate.getProducerBuilder().setTransactionChecker((T</span><br><span class="line">                            ransactionChecker) bean);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>(6)⽣产者拓展的实现<br />我们可以⽤⼀个 @ExtTemplateConfiguration 注解来拓展我们的rocketmqTemplate，当⽤户需要多个不同的⽣产者时，可以使⽤这个注解来拓展装配不同的⽣产者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ExtTemplateConfiguration &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The component name of the Producer configuration.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The property of &quot;access-key&quot;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">accessKey</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;$&#123;rocketmq.producer.accessKey:&#125;&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The property of &quot;secret-key&quot;.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">secretKey</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;$&#123;rocketmq.producer.secretKey:&#125;&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Proxy address and port list</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">endpoints</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;$&#123;rocketmq.producer.endpoints:&#125;&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * topic is used to prefetch the route</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">topic</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;$&#123;rocketmq.producer.topic:&#125;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(7)容器拓展类的注册<br />对于这个拓展 ExtRocketmqTemplate 的装配，我们可以在⾃定义配置类<br />ExtProducerResetConfiguration 中构造。与上⽂中 TransactionConfiguration 配置类似的，⾸先获取 @ExtTemplateConfiguration 注解下的所有 bean，然后获取@ExtTemplateConfiguration 注解的所有拓展属性值，装配出⼀个 ProducerBuilder并注⼊到⾃定义的拓展 ExtRocketmqTemplate 中。<br><a name="auMY3"></a></p>
+<h4 id="新增字段"><a href="#新增字段" class="headerlink" title="新增字段"></a>新增字段</h4><p>由于在 rocketmq-spring 的基于 4.x remoting 的源代码中，RocketMQProperties 类中的静态内部类 PushConsumer 是继承 PullConsumer 的，所以我在 PullConsumer 的字段中加入了以下两个属性：<br /><strong>Tag属性：</strong>设置消息 Tag，用于消费端根据指定Tag过滤消息<br /><strong>EndPoints属性：</strong>同上 Producer 的 Endpoints 介绍：我们知道 endpoints 是接入点地址，需要设置成 Proxy 的地址和端口列表。有了 RocketMQ Proxy 的出现，无疑解决了4.X版本客户端多语言客户端实现 Remoing 协议难度大、复杂、功能不一致、维护工作大的问题。使用业界熟悉的GRPC协议， 各个语言代码统一、简单，使得多语言使用RocketMQ更方便容易。<br /><strong>FilterExpressionType属性：</strong>消费者过滤表达式的类型。RocketMQ 支持两种过滤表达式类型：TAG 和 SQL92。如果将 FilterExpressionType 设置为 TAG，则消费者只会消费指定标签的消息TAG 表达式类型比较简单，性能相对较好，适用于只需要简单标签过滤的场景。如果将 FilterExpressionType 设置为 SQL92，则消费者可以使用 SQL92 的语法来过滤消息。SQL92 表达式类型更加灵活，可以支持更复杂的过滤规则，但是由于需要解析 SQL92 语法，所以性能相对较差。我们可以根据实际情况，选择合适的过滤表达式类型可以提高消费者的性能和效率。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Tag of consumer.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> String tag;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Proxy address and port list</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> String endpoints;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * filterExpressionType</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">filterExpressionType</span> <span class="operator">=</span> <span class="string">&quot;tag&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a name="BQi9T"></a></p>
+<h3 id="装配SimpleConsumer"><a href="#装配SimpleConsumer" class="headerlink" title="装配SimpleConsumer"></a>装配SimpleConsumer</h3><p><a name="tqnG1"></a></p>
+<h4 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * description:gRPC-SDK SimpleConsumer</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Bean(SIMPLE_CONSUMER_BEAN_NAME)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(SimpleConsumer.class)</span></span><br><span class="line"><span class="comment">//@ConditionalOnProperty(name = &quot;rocketmq.sdk-version&quot;, havingValue = &quot;grpc&quot;)</span></span><br><span class="line"><span class="meta">@ConditionalOnExpression(&quot;$&#123;rocketmq.sdk-version&#125; == &#x27;grpc&#x27; &amp;&amp; $&#123;rocketmq.pull-consumer.endpoints&#125;&quot;)</span></span><br><span class="line"><span class="comment">//@ConditionalOnProperty(prefix = &quot;rocketmq&quot;, value = &#123;&quot;producer.endpoints&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> SimpleConsumer <span class="title function_">simpleConsumer</span><span class="params">(RocketMQProperties rocketMQProperties)</span> &#123;</span><br><span class="line">    <span class="comment">//此处getConsumer返回一个pushConsumer,getPullConsumer返回一个pullConsumer</span></span><br><span class="line">    RocketMQProperties.<span class="type">PullConsumer</span> <span class="variable">rocketMQPullConsumer</span> <span class="operator">=</span> rocketMQProperties.getPullConsumer();</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ClientServiceProvider</span> <span class="variable">provider</span> <span class="operator">=</span> ClientServiceProvider.loadService();</span><br><span class="line">    <span class="type">SessionCredentialsProvider</span> <span class="variable">sessionCredentialsProvider</span> <span class="operator">=</span></span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">StaticSessionCredentialsProvider</span>(rocketMQPullConsumer.getAccessKey(), rocketMQPullConsumer.getSecretKey());</span><br><span class="line">    <span class="type">ClientConfiguration</span> <span class="variable">clientConfiguration</span> <span class="operator">=</span> ClientConfiguration.newBuilder()</span><br><span class="line">            .setEndpoints(rocketMQPullConsumer.getEndpoints())</span><br><span class="line">            .setCredentialProvider(sessionCredentialsProvider)</span><br><span class="line">            .build();</span><br><span class="line">    <span class="type">Duration</span> <span class="variable">awaitDuration</span> <span class="operator">=</span> Duration.ofSeconds(<span class="number">30</span>);</span><br><span class="line">    <span class="type">FilterExpressionType</span> <span class="variable">filterExpression</span> <span class="operator">=</span> <span class="string">&quot;tag&quot;</span>.equals(rocketMQPullConsumer.getTag()) ? FilterExpressionType.TAG : FilterExpressionType.SQL92;</span><br><span class="line">    <span class="type">FilterExpression</span> <span class="variable">expression</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FilterExpression</span>(rocketMQPullConsumer.getTag(), filterExpression);</span><br><span class="line">    SimpleConsumer simpleConsumer;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        simpleConsumer = provider.newSimpleConsumerBuilder()</span><br><span class="line">                .setClientConfiguration(clientConfiguration)</span><br><span class="line">                <span class="comment">// Set the consumer group name.</span></span><br><span class="line">                .setConsumerGroup(rocketMQPullConsumer.getGroup())</span><br><span class="line">                <span class="comment">// set await duration for long-polling.</span></span><br><span class="line">                .setAwaitDuration(awaitDuration)</span><br><span class="line">                <span class="comment">// Set the subscription for the consumer.</span></span><br><span class="line">                .setSubscriptionExpressions(Collections.singletonMap(rocketMQPullConsumer.getTopic(), expression))</span><br><span class="line">                .build();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClientException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> simpleConsumer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="xXmQb"></a></p>
+<h4 id="新增字段-1"><a href="#新增字段-1" class="headerlink" title="新增字段"></a>新增字段</h4><p>同PushConsumer<br><a name="YgZ22"></a></p>
+<h4 id="注解控制实体装配"><a href="#注解控制实体装配" class="headerlink" title="注解控制实体装配"></a>注解控制实体装配</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConditionalOnExpression(&quot;$&#123;rocketmq.sdk-version&#125; == &#x27;grpc&#x27; &amp;&amp; $&#123;rocketmq.pull-consumer.endpoints&#125;&quot;)</span></span><br></pre></td></tr></table></figure>
+
+<p>@ConditionalOnExpression注解表示：只有当用户<strong>自定义配置属性rocketmq.sdk-version为grpc时</strong>，并且属性<strong>rocketmq.pull-consumer.endpoints不为空</strong>，才会将这个bean交给ioc容器管理，否则不会加载它。<br><a name="AUiC5"></a></p>
+<h1 id="封装消息发送方法"><a href="#封装消息发送方法" class="headerlink" title="封装消息发送方法"></a>封装消息发送方法</h1><p>我们知道，RocketMQ-Spring 是遵循<strong>Spring Messaging API</strong>规范的，RocketMQ-Spring 通过实现 RocketMQTemplate 完成消息的发送。<br />RocketMQTemplate 继承 AbstractMessageSendingTemplate 抽象类，来支持 Spring Messaging API 标准的消息转换和发送方法，这些方法最终会代理给 doSend 方法，doSend 方法会最终调用 syncSend，由 DefaultMQProducer 实现。<br><a name="tRrlr"></a></p>
+<h3 id="remoting-SDK消息发送"><a href="#remoting-SDK消息发送" class="headerlink" title="remoting SDK消息发送"></a>remoting SDK消息发送</h3><p>首先我们先来分析一下基于rocketmq 4.x remoting SDK的消息发送封装类型：<br /><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/Lni1RPfHUCYe85x.png"
+                      alt="image.png"
+                ><br><a name="TNV84"></a></p>
+<h4 id="同步消息的发送"><a href="#同步消息的发送" class="headerlink" title="同步消息的发送"></a>同步消息的发送</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//同步模式发送延迟消息（自定义超时时间）</span></span><br><span class="line"><span class="keyword">private</span> SendResult <span class="title function_">syncSend</span><span class="params">(String destination, Message&lt;?&gt; message, <span class="type">long</span> timeout, <span class="type">long</span> delayTime, DelayMode mode)</span></span><br><span class="line"><span class="comment">//同步模式发送延迟消息（自定义超时层级）</span></span><br><span class="line"><span class="keyword">public</span> SendResult <span class="title function_">syncSend</span><span class="params">(String destination, Message&lt;?&gt; message, <span class="type">long</span> timeout, <span class="type">int</span> delayLevel)</span></span><br><span class="line"><span class="comment">//同步模式发送批量消息</span></span><br><span class="line"><span class="keyword">public</span> &lt;T <span class="keyword">extends</span> <span class="title class_">Message</span>&gt; SendResult <span class="title function_">syncSend</span><span class="params">(String destination, Collection&lt;T&gt; messages, <span class="type">long</span> timeout)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="ae0vZ"></a></p>
+<h4 id="异步消息的发送"><a href="#异步消息的发送" class="headerlink" title="异步消息的发送"></a>异步消息的发送</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//异步模式发送延迟消息</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">asyncSend</span><span class="params">(String destination, Message&lt;?&gt; message, SendCallback sendCallback, <span class="type">long</span> timeout, <span class="type">int</span> delayLevel)</span></span><br><span class="line"><span class="comment">//异步模式发送延迟批量消息</span></span><br><span class="line"><span class="keyword">public</span> &lt;T <span class="keyword">extends</span> <span class="title class_">Message</span>&gt; <span class="keyword">void</span> <span class="title function_">asyncSend</span><span class="params">(String destination, Collection&lt;T&gt; messages, SendCallback sendCallback, <span class="type">long</span> timeout)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="kubi9"></a></p>
+<h4 id="顺序消息的发送"><a href="#顺序消息的发送" class="headerlink" title="顺序消息的发送"></a>顺序消息的发送</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//同步模式发送顺序延迟消息</span></span><br><span class="line"><span class="keyword">public</span> SendResult <span class="title function_">syncSendOrderly</span><span class="params">(String destination, Message&lt;?&gt; message, String hashKey, <span class="type">long</span> timeout, <span class="type">int</span> delayLevel)</span></span><br><span class="line"><span class="comment">//同步模式发送批量顺序延迟消息</span></span><br><span class="line"><span class="keyword">public</span> &lt;T <span class="keyword">extends</span> <span class="title class_">Message</span>&gt; SendResult <span class="title function_">syncSendOrderly</span><span class="params">(String destination, Collection&lt;T&gt; messages, String hashKey, <span class="type">long</span> timeout)</span> &#123;</span><br><span class="line"><span class="comment">//异步模式发送顺序延迟消息</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">asyncSendOrderly</span><span class="params">(String destination, Message&lt;?&gt; message, String hashKey, SendCallback sendCallback, <span class="type">long</span> timeout, <span class="type">int</span> delayLevel)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="I5gUv"></a></p>
+<h4 id="单向消息的发送"><a href="#单向消息的发送" class="headerlink" title="单向消息的发送"></a>单向消息的发送</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//单向模式的消息发送，忽略响应</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendOneWay</span><span class="params">(String destination, Message&lt;?&gt; message)</span></span><br><span class="line"><span class="comment">//单向模式的消息顺序发送，忽略响应</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendOneWayOrderly</span><span class="params">(String destination, Message&lt;?&gt; message, String hashKey)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="u5WLJ"></a></p>
+<h4 id="事务消息的发送"><a href="#事务消息的发送" class="headerlink" title="事务消息的发送"></a>事务消息的发送</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//事务消息的发送</span></span><br><span class="line"><span class="keyword">public</span> TransactionSendResult <span class="title function_">sendMessageInTransaction</span><span class="params">(<span class="keyword">final</span> String destination, <span class="keyword">final</span> Message&lt;?&gt; message, <span class="keyword">final</span> Object arg)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="Tp5yJ"></a></p>
+<h4 id="Request-Reply-消息的发送"><a href="#Request-Reply-消息的发送" class="headerlink" title="Request-Reply 消息的发送"></a><strong>Request-Reply 消息的发送</strong></h4><p>Request-Reply 消息指的是上游服务投递消息后进入等待被通知的状态，直到消费端返回结果并返回给发送端。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Request-Reply 消息发送</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; T <span class="title function_">sendAndReceive</span><span class="params">(String destination, Message&lt;?&gt; message, Type type, String hashKey,<span class="type">long</span> timeout, <span class="type">int</span> delayLevel)</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="GoGxN"></a></p>
+<h3 id="v5-SDK消息发送"><a href="#v5-SDK消息发送" class="headerlink" title="v5 SDK消息发送"></a>v5 SDK消息发送</h3><p>基于上述remoting SDK消息的发送，我们需要进一步整合进 v5 SDK到 rocketmq-spring中。<br />在rocketmq-client-java项目中，我们依据Producer接口下的方法，首先可以粗略地将生产者发送消息的方法归结为以下<strong>三类</strong>：<br />（1）Producer发送同步消息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SendReceipt <span class="title function_">send</span><span class="params">(Message message)</span> <span class="keyword">throws</span> ClientException;</span><br></pre></td></tr></table></figure>
+
+<p>（2）Producer发送事务消息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SendReceipt <span class="title function_">send</span><span class="params">(Message message, Transaction transaction)</span> <span class="keyword">throws</span> ClientException;</span><br></pre></td></tr></table></figure>
+
+<p>（3）Producer发送异步消息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CompletableFuture &lt;SendReceipt&gt; sendAsync(Message message);</span><br></pre></td></tr></table></figure>
+
+<p>但是，实际上在rocketmq-client-java中，我们可以发送不同类型的消息，<strong>官方文档</strong>有很清楚的记录：<br /><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/pMzsRKXW1y7x2bL.png"
+                      alt="image.png"
+                ><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/GxtjpOb3ZUBzsY4.png"
+                      alt="image.png"
+                ></p>
+<p>基于rocketmq-client-java 5.0 SDK，我们需要整合的消息发送方法可以具体分为以下几类：<br />（1）Producer发送普通消息（NormalMessage）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> provider.newMessageBuilder()</span><br><span class="line">            <span class="comment">// Set topic for the current message.</span></span><br><span class="line">            .setTopic(topic)</span><br><span class="line">            <span class="comment">// Message secondary classifier of message besides topic.</span></span><br><span class="line">            .setTag(tag)</span><br><span class="line">            <span class="comment">// Key(s) of the message, another way to mark message besides message id.</span></span><br><span class="line">            .setKeys(<span class="string">&quot;yourMessageKey-1c151062f96e&quot;</span>)</span><br><span class="line">            .setBody(body)</span><br><span class="line">            .build();</span><br><span class="line"><span class="keyword">final</span> <span class="type">SendReceipt</span> <span class="variable">sendReceipt</span> <span class="operator">=</span> producer.send(message);</span><br></pre></td></tr></table></figure>
+
+<p>（2）Producer发送顺序消息（FIFOMessage）<br />顺序消息和普通消息的不同之处就在于，需要<strong>设置消息组、保证单一生产者</strong>并且<strong>串行发送。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> provider.newMessageBuilder()</span><br><span class="line">            <span class="comment">// Set topic for the current message.</span></span><br><span class="line">            .setTopic(topic)</span><br><span class="line">            <span class="comment">// Message secondary classifier of message besides topic.</span></span><br><span class="line">            .setTag(tag)</span><br><span class="line">            <span class="comment">// Key(s) of the message, another way to mark message besides message id.</span></span><br><span class="line">            .setKeys(<span class="string">&quot;yourMessageKey-1ff69ada8e0e&quot;</span>)</span><br><span class="line">            <span class="comment">// Message group decides the message delivery order.</span></span><br><span class="line">            .setMessageGroup(<span class="string">&quot;yourMessageGroup0&quot;</span>)</span><br><span class="line">            .setBody(body)</span><br><span class="line">            .build();</span><br><span class="line"><span class="keyword">final</span> <span class="type">SendReceipt</span> <span class="variable">sendReceipt</span> <span class="operator">=</span> producer.send(message);</span><br></pre></td></tr></table></figure>
+
+<p>（3）Producer发送延迟消息（DelayMessage）<br />对message设置触发时间即可，例如示例代码中我们可以对message进行如下处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> provider.newMessageBuilder()</span><br><span class="line">            <span class="comment">// Set topic for the current message.</span></span><br><span class="line">            .setTopic(topic)</span><br><span class="line">            <span class="comment">// Message secondary classifier of message besides topic.</span></span><br><span class="line">            .setTag(tag)</span><br><span class="line">            <span class="comment">// Key(s) of the message, another way to mark message besides message id.</span></span><br><span class="line">            .setKeys(<span class="string">&quot;yourMessageKey-3ee439f945d7&quot;</span>)</span><br><span class="line">            <span class="comment">// Set expected delivery timestamp of message.</span></span><br><span class="line">            .setDeliveryTimestamp(System.currentTimeMillis() + messageDelayTime.toMillis())</span><br><span class="line">            .setBody(body)</span><br><span class="line">            .build();</span><br><span class="line"><span class="keyword">final</span> <span class="type">SendReceipt</span> <span class="variable">sendReceipt</span> <span class="operator">=</span> producer.send(message);</span><br></pre></td></tr></table></figure>
+
+<p>（4）Producer发送事务消息（TransactionMessage）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">Transaction</span> <span class="variable">transaction</span> <span class="operator">=</span> producer.beginTransaction();</span><br><span class="line">        <span class="comment">// Define your message body.</span></span><br><span class="line"><span class="keyword">final</span> <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> provider.newMessageBuilder()</span><br><span class="line">            <span class="comment">// Set topic for the current message.</span></span><br><span class="line">            .setTopic(topic)</span><br><span class="line">            <span class="comment">// Message secondary classifier of message besides topic.</span></span><br><span class="line">            .setTag(tag)</span><br><span class="line">            <span class="comment">// Key(s) of the message, another way to mark message besides message id.</span></span><br><span class="line">            .setKeys(<span class="string">&quot;yourMessageKey-565ef26f5727&quot;</span>)</span><br><span class="line">            .setBody(body)</span><br><span class="line">            .build();</span><br><span class="line"><span class="keyword">final</span> <span class="type">SendReceipt</span> <span class="variable">sendReceipt</span> <span class="operator">=</span> producer.send(message, transaction);</span><br></pre></td></tr></table></figure>
+
+<p>（5）Producer发送异步消息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="type">Message</span> <span class="variable">message</span> <span class="operator">=</span> provider.newMessageBuilder()</span><br><span class="line">            <span class="comment">// Set topic for the current message.</span></span><br><span class="line">            .setTopic(topic)</span><br><span class="line">            <span class="comment">// Message secondary classifier of message besides topic.</span></span><br><span class="line">            .setTag(tag)</span><br><span class="line">            <span class="comment">// Key(s) of the message, another way to mark message besides message id.</span></span><br><span class="line">            .setKeys(<span class="string">&quot;yourMessageKey-0e094a5f9d85&quot;</span>)</span><br><span class="line">            .setBody(body)</span><br><span class="line">            .build();</span><br><span class="line">        <span class="comment">// Set individual thread pool for send callback.</span></span><br><span class="line"><span class="keyword">final</span> CompletableFuture&lt;SendReceipt&gt; future = producer.sendAsync(message);</span><br></pre></td></tr></table></figure>
+
+<p>那么接下来，我们将围绕以上的五种消息，将消息发送整合到现有的 rocketmq-spring 框架中来。我们可以首先做一个简略的基于v5 SDK整合的思维导图：<br /><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/20/wZjsbBoYMlr3yUD.png"
+                      alt="image.png"
+                ><br><a name="VwLJs"></a></p>
+<h4 id="同步消息的发送-1"><a href="#同步消息的发送-1" class="headerlink" title="同步消息的发送"></a>同步消息的发送</h4><p>在RocketmqTemplate中我们定义<strong>syncSendGrpcMessage方法</strong>，代码如下：<br />该方法主要是利用配置文件中的参数之前在ioc容器中管理的bean：grpcProducer，调用它的send方法达到发送同步消息的目的，其中message由spring的message转换为了client的message，作为grpcProducer.syncSendGrpcMessage方法的参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> destination      formats: `topicName:tags`</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> message          &#123;<span class="doctag">@link</span> org.springframework.messaging.Message&#125; the message to be sent.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> messageDelayTime Time for message delay</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> messageGroup     message group name</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> SendReceipt Synchronous Task Results</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendGrpcMessage</span><span class="params">(String destination, Message&lt;?&gt; message, Duration messageDelayTime, String messageGroup)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (Objects.isNull(message) || Objects.isNull(message.getPayload())) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message is null &quot;</span>, destination);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;`message` and `message.payload` cannot be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">SendReceipt</span> <span class="variable">sendReceipt</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        org.apache.rocketmq.client.apis.message.<span class="type">Message</span> <span class="variable">rocketMsg</span> <span class="operator">=</span> <span class="built_in">this</span>.createRocketMqgRPCMessage(destination, message, messageDelayTime, messageGroup);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            sendReceipt = grpcProducer.send(rocketMsg);</span><br><span class="line">            log.info(<span class="string">&quot;Send message successfully, messageId=&#123;&#125;&quot;</span>, sendReceipt.getMessageId());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Failed to send message&quot;</span>, t);</span><br><span class="line">        &#125;</span><br><span class="line">        grpcProducer.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message:&#123;&#125; &quot;</span>, destination, message);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">MessagingException</span>(e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sendReceipt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法与remoting SDK类似，remoting SDK调用了消息转换的方法createRocketMqMessage，而我们这里并不需要一个&lt;org.apache.rocketmq.common.message.Message&gt;类型的消息实体对象，而是需要一个&lt;org.apache.rocketmq.client.apis.message.Message&gt;类型的消息实体对象，所以这里我又自定义了一个构建基于 v5-SDK 的消息构造方法：<strong>createRocketMqMessage</strong>。<br />下面是 <strong>createRocketMqMessage</strong> 方法具体源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> org.apache.rocketmq.client.apis.message.Message <span class="title function_">createRocketMQMessage</span><span class="params">(String destination, Message&lt;?&gt; message, Duration messageDelayTime, String messageGroup)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; msg = <span class="built_in">this</span>.doConvert(message.getPayload(), message.getHeaders(), <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> RocketMQUtil.convertToClientMessage(getMessageConverter(), charset,</span><br><span class="line">            destination, msg, messageDelayTime, messageGroup);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面调用了 RocketMQUtil 中的静态方法 convertToClientMessage 用来构造一个真正的&lt;org.apache.rocketmq.client.apis.message&gt;消息实例。<br />下面是 <strong>convertToClientMessage</strong> 方法代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> org.apache.rocketmq.client.apis.message.Message <span class="title function_">convertToClientMessage</span><span class="params">(</span></span><br><span class="line"><span class="params">        MessageConverter messageConverter, String charset,</span></span><br><span class="line"><span class="params">        String destination, org.springframework.messaging.Message&lt;?&gt; message, Duration messageDelayTime, String messageGroup)</span> &#123;</span><br><span class="line">    <span class="type">Object</span> <span class="variable">payloadObject</span> <span class="operator">=</span> message.getPayload();</span><br><span class="line">    <span class="type">byte</span>[] payloads;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        payloads = getPayloadBytes(payloadObject, messageConverter, charset, message);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;convert to gRPC message failed.&quot;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> getAndWrapMessage(destination, message.getHeaders(), payloads, messageDelayTime, messageGroup);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在获取了消息负载的byte数组后，我们需要封装消息实体了。<br />下面是方法 <strong>getAndWrapMessage</strong> 源码：<br />在这个方法里面，我们首先进行了判空操作解析了 destination 中的 topic 和 tag，取出MessageHeaders 中的属性并放到 message 的 properties 属性中，最后建造者模式调用build 方法构造了我们所需要的 message 类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> org.apache.rocketmq.client.apis.message.Message <span class="title function_">getAndWrapMessage</span><span class="params">(</span></span><br><span class="line"><span class="params">        String destination, MessageHeaders headers, <span class="type">byte</span>[] payloads, Duration messageDelayTime, String messageGroup)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (payloads == <span class="literal">null</span> || payloads.length &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (destination == <span class="literal">null</span> || destination.length() &lt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    String[] tempArr = destination.split(<span class="string">&quot;:&quot;</span>, <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ClientServiceProvider</span> <span class="variable">provider</span> <span class="operator">=</span> ClientServiceProvider.loadService();</span><br><span class="line">    org.apache.rocketmq.client.apis.message.<span class="type">MessageBuilder</span> <span class="variable">messageBuilder</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// resolve header</span></span><br><span class="line">    <span class="keyword">if</span> (Objects.nonNull(headers) &amp;&amp; !headers.isEmpty()) &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">keys</span> <span class="operator">=</span> headers.get(RocketMQHeaders.KEYS);</span><br><span class="line">        <span class="keyword">if</span> (ObjectUtils.isEmpty(keys)) &#123;</span><br><span class="line">            keys = headers.get(toRocketHeaderKey(RocketMQHeaders.KEYS));</span><br><span class="line">        &#125;</span><br><span class="line">        messageBuilder = provider.newMessageBuilder()</span><br><span class="line">                .setTopic(tempArr[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">if</span> (tempArr.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            messageBuilder.setTag(tempArr[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.hasLength(messageGroup)) &#123;</span><br><span class="line">            messageBuilder.setMessageGroup(messageGroup);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!ObjectUtils.isEmpty(keys)) &#123;</span><br><span class="line">            messageBuilder.setKeys(keys.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(messageDelayTime)) &#123;</span><br><span class="line">            messageBuilder.setDeliveryTimestamp(System.currentTimeMillis() + messageDelayTime.toMillis());</span><br><span class="line">        &#125;</span><br><span class="line">        messageBuilder.setBody(payloads);</span><br><span class="line">        org.apache.rocketmq.client.apis.message.<span class="type">MessageBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> messageBuilder;</span><br><span class="line">        headers.forEach((key, value) -&gt; builder.addProperty(key, String.valueOf(value)));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> messageBuilder.build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里我们需要的 message 实体类就构建完成了，之后交给 rocketmq-client-java 原生的send 方法就好了。syncSend(String destination, Message&lt;?&gt; message, Duration messageDelayTime, String messageGroup) 这个方法的参数可以看出，它既支持 Normal消息的发送，同时也支持 Delay 消息(messageDelayTime参数可配置)和 FIFO 消息（messageGroup可配置）的发送。<br /><strong>方法重载：</strong><br />相比于原生客户端需要自己去构建 RocketMQ Message（比如将对象序列化成 byte 数组放入 Message 对象），我们需要让 RocketMQTemplate 可以直接将对象、字符串或者 byte 数组作为参数发送出去【对象序列化操作由 RocketMQ-Spring 内置完成】<br />我们可以定义如下重载方法：<br />（1）Normal Message</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendNormalMessage</span><span class="params">(String destination, Object payload)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendNormalMessage</span><span class="params">(String destination, String payload)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendNormalMessage</span><span class="params">(String destination, Message&lt;?&gt; message)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendNormalMessage</span><span class="params">(String destination, <span class="type">byte</span>[] payload)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）FIFO Message</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendFifoMessage</span><span class="params">(String destination, Object payload, String messageGroup)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, messageGroup);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendFifoMessage</span><span class="params">(String destination, String payload, String messageGroup)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, messageGroup);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendFifoMessage</span><span class="params">(String destination, <span class="type">byte</span>[] payload, String messageGroup)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, messageGroup);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendFifoMessage</span><span class="params">(String destination, Message&lt;?&gt; message, String messageGroup)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, <span class="literal">null</span>, messageGroup);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>（3）Delay Message</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendDelayMessage</span><span class="params">(String destination, Object payload, Duration messageDelayTime)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, messageDelayTime, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendDelayMessage</span><span class="params">(String destination, String payload, Duration messageDelayTime)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, messageDelayTime, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendDelayMessage</span><span class="params">(String destination, <span class="type">byte</span>[] payload, Duration messageDelayTime)</span> &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, messageDelayTime, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> SendReceipt <span class="title function_">syncSendDelayMessage</span><span class="params">(String destination, Message&lt;?&gt; message, Duration messageDelayTime)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> syncSendGrpcMessage(destination, message, messageDelayTime, <span class="literal">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>他们底层都调用了<strong>syncSendGrpcMessage</strong>方法。<br><a name="Vxu7i"></a></p>
+<h4 id="异步消息的发送-1"><a href="#异步消息的发送-1" class="headerlink" title="异步消息的发送"></a>异步消息的发送</h4><p>我们定义了如下一个异步消息的发送方法 asyncSend。<br />类似的，他的核心方法调用了 rocketmq-client-java 原生的sendAsync异步发送消息方法：future &#x3D; grpcProducer.sendAsync(rocketMsg);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> CompletableFuture&lt;SendReceipt&gt; <span class="title function_">asyncSend</span><span class="params">(String destination, Message&lt;?&gt; message, Duration messageDelayTime, String messageGroup, CompletableFuture&lt;SendReceipt&gt; future)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (Objects.isNull(message) || Objects.isNull(message.getPayload())) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message is null &quot;</span>, destination);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;`message` and `message.payload` cannot be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">Producer</span> <span class="variable">grpcProducer</span> <span class="operator">=</span> <span class="built_in">this</span>.getProducer();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        org.apache.rocketmq.client.apis.message.<span class="type">Message</span> <span class="variable">rocketMsg</span> <span class="operator">=</span> <span class="built_in">this</span>.createRocketMQMessage(destination, message, messageDelayTime, messageGroup);</span><br><span class="line">        future = grpcProducer.sendAsync(rocketMsg);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message:&#123;&#125; &quot;</span>, destination, message);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">MessagingException</span>(e.getMessage(), e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> future;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="qppyQ"></a></p>
+<h4 id="事务消息的发送-1"><a href="#事务消息的发送-1" class="headerlink" title="事务消息的发送"></a>事务消息的发送</h4><p>与普通消息发送不同的是，我们需要在事务消息中调用grpcProducer.beginTransaction()开启事务，并且还要提交事务transaction.commit()。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Pair&lt;SendReceipt, Transaction&gt; <span class="title function_">sendMessageInTransaction</span><span class="params">(String destination, Object payload)</span> <span class="keyword">throws</span> ClientException &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> sendTransactionMessage(destination, message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Pair&lt;SendReceipt, Transaction&gt; <span class="title function_">sendMessageInTransaction</span><span class="params">(String destination, String payload)</span> <span class="keyword">throws</span> ClientException &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> sendTransactionMessage(destination, message);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Pair&lt;SendReceipt, Transaction&gt; <span class="title function_">sendMessageInTransaction</span><span class="params">(String destination, <span class="type">byte</span>[] payload)</span> <span class="keyword">throws</span> ClientException &#123;</span><br><span class="line">    Message&lt;?&gt; message = MessageBuilder.withPayload(payload).build();</span><br><span class="line">    <span class="keyword">return</span> sendTransactionMessage(destination, message);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> destination formats: `topicName:tags`</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> message     &#123;<span class="doctag">@link</span> Message&#125; the message to be sent.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> CompletableFuture&lt;SendReceipt&gt; Asynchronous Task Results</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> Pair&lt;SendReceipt, Transaction&gt; <span class="title function_">sendTransactionMessage</span><span class="params">(String destination, Message&lt;?&gt; message)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (Objects.isNull(message) || Objects.isNull(message.getPayload())) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message is null &quot;</span>, destination);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;`message` and `message.payload` cannot be null&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> SendReceipt sendReceipt;</span><br><span class="line">    <span class="type">Producer</span> <span class="variable">grpcProducer</span> <span class="operator">=</span> <span class="built_in">this</span>.getProducer();</span><br><span class="line">    org.apache.rocketmq.client.apis.message.<span class="type">Message</span> <span class="variable">rocketMsg</span> <span class="operator">=</span> <span class="built_in">this</span>.createRocketMQMessage(destination, message, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">final</span> Transaction transaction;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        transaction = grpcProducer.beginTransaction();</span><br><span class="line">        sendReceipt = grpcProducer.send(rocketMsg, transaction);</span><br><span class="line">        log.info(<span class="string">&quot;Send transaction message successfully, messageId=&#123;&#125;&quot;</span>, sendReceipt.getMessageId());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClientException e) &#123;</span><br><span class="line">        log.error(<span class="string">&quot;send request message failed. destination:&#123;&#125;, message:&#123;&#125; &quot;</span>, destination, message);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(sendReceipt, transaction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="tJBMW"></a></p>
+<h1 id="封装消息接收方法"><a href="#封装消息接收方法" class="headerlink" title="封装消息接收方法"></a>封装消息接收方法</h1><p><a name="TgH4l"></a></p>
+<h3 id="PushConsumer消息接收"><a href="#PushConsumer消息接收" class="headerlink" title="PushConsumer消息接收"></a>PushConsumer消息接收</h3><p>因为之前在RocketmqProperties中已经将bean：pushConsumerBuilder 注入了ioc容器中，现在只需要让用户定义消息监听处理方式，然后在初始化时将 pushConsumerBuilder所需要的参数传入就可以了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">initRocketMQPushConsumer</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (rocketMQMessageListener == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Property &#x27;rocketMQMessageListener&#x27; is required&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Assert.notNull(consumerGroup, <span class="string">&quot;Property &#x27;consumerGroup&#x27; is required&quot;</span>);</span><br><span class="line">    Assert.notNull(topic, <span class="string">&quot;Property &#x27;topic&#x27; is required&quot;</span>);</span><br><span class="line">    Assert.notNull(tag, <span class="string">&quot;Property &#x27;tag&#x27; is required&quot;</span>);</span><br><span class="line">    <span class="type">FilterExpression</span> <span class="variable">filterExpression</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">ClientServiceProvider</span> <span class="variable">provider</span> <span class="operator">=</span> ClientServiceProvider.loadService();</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.hasLength(<span class="built_in">this</span>.getTag())) &#123;</span><br><span class="line">        filterExpression = RocketMQUtil.createFilterExpression(<span class="built_in">this</span>.getTag(),<span class="built_in">this</span>.getType());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">ClientConfiguration</span> <span class="variable">clientConfiguration</span> <span class="operator">=</span> RocketMQUtil.createClientConfiguration(<span class="built_in">this</span>.getAccessKey(), <span class="built_in">this</span>.getSecretKey(), <span class="built_in">this</span>.getEndpoints(), <span class="built_in">this</span>.getRequestTimeout());</span><br><span class="line"></span><br><span class="line">    <span class="type">PushConsumerBuilder</span> <span class="variable">pushConsumerBuilder</span> <span class="operator">=</span> provider.newPushConsumerBuilder()</span><br><span class="line">            .setClientConfiguration(clientConfiguration);</span><br><span class="line">    <span class="comment">// Set the consumer group name.</span></span><br><span class="line">    <span class="keyword">if</span> (StringUtils.hasLength(<span class="built_in">this</span>.getConsumerGroup())) &#123;</span><br><span class="line">        pushConsumerBuilder.setConsumerGroup(<span class="built_in">this</span>.getConsumerGroup());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Set the subscription for the consumer.</span></span><br><span class="line">    <span class="keyword">if</span> (StringUtils.hasLength(<span class="built_in">this</span>.getTopic()) &amp;&amp; Objects.nonNull(filterExpression)) &#123;</span><br><span class="line">        pushConsumerBuilder.setSubscriptionExpressions(Collections.singletonMap(<span class="built_in">this</span>.getTopic(), filterExpression));</span><br><span class="line">    &#125;</span><br><span class="line">    pushConsumerBuilder</span><br><span class="line">            .setConsumptionThreadCount(<span class="built_in">this</span>.getConsumptionThreadCount())</span><br><span class="line">            .setMaxCacheMessageSizeInBytes(<span class="built_in">this</span>.getMaxCacheMessageSizeInBytes())</span><br><span class="line">            .setMaxCacheMessageCount(<span class="built_in">this</span>.getMaxCachedMessageCount())</span><br><span class="line">            .setMessageListener(rocketMQListener);</span><br><span class="line">    <span class="built_in">this</span>.setPushConsumerBuilder(pushConsumerBuilder);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="DOlvg"></a></p>
+<h3 id="SimpleConsumer消息接收"><a href="#SimpleConsumer消息接收" class="headerlink" title="SimpleConsumer消息接收"></a>SimpleConsumer消息接收</h3><p><a name="IzPVR"></a></p>
+<h4 id="同步接收消息"><a href="#同步接收消息" class="headerlink" title="同步接收消息"></a>同步接收消息</h4><p>我们定义了一个 receive 方法作为 SimpleConsumer 的消息接收方法，并且传入参数maxMessageNum指定了每次长轮询的最大消息数，invisibleDuration 指定了设置消息接收后的不可见持续时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;MessageView&gt; <span class="title function_">receive</span><span class="params">(<span class="type">int</span> maxMessageNum, Duration invisibleDuration)</span> <span class="keyword">throws</span> ClientException &#123;</span><br><span class="line">    <span class="type">SimpleConsumer</span> <span class="variable">simpleConsumer</span> <span class="operator">=</span> <span class="built_in">this</span>.getSimpleConsumer();</span><br><span class="line">    <span class="keyword">return</span> simpleConsumer.receive(maxMessageNum, invisibleDuration);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进行消息确认：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">ack</span><span class="params">(MessageView message)</span> <span class="keyword">throws</span> ClientException &#123;</span><br><span class="line">    <span class="type">SimpleConsumer</span> <span class="variable">simpleConsumer</span> <span class="operator">=</span> <span class="built_in">this</span>.getSimpleConsumer();</span><br><span class="line">    simpleConsumer.ack(message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="dJE3A"></a></p>
+<h4 id="异步接收消息"><a href="#异步接收消息" class="headerlink" title="异步接收消息"></a>异步接收消息</h4><p>receiveAsync方法返回一个CompletableFuture类型的异步返回结果，对于这个结果的处理，用户可以在调用rocketmqTemplate.receiveAsync之后自行处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> CompletableFuture&lt;List&lt;MessageView&gt;&gt; <span class="title function_">receiveAsync</span><span class="params">(<span class="type">int</span> maxMessageNum, Duration invisibleDuration)</span> <span class="keyword">throws</span> ClientException, IOException &#123;</span><br><span class="line">    <span class="type">SimpleConsumer</span> <span class="variable">simpleConsumer</span> <span class="operator">=</span> <span class="built_in">this</span>.getSimpleConsumer();</span><br><span class="line">    CompletableFuture&lt;List&lt;MessageView&gt;&gt; listCompletableFuture = simpleConsumer.receiveAsync(maxMessageNum, invisibleDuration);</span><br><span class="line">    simpleConsumer.close();</span><br><span class="line">    <span class="keyword">return</span> listCompletableFuture;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进行消息确认：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> CompletableFuture&lt;Void&gt; <span class="title function_">ackAsync</span><span class="params">(MessageView messageView)</span> &#123;</span><br><span class="line">    <span class="type">SimpleConsumer</span> <span class="variable">simpleConsumer</span> <span class="operator">=</span> <span class="built_in">this</span>.getSimpleConsumer();</span><br><span class="line">    <span class="keyword">return</span> simpleConsumer.ackAsync(messageView);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/"><i class="icon fas fa-hashtag"></i>开源之夏</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/10/26/FlexiblePaxos%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E6%B3%95%E5%AE%9A%E4%BA%BA%E6%95%B0%E4%BA%A4%E9%9B%86%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/"
+                                   title="Flexible Paxos：重新审视法定人数交集-中译"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Flexible Paxos：重新审视法定人数交集-中译</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/10/19/Git-Flow%20%E5%9B%A2%E9%98%9F%E4%BB%A3%E7%A0%81%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B%E5%88%9D%E4%BD%93%E9%AA%8C/"
+                                   title="Git-Flow 团队代码分支管理模型初体验"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Git-Flow 团队代码分支管理模型初体验</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84%E6%B6%88%E6%81%AF%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.</span> <span class="nav-text">Spring 中的消息框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E%E9%80%82%E9%85%8D"><span class="nav-number">1.2.</span> <span class="nav-text">模块与适配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0maven%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">添加maven依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E9%85%8Dspring-boot%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">适配spring-boot自动化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%80%82%E9%85%8D%E6%96%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BD%93"><span class="nav-number">2.2.1.</span> <span class="nav-text">支持适配新客户端实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%85%8DProducer"><span class="nav-number">2.2.2.</span> <span class="nav-text">装配Producer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">新增字段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%85%8DSimpleConsumer"><span class="nav-number">2.2.3.</span> <span class="nav-text">装配SimpleConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5-1"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">新增字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E6%8E%A7%E5%88%B6%E5%AE%9E%E4%BD%93%E8%A3%85%E9%85%8D"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">注解控制实体装配</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">封装消息发送方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#remoting-SDK%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.</span> <span class="nav-text">remoting SDK消息发送</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">同步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">异步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.3.</span> <span class="nav-text">顺序消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E5%90%91%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.4.</span> <span class="nav-text">单向消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.5.</span> <span class="nav-text">事务消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Request-Reply-%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.6.</span> <span class="nav-text">Request-Reply 消息的发送</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v5-SDK%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81"><span class="nav-number">3.0.2.</span> <span class="nav-text">v5 SDK消息发送</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">同步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">异步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">事务消息的发送</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">封装消息接收方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PushConsumer%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6"><span class="nav-number">4.0.1.</span> <span class="nav-text">PushConsumer消息接收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SimpleConsumer%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6"><span class="nav-number">4.0.2.</span> <span class="nav-text">SimpleConsumer消息接收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">4.0.2.1.</span> <span class="nav-text">同步接收消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">4.0.2.2.</span> <span class="nav-text">异步接收消息</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E4%B8%AD%E7%9A%84%E6%B6%88%E6%81%AF%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.</span> <span class="nav-text">Spring 中的消息框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E%E9%80%82%E9%85%8D"><span class="nav-number">1.2.</span> <span class="nav-text">模块与适配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0maven%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">添加maven依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E9%85%8Dspring-boot%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">适配spring-boot自动化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E9%80%82%E9%85%8D%E6%96%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BD%93"><span class="nav-number">2.2.1.</span> <span class="nav-text">支持适配新客户端实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%85%8DProducer"><span class="nav-number">2.2.2.</span> <span class="nav-text">装配Producer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">新增字段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%85%E9%85%8DSimpleConsumer"><span class="nav-number">2.2.3.</span> <span class="nav-text">装配SimpleConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5-1"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">新增字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E6%8E%A7%E5%88%B6%E5%AE%9E%E4%BD%93%E8%A3%85%E9%85%8D"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">注解控制实体装配</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">封装消息发送方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#remoting-SDK%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.</span> <span class="nav-text">remoting SDK消息发送</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">同步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">异步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.3.</span> <span class="nav-text">顺序消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E5%90%91%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.4.</span> <span class="nav-text">单向消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.5.</span> <span class="nav-text">事务消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Request-Reply-%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81"><span class="nav-number">3.0.1.6.</span> <span class="nav-text">Request-Reply 消息的发送</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v5-SDK%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81"><span class="nav-number">3.0.2.</span> <span class="nav-text">v5 SDK消息发送</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">同步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">异步消息的发送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%91%E9%80%81-1"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">事务消息的发送</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">封装消息接收方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PushConsumer%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6"><span class="nav-number">4.0.1.</span> <span class="nav-text">PushConsumer消息接收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SimpleConsumer%E6%B6%88%E6%81%AF%E6%8E%A5%E6%94%B6"><span class="nav-number">4.0.2.</span> <span class="nav-text">SimpleConsumer消息接收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">4.0.2.1.</span> <span class="nav-text">同步接收消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">4.0.2.2.</span> <span class="nav-text">异步接收消息</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            OSPP-2023 ｜ Flexible Raft 杂谈 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        OSPP-2023 ｜ Flexible Raft 杂谈
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-11-13 02:20:37</span>
+                <span class="mobile">2023-11-13 02:20</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Sun Jul 28 2024 16:51:21 GMT+0000">2024-07-28 16:51:21</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/">开源之夏</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <p><a name="dlWxD"></a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>在 OSPP-2023 官方选题中，我最终中选了 SOFA Stack 社区中 【结合 NWR 实现 Flexible Raft】这一选题，最近也收到成功结项的消息。<br>关于 Flexible Raft，其实我们最早可以追溯到 Heidi Howard 博士于2016年发布的一篇论文<a class="link"   target="_blank" rel="noopener" href="https://arxiv.org/pdf/1608.06696v1.pdf" >《改进分布式共识》<i class="fas fa-external-link-alt"></i></a>，Howard 是剑桥大学计算机科学与技术系系统研究小组的分布式系统研究员，这篇论文一经发出，受到广泛关注。<br>截至目前，网络上还并没有找到该篇论文的中文翻译，于是我自己把这件事情给做了，详见：<a class="link"   target="_blank" rel="noopener" href="https://1294566108.github.io/2023/10/26/FlexiblePaxos%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E6%B3%95%E5%AE%9A%E4%BA%BA%E6%95%B0%E4%BA%A4%E9%9B%86%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/" >Flexible Paxos：重新审视法定人数交集-论文中译<i class="fas fa-external-link-alt"></i></a>。中译版最初是通过机译之后，再对不太准确的地方进行手工校验修正，在格式和文字风格上最大程度维持了原样，若仍有不准确的地方读者可以留言斧正。<br>该篇论文基于 paxos 算法，提出了一个比 paxos 更 Flexible 的共识协议改进，能够更加灵活的去调整协商和共识效率。而本篇文章将基于 FPaxos 的核心思想进而过渡到 Flexible Raft 的实现思路。</p>
+</blockquote>
+<p><a name="dko9Q"></a></p>
+<h1 id="分布式一致性"><a href="#分布式一致性" class="headerlink" title="分布式一致性"></a>分布式一致性</h1><p>分布式系统通常由异步网络连接的多个节点构成，每个节点有独立的计算和存储。通常来说，分布式一致性一般指的是数据的一致性。比如分布式存储系统，通常以多副本冗余的方式实现数据的可靠存储。同一份数据的多个副本必须保证一致，而数据的多个副本又存储在不同的节点中，这里的分布式一致性问题就是存储在不同节点中的数据副本的取值必须一致。<strong>分布式系统最朴实的目标是把一堆普通机器的计算&#x2F;存储等能力整合到一起，然后整体上能够像一台超级机器一样对外提供可扩展的读写服务。</strong><br />如果不保证一致性，那么就说明这个系统中的数据根本不可信，数据也就没有意义，那么这个系统也就没有任何价值可言。<br />在分布式系统中，各个节点之间需要进行通信来保持数据的一致性，而通信的实现方式有共享内存和消息传递两种模型。基于消息传递通信模型的分布式系统，不可避免的会发生下面的错误：机器宕机，进程可能会慢、被杀死或者重启，消息可能会延迟、丢失、重复。那么在这种复杂的情况下该如何保证一致性呢？这时就需要交给我们的 Paxos&#x2F;Raft 算法去实现了。<br />Paxos&#x2F;Raft 算法能够快速正确的在一个分布式系统中对某个数据的值达成一致，并且保证无论发生任何异常，都不会破坏整个系统的一致性。<br><a name="mkSIN"></a></p>
+<h1 id="Paxos-旧约"><a href="#Paxos-旧约" class="headerlink" title="Paxos 旧约"></a>Paxos 旧约</h1><p>在遥远的古希腊，有一座小岛，它位于爱奥尼亚海的东面。当时的人们在岛上进行民主决策实践。我们的主人公 Lamport 早先年考古希腊群岛，就被这座小岛所吸引，可能是从这个背景中获得了灵感，于是，他将小岛的名字 Paxos 用于命名自己提出的共识协议，以表示分布式系统中的协商和共识过程，这就是Paxos 名称的由来。<br /><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/11/13/gs6CvtRdDwA4rVF.png"
+                      alt="image.png"
+                ><br><a name="PjJ1w"></a></p>
+<h2 id="Basic-Paxos-算法过程"><a href="#Basic-Paxos-算法过程" class="headerlink" title="Basic Paxos 算法过程"></a>Basic Paxos 算法过程</h2><p>Propser 有两个重要属性，提案编号 N, 提案 V, 简记 Proposer(N, V)。<br />Acceptor 有三个重要属性，响应提案编号 ResN, 接受的提案编号 AcceptN, 接收的提案 AcceptV， 简记Acceptor（ResN, AcceptN, AcceptV）。<br><a name="KeTeP"></a></p>
+<h3 id="第一阶段-Prepare准备阶段"><a href="#第一阶段-Prepare准备阶段" class="headerlink" title="第一阶段: Prepare准备阶段"></a>第一阶段: Prepare准备阶段</h3><p><strong>Proposer：</strong>Proposer 生成<strong>全局唯一且递增</strong>的提案编号N，向所有Acceptor发送Prepare请求，这里无需携带提案内容，只携带提案编号即可, 即发送 Proposer(N, null)。<br /><strong>Acceptor：</strong>Acceptor 收到 Prepare 请求后，有两种情况：</p>
+<ol>
+<li>如果 Acceptor 首次接收 Prepare 请求, 设置 ResN&#x3D;N，同时响应ok</li>
+<li>如果 Acceptor <strong>不是</strong>首次接收 Prepare 请求，则：</li>
+</ol>
+<ul>
+<li>若请求过来的提案编号 N<strong>小于等于</strong>上次持久化的提案编号 ResN，则不响应或者响应 error。</li>
+<li>若请求过来的提案编号 N<strong>大于</strong>上次持久化的提案编号 ResN, 则更新 ResN &#x3D; N，同时给出响应。响应的结果有两种，如果这个 Acceptor 此前没有接受过提案， 只返回 ok。否则如果这个 Acceptor 此前接收过提案，则返回 ok 和上次接受的提案编号 AcceptN，接收的提案 AcceptV。<br><a name="qDx15"></a></li>
+</ul>
+<h3 id="第二阶段-Accept接受阶段"><a href="#第二阶段-Accept接受阶段" class="headerlink" title="第二阶段: Accept接受阶段"></a>第二阶段: Accept接受阶段</h3><p><strong>Proposer：</strong> Proposer 收到响应后，有两种情况：</p>
+<ol>
+<li>如果收到了<strong>超过半数</strong>响应 ok , 检查响应中是否有提案，如果有的话，取提案 V&#x3D; 响应中最大 AcceptN 对应的 AcceptV，如果没有的话，V则有当前 Proposer 自己设定。最后发出 accept 请求，这个请求中携带提案 V。</li>
+<li>如果<strong>没有收到超过半数</strong>响应 ok , 则重新生成提案编号 N，重新回到第一阶段，发起 Prepare 请求。</li>
+</ol>
+<p><strong>Acceptor：</strong> Acceptor 收到 accept 请求后，分为两种情况：</p>
+<ol>
+<li>如果发送的提案请求 N <strong>大于</strong>此前保存的 RespN，接受提案，设置 AcceptN &#x3D; N, AcceptV &#x3D; V, 并且回复 ok。</li>
+<li>如果发送的提案请求 N <strong>小于等于</strong>此前保存的 RespN，不接受，不回复或者回复 error。</li>
+</ol>
+<p><strong>Proposer：</strong> Proposer 收到 ok 超过半数，则 V 被选定，否则重新发起 Prepare 请求。<br><a name="jW7NP"></a></p>
+<h3 id="第三阶段-Learn学习阶段"><a href="#第三阶段-Learn学习阶段" class="headerlink" title="第三阶段: Learn学习阶段"></a>第三阶段: Learn学习阶段</h3><p><strong>Learner：</strong> Proposer 收到多数 Acceptor 的 Accept 后，决议形成，将形成的决议发送给所有 Learner。<br><a name="sDgZM"></a></p>
+<h1 id="Flexible-Paxos"><a href="#Flexible-Paxos" class="headerlink" title="Flexible Paxos"></a>Flexible Paxos</h1><p><a name="Uq0ok"></a></p>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p><strong>下面是微软剑桥实验室对Heidi Howard的介绍：</strong></p>
+<blockquote>
+<p>我是<strong>微软剑桥研究院机密计算小组</strong>的高级研究员。我的研究处于分布式计算理论和实践的交叉点，重点是开发弹性和值得信赖的分布式计算机系统。此前，我是<strong>剑桥大学三一大厅</strong>的计算机科学研究员VMware Research的附属&#x2F;访问研究员和剑桥大学计算机科学与技术系的附属讲师。我于2019年因对分布式共识的研究获得了剑桥大学的博士学位。我最出名的可能是我在Paxos算法方面的工作，特别是 <strong>Flexible Paxos 的发明</strong>。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/11/13/Oibz4e9pxr7INm1.png"
+                      alt="image.png"
+                ><br><a name="T3PA5"></a></p>
+<h2 id="为什么要拥抱FPaxos"><a href="#为什么要拥抱FPaxos" class="headerlink" title="为什么要拥抱FPaxos"></a>为什么要拥抱FPaxos</h2><p>我们想象这样一个场景：假设 paxos 集群中成员总数是 n，prepare 阶段参与的成员数是 Q1，accept 阶段参与的成员数是Q2，那么 Basic Paxos 正确性保障最本质的诉求是 Q1 与 Q2 两个阶段要有重合成员，以确保信息可以传递。当前一个普遍的实现机制是：只要 Q1 与 Q2 两个阶段都有多数派（majority）成员参与即可。<br />可是，我们发现只要保证 prepare 与accept 两个阶段参与的成员数超过成员总数，即 Q1 + Q2 &gt; N，那一样能够满足 Q1 与 Q2 两个阶段要有重合成员的要求，如果是这样，那我们选择的参数就非常灵活了。</p>
+<blockquote>
+<p>那么，动态调节 Q1 和 Q2 的意义在哪里？我们知道 prepare 阶段事实上可以看作 Leader 选举，accept 阶段则可以看成日志同步，即涉及 IO 操作。我们是否可以考虑把Q1调大，而Q2调小，来减小 IO 操作带来的压力；又或者我们不再局限于多数派模型，动态设置更灵活的两阶段成员数量，来更好的支持异地容灾呢？</p>
+</blockquote>
+<p>我们来举一个具体的例子来更好的理解 Flexible Paxos 的优势。<br />现在有一个 n&#x3D;5 的集群节点，按照以往的 majority 模式，我们 prepare 和 accept 阶段需要的成员数都是3。如果我们设置FPaxos 「n&#x3D;5，prepare&#x3D;4，accept&#x3D;2」，此时的IO依赖于两个节点存活响应，那么我们是不是IO的压力就小了，日志同步这种慢操作所依赖的节点更少了。<br />另外一个比较经典的例子，AWS曾经提出了可用区（Availability+Zone）的概念，在每个区域 （Region）都有多个可用区。AZ之间物理隔离，独立供电，一个AZ故障，不会影响另外一个AZ，但AZ之间是连通，且网络耗时低。简单可以将AZ理解为独立机房或逻辑机房，这样可以利用AZ的隔离性，对业务进行跨AZ部署，实现高可用。在这样的异地容灾背景下，如果使用多数派模型，像 [2,2,2] 这样的 3 AZ 场景，无论是 prepare 阶段还是 accept 阶段，他最多只能接受挂掉一个 zone，因为 6 节点的多数派是 4。那其实 [2,2,2] 相较于 [2,2,1] 是没有增加额外的容灾能力的，后者也最多只允许宕掉一个 zone。但是如果我们引入了 Flexible Paxos 就不一样了。如果我们将 [2,2,2] 的 Q1 设置为 4，Q2 设置为 3，这样我们能抗住挂掉一个 AZ，这时还剩下 4 个节点，即使宕掉的 AZ 中有 Leader，仍然可以重新选举出一个新的 Leader，并且在accept 阶段还可以另外支持宕掉一个节点，毕竟Q2&#x3D;3。<br><a name="ZEcYX"></a></p>
+<h1 id="Flexible-Raft"><a href="#Flexible-Raft" class="headerlink" title="Flexible Raft"></a>Flexible Raft</h1><p>有人说过这样一句话：在 Paxos 算法找到一个开源的“杀手级”工业应用之前，Raft 算法的赶超速度几乎是不可阻挡的。Paxos 协议族会逐步成为 Raft 算法的优化策略（所以我们看到这次SOFA-JRaft 在 OSPP-2023 开源之夏给出的选题，<a class="link"   target="_blank" rel="noopener" href="https://summer-ospp.ac.cn/org/prodetail/2395a0390?list=org&navpage=org" >结合 NWR Quorum 模型实现 Flexible Raft<i class="fas fa-external-link-alt"></i></a> 这个课题，说明 Raft 算法已经开始拥抱 Flexible Raft 这个灵活派的新特性了）。<br />对于 Raft 算法来说，其实要像 Flexible Paxos 算法一样实现 Flexible Raft 也是大同小异的。Paxos 的 prepare 阶段类似于 Raft 的 Leader 选举，Paxos 的 Accept 阶段类似于 Raft 的日志复制。那么我们如何在兼容多数派模型的情况下，同时引入 Flexible 模型呢？<br />社区给出的答案是：我们可以结合 Quorum NWR 模型来实现这一设计，具体思考可以参考 SOFA-JRaft 的<a class="link"   target="_blank" rel="noopener" href="https://github.com/sofastack/sofa-jraft/issues/975" >讨论<i class="fas fa-external-link-alt"></i></a>。举个例子，在一个总节点数为 5 的集群中，多数派模型的NWR结构是 [n&#x3D;5，r&#x3D;3，w&#x3D;3]；而 Flexible Raft 的 NWR 可以设计为 [n&#x3D;5，r&#x3D;2，w&#x3D;4] 或者 [n&#x3D;5，r&#x3D;4，w&#x3D;2]，甚至可以 [n&#x3D;5，r&#x3D;5，w&#x3D;1]，只需要满足 r+w &#x3D; n+1 就好了。<br />所以接下来，我会给出在本次 OSPP-2023 开源之夏活动中，对于 Flexible Raft 的设计与具体实现。<br><a name="aIYaI"></a></p>
+<h2 id="使用规则"><a href="#使用规则" class="headerlink" title="使用规则"></a>使用规则</h2><p>Flexible Raft 的功能使用方法很简单，这里以 jraft-example 模块下我提供给社区的 Flexible Raft 功能测试用例模块为例子：FlexibleRaftServer 中，我们只需要使用 <strong>nodeOptions.enableFlexibleRaft(true)</strong> 打开 Flexible Raft 开关，然后调用 <strong>nodeOptions.setFactor(6, 4)</strong> 对读写 factor 因子进行设置，这样就能够启动 Flexible Raft了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">FlexibleRaftServer</span><span class="params">(<span class="keyword">final</span> String dataPath, <span class="keyword">final</span> String groupId, <span class="keyword">final</span> PeerId serverId,</span></span><br><span class="line"><span class="params">                          <span class="keyword">final</span> NodeOptions nodeOptions)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="comment">// init raft data path, it contains log,meta,snapshot</span></span><br><span class="line">    FileUtils.forceMkdir(<span class="keyword">new</span> <span class="title class_">File</span>(dataPath));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// here use same RPC server for raft and business. It also can be seperated generally</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">RpcServer</span> <span class="variable">rpcServer</span> <span class="operator">=</span> RaftRpcServerFactory.createRaftRpcServer(serverId.getEndpoint());</span><br><span class="line">    <span class="comment">// GrpcServer need init marshaller</span></span><br><span class="line">    FlexibleGrpcHelper.initGRpc();</span><br><span class="line">    FlexibleGrpcHelper.setRpcServer(rpcServer);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// register business processor</span></span><br><span class="line">    <span class="type">FlexibleRaftService</span> <span class="variable">flexibleRaftService</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FlexibleRaftServiceImpl</span>(<span class="built_in">this</span>);</span><br><span class="line">    rpcServer.registerProcessor(<span class="keyword">new</span> <span class="title class_">FlexibleGetValueRequestProcessor</span>(flexibleRaftService));</span><br><span class="line">    rpcServer.registerProcessor(<span class="keyword">new</span> <span class="title class_">FlexibleIncrementAndGetRequestProcessor</span>(flexibleRaftService));</span><br><span class="line">    <span class="comment">// init state machine</span></span><br><span class="line">    <span class="built_in">this</span>.fsm = <span class="keyword">new</span> <span class="title class_">FlexibleStateMachine</span>();</span><br><span class="line">    <span class="comment">// set fsm to nodeOptions</span></span><br><span class="line">    nodeOptions.setFsm(<span class="built_in">this</span>.fsm);</span><br><span class="line">    <span class="comment">// set storage path (log,meta,snapshot)</span></span><br><span class="line">    <span class="comment">// log, must</span></span><br><span class="line">    nodeOptions.setLogUri(dataPath + File.separator + <span class="string">&quot;log&quot;</span>);</span><br><span class="line">    <span class="comment">// meta, must</span></span><br><span class="line">    nodeOptions.setRaftMetaUri(dataPath + File.separator + <span class="string">&quot;raft_meta&quot;</span>);</span><br><span class="line">    <span class="comment">// snapshot, optional, generally recommended</span></span><br><span class="line">    nodeOptions.setSnapshotUri(dataPath + File.separator + <span class="string">&quot;snapshot&quot;</span>);</span><br><span class="line">    <span class="comment">// enable flexible raft</span></span><br><span class="line">    nodeOptions.enableFlexibleRaft(<span class="literal">true</span>);</span><br><span class="line">    <span class="comment">// set flexible raft factor</span></span><br><span class="line">    nodeOptions.setFactor(<span class="number">6</span>, <span class="number">4</span>);</span><br><span class="line">    <span class="comment">// init raft group service framework</span></span><br><span class="line">    <span class="built_in">this</span>.raftGroupService = <span class="keyword">new</span> <span class="title class_">RaftGroupService</span>(groupId, serverId, nodeOptions, rpcServer);</span><br><span class="line">    <span class="comment">// start raft node</span></span><br><span class="line">    <span class="built_in">this</span>.node = <span class="built_in">this</span>.raftGroupService.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们对 Majority Raft 模式的使用进行了兼容，如果需要使用 Majority Raft，可以使用下面代码给出的方式设置开启 FlexibleRaft 为 false，或者更简单的方法不进行任何对FlexibleRaft 参数的操作，因为 Jraft 默认是使用 Majority Raft 的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nodeOptions.enableFlexibleRaft(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p><a name="IDvDs"></a></p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p><a name="VrQya"></a></p>
+<h3 id="NWR-模型"><a href="#NWR-模型" class="headerlink" title="NWR 模型"></a>NWR 模型</h3><p>我们知道，NWR 是一种在分布式存储系统中用于控制一致性级别的策略。N 在分布式存储系统中，代表有多少份备份数据 。W 代表一次成功的更新操作要求至少有 W 份数据写入成功。R 代表一次成功的读数据操作要求至少有 R 份数据成功读取。<br />满足 W + R &gt; N 的情况下，读 Quorum 和写 Quorum 一定存在交集，这个相交的成员一定拥有最新的数据，那么这个分布式系统一定是满足强一致性的。<br />例如，在一个 N&#x3D;3 的 Raft 集群中，W 是 2、R 是 2 的时候，W+R&gt;N，这种情况对于集群而言就是强一致性的。<br /><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/11/13/IDzW7ST5vKuXso8.png"
+                      alt="image.png"
+                ><br />所以基于以上思路，首先我们要对 Quorum 这一核心类进行设计。Quorum 类结构很简单，只需要{int w，int r} 来表示读写节点数量即可。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Quorum</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> w;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> r;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Quorum(<span class="built_in">int</span> w, <span class="built_in">int</span> r) &#123;</span><br><span class="line">        <span class="keyword">this</span>.w = w;</span><br><span class="line">        <span class="keyword">this</span>.r = r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="P2Up7"></a></p>
+<h3 id="Configuration-升级"><a href="#Configuration-升级" class="headerlink" title="Configuration 升级"></a>Configuration 升级</h3><p>设计好 Quorum 类之后，如何在每个节点运行过程中随时获取或者修改？这时我们需要整合到 Configuration 类中了。在原有的 Configuration 类中，是没有 quorum、readFactor、writeFactor 和 isEnableFlexible 的，因为这几个属性是为了适配 Fleixble Raft 而新添加的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Configuration</span> <span class="keyword">implements</span> <span class="title class_">Iterable</span>&lt;PeerId&gt;, Copiable&lt;Configuration&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span>   <span class="variable">LOG</span>              <span class="operator">=</span> LoggerFactory.getLogger(Configuration.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span>   <span class="variable">LEARNER_POSTFIX</span>  <span class="operator">=</span> <span class="string">&quot;/learner&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Quorum                quorum;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer               readFactor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer               writeFactor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">Boolean</span>               <span class="variable">isEnableFlexible</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;PeerId&gt;          peers            = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// use LinkedHashSet to keep insertion order.</span></span><br><span class="line">    <span class="keyword">private</span> LinkedHashSet&lt;PeerId&gt; learners         = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="oH6Lm"></a></p>
+<h3 id="Quorum-计算规则"><a href="#Quorum-计算规则" class="headerlink" title="Quorum 计算规则"></a>Quorum 计算规则</h3><p>我们根据使用规则可以知道，用户端要使用 Flexible Raft 功能需要打开 NodeOptions 中 Flexible Raft 的开关，并且设置好 factor 因子的大小。那么我们又是如何根据 factor 因子计算出一个 raft 集群的w和r是多少呢？<br />为了实现 w 和 r 的计算逻辑，我们提供了一个计算工厂BallotFactory类专门处理NWR的计算规则。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">checkValid：校验读写factor是否都不为空，并且其和为<span class="number">10</span></span><br><span class="line">calculateWriteQuorum：根据size与writeFactor计算w的大小</span><br><span class="line">calculateReadQuorum：根据计算出的w，根据公式 r = n - w + <span class="number">1</span> 计算</span><br><span class="line">calculateMajorityQuorum：计算 Majority 模式下的 w 和 r</span><br><span class="line">buildFlexibleQuorum：如果打开 Flexible 模式，用于计算该模式下的 Quorum</span><br><span class="line">buildMajorityQuorum：如果打开 Majority 模式，用于计算该模式下的 Quorum</span><br><span class="line">convertConfigToLogEntry：将 configuration 转换为 LogEntry</span><br><span class="line">convertOldConfigToLogOuterEntry：将 oldConfiguration 转换为 LogEntry</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">BallotFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span>     <span class="variable">LOG</span>                  <span class="operator">=</span> LoggerFactory.getLogger(BallotFactory.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span>     <span class="variable">defaultDecimalFactor</span> <span class="operator">=</span> <span class="string">&quot;0.1&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">BigDecimal</span> <span class="variable">defaultDecimal</span>       <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(defaultDecimalFactor);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Quorum <span class="title function_">buildFlexibleQuorum</span><span class="params">(Integer readFactor, Integer writeFactor, <span class="type">int</span> size)</span> &#123;</span><br><span class="line">        <span class="comment">// if size equals 0,config must be empty,so we just return null</span></span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Check if factors are valid</span></span><br><span class="line">        <span class="keyword">if</span> (!checkValid(readFactor, writeFactor)) &#123;</span><br><span class="line">            LOG.error(<span class="string">&quot;Invalid factor, factor&#x27;s range must be (0,10) and the sum of factor should be 10&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Partial factor is empty</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(writeFactor)) &#123;</span><br><span class="line">            writeFactor = <span class="number">10</span> - readFactor;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(readFactor)) &#123;</span><br><span class="line">            readFactor = <span class="number">10</span> - writeFactor;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Calculate quorum</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">w</span> <span class="operator">=</span> calculateWriteQuorum(writeFactor, size);</span><br><span class="line">        <span class="type">int</span> <span class="variable">r</span> <span class="operator">=</span> calculateReadQuorum(readFactor, size);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Quorum</span>(w, r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Quorum <span class="title function_">buildMajorityQuorum</span><span class="params">(<span class="type">int</span> size)</span> &#123;</span><br><span class="line">        <span class="comment">// if size equals 0,config must be empty,so we just return null</span></span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">majorityQuorum</span> <span class="operator">=</span> calculateMajorityQuorum(size);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Quorum</span>(majorityQuorum, majorityQuorum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">calculateWriteQuorum</span><span class="params">(<span class="type">int</span> writeFactor, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">writeFactorDecimal</span> <span class="operator">=</span> defaultDecimal.multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(writeFactor))</span><br><span class="line">            .multiply(<span class="keyword">new</span> <span class="title class_">BigDecimal</span>(n));</span><br><span class="line">        <span class="keyword">return</span> writeFactorDecimal.setScale(<span class="number">0</span>, RoundingMode.CEILING).intValue();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">calculateReadQuorum</span><span class="params">(<span class="type">int</span> readFactor, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">writeQuorum</span> <span class="operator">=</span> calculateWriteQuorum(<span class="number">10</span> - readFactor, n);</span><br><span class="line">        <span class="keyword">return</span> n - writeQuorum + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">calculateMajorityQuorum</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> n / <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">checkValid</span><span class="params">(Integer readFactor, Integer writeFactor)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(readFactor) || Objects.isNull(writeFactor)) &#123;</span><br><span class="line">            LOG.error(<span class="string">&quot;When turning on flexible mode, Both of readFactor and writeFactor should not be null.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (readFactor + writeFactor == <span class="number">10</span> &amp;&amp; readFactor &gt; <span class="number">0</span> &amp;&amp; readFactor &lt; <span class="number">10</span> &amp;&amp; writeFactor &gt; <span class="number">0</span> &amp;&amp; writeFactor &lt; <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        LOG.error(<span class="string">&quot;Fail to set quorum_nwr because the sum of read_factor and write_factor is &#123;&#125; , not 10&quot;</span>,</span><br><span class="line">            readFactor + writeFactor);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> LogEntry <span class="title function_">convertConfigToLogEntry</span><span class="params">(LogEntry logEntry, Configuration conf)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(logEntry)) &#123;</span><br><span class="line">            logEntry = <span class="keyword">new</span> <span class="title class_">LogEntry</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        logEntry.setEnableFlexible(<span class="literal">false</span>);</span><br><span class="line">        logEntry.setPeers(conf.listPeers());</span><br><span class="line">        <span class="keyword">final</span> LogOutter.Quorum.<span class="type">Builder</span> <span class="variable">quorumBuilder</span> <span class="operator">=</span> LogOutter.Quorum.newBuilder();</span><br><span class="line">        LogOutter.<span class="type">Quorum</span> <span class="variable">quorum</span> <span class="operator">=</span> quorumBuilder.setR(conf.getQuorum().getR()).setW(conf.getQuorum().getW()).build();</span><br><span class="line">        logEntry.setQuorum(quorum);</span><br><span class="line">        <span class="keyword">return</span> logEntry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> LogEntry <span class="title function_">convertOldConfigToLogOuterEntry</span><span class="params">(LogEntry logEntry, Configuration conf)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(logEntry)) &#123;</span><br><span class="line">            logEntry = <span class="keyword">new</span> <span class="title class_">LogEntry</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        logEntry.setEnableFlexible(<span class="literal">false</span>);</span><br><span class="line">        logEntry.setOldPeers(conf.listPeers());</span><br><span class="line">        <span class="keyword">final</span> LogOutter.Quorum.<span class="type">Builder</span> <span class="variable">quorumBuilder</span> <span class="operator">=</span> LogOutter.Quorum.newBuilder();</span><br><span class="line">        LogOutter.<span class="type">Quorum</span> <span class="variable">quorum</span> <span class="operator">=</span> quorumBuilder.setR(conf.getQuorum().getR()).setW(conf.getQuorum().getW()).build();</span><br><span class="line">        logEntry.setOldQuorum(quorum);</span><br><span class="line">        <span class="keyword">return</span> logEntry;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="nVrqZ"></a></p>
+<h3 id="Node-节点初始化"><a href="#Node-节点初始化" class="headerlink" title="Node 节点初始化"></a>Node 节点初始化</h3><p>启动节点后，一定会调用 NodeImpl#init 方法来初始化一个节点。在原有初始化init方法的基础上，额外添加下面的 Flexible 逻辑以适配灵活派模型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 省略非 Flexible 模式下的相关代码</span></span><br><span class="line"><span class="type">Configuration</span> <span class="variable">initialConf</span> <span class="operator">=</span> options.getInitialConf();</span><br><span class="line">    	<span class="comment">// 判断开启 Flexible 模式后，校验设置的 factor 是否合规</span></span><br><span class="line">        <span class="keyword">if</span> (initialConf.isEnableFlexible()</span><br><span class="line">            &amp;&amp; !checkFactor(initialConf.getWriteFactor(), initialConf.getReadFactor())) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.conf = <span class="keyword">new</span> <span class="title class_">ConfigurationEntry</span>();</span><br><span class="line">        <span class="built_in">this</span>.conf.setId(<span class="keyword">new</span> <span class="title class_">LogId</span>());</span><br><span class="line">        <span class="comment">// if have log using conf in log, else using conf in options</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.logManager.getLastLogIndex() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            checkAndSetConfiguration(<span class="literal">false</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.conf.setConf(<span class="built_in">this</span>.options.getInitialConf());</span><br><span class="line">            <span class="comment">// initially set to max(priority of all nodes)</span></span><br><span class="line">            <span class="built_in">this</span>.targetPriority = getMaxPriorityOfNodes(<span class="built_in">this</span>.conf.getConf().getPeers());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">this</span>.conf.isEmpty()) &#123;</span><br><span class="line">            Requires.requireTrue(<span class="built_in">this</span>.conf.isValid(), <span class="string">&quot;Invalid conf: %s&quot;</span>, <span class="built_in">this</span>.conf);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            LOG.info(<span class="string">&quot;Init node &#123;&#125; with empty conf.&quot;</span>, <span class="built_in">this</span>.serverId);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 判断开启 Majority Mode 后，设置 Majority Quorum</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.isNull(conf.getConf().getQuorum()) &amp;&amp; !conf.getConf().isEnableFlexible()) &#123;</span><br><span class="line">            <span class="type">Quorum</span> <span class="variable">quorum</span> <span class="operator">=</span> BallotFactory.buildMajorityQuorum(conf.getConf().size());</span><br><span class="line">            conf.getConf().setQuorum(quorum);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化预投票选票Ctx：prevVoteCtx</span></span><br><span class="line">        <span class="keyword">if</span> (!prevVoteCtx.init(conf.getConf(), conf.getOldConf())) &#123;</span><br><span class="line">            LOG.error(<span class="string">&quot;Fail to init prevVoteCtx.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 初始化投票选票Ctx：voteCtx</span></span><br><span class="line">        <span class="keyword">if</span> (!voteCtx.init(conf.getConf(), conf.getOldConf())) &#123;</span><br><span class="line">            LOG.error(<span class="string">&quot;Fail to init voteCtx.&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="YvBSV"></a></p>
+<h3 id="写操作约束"><a href="#写操作约束" class="headerlink" title="写操作约束"></a>写操作约束</h3><p>我们根据选择的 Majority&#x2F;Flexible 的计算规则，生成的 WriteQuorum 最终会在初始化 Ballot 的时候赋值到 quorum 属性。Ballot 选票会在上文提到的 preVoteCtx 与 voteCtx 中进行初始化，用于投票计算，当收到任意节点的投票后，quorum 大小减一。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">init</span><span class="params">(<span class="keyword">final</span> Configuration conf, <span class="keyword">final</span> Configuration oldConf)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.peers.clear();</span><br><span class="line">    <span class="built_in">this</span>.oldPeers.clear();</span><br><span class="line">    <span class="built_in">this</span>.quorum = <span class="built_in">this</span>.oldQuorum = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (conf != <span class="literal">null</span> &amp;&amp; !conf.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">final</span> PeerId peer : conf) &#123;</span><br><span class="line">            <span class="built_in">this</span>.peers.add(<span class="keyword">new</span> <span class="title class_">UnfoundPeerId</span>(peer, index++, <span class="literal">false</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 获取conf中的Quorum.W</span></span><br><span class="line">        quorum = conf.getQuorum().getW();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (oldConf == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> PeerId peer : oldConf) &#123;</span><br><span class="line">        <span class="built_in">this</span>.oldPeers.add(<span class="keyword">new</span> <span class="title class_">UnfoundPeerId</span>(peer, index++, <span class="literal">false</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!oldConf.isEmpty()) &#123;</span><br><span class="line">        <span class="built_in">this</span>.oldQuorum = oldConf.getQuorum().getW();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于投票是否完成并达成共识，可以使用 isGranted 方法去判断。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isGranted</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.quorum &lt;= <span class="number">0</span> &amp;&amp; <span class="built_in">this</span>.oldQuorum &lt;= <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="eFcUc"></a></p>
+<h3 id="读操作约束"><a href="#读操作约束" class="headerlink" title="读操作约束"></a>读操作约束</h3><p>在 ReadIndexHeartbeatResponseClosure 中定义了心跳响应的属性，如下述代码所示。failPeersThreshold 参数即允许心跳失败的阈值，可以看到使用到了我们提供的quorum.getR() 来获取 Read Quorum。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ReadIndexHeartbeatResponseClosure</span><span class="params">(<span class="keyword">final</span> RpcResponseClosure&lt;ReadIndexResponse&gt; closure,</span></span><br><span class="line"><span class="params">                                         <span class="keyword">final</span> ReadIndexResponse.Builder rb, <span class="keyword">final</span> Quorum quorum,</span></span><br><span class="line"><span class="params">                                         <span class="keyword">final</span> <span class="type">int</span> peersCount)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>();</span><br><span class="line">    <span class="built_in">this</span>.closure = closure;</span><br><span class="line">    <span class="built_in">this</span>.respBuilder = rb;</span><br><span class="line">    <span class="built_in">this</span>.quorum = quorum;</span><br><span class="line">    <span class="built_in">this</span>.failPeersThreshold = peersCount - quorum.getR() + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">this</span>.ackSuccess = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.ackFailures = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.isDone = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 ReadIndexHeartbeatResponseClosure 心跳响应回调重写了 run 方法，用来判断读请求的操作是否还满足心跳要求，即当前 leader 是否还是 leader。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">(<span class="keyword">final</span> Status status)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.isDone) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (status.isOk() &amp;&amp; getResponse().getSuccess()) &#123;</span><br><span class="line">        <span class="built_in">this</span>.ackSuccess++;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.ackFailures++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Include leader self vote yes.</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.ackSuccess + <span class="number">1</span> &gt;= <span class="built_in">this</span>.quorum.getR()) &#123;</span><br><span class="line">        LOG.info(<span class="string">&quot;Reading successfully...&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.respBuilder.setSuccess(<span class="literal">true</span>);</span><br><span class="line">        <span class="built_in">this</span>.closure.setResponse(<span class="built_in">this</span>.respBuilder.build());</span><br><span class="line">        <span class="built_in">this</span>.closure.run(Status.OK());</span><br><span class="line">        <span class="built_in">this</span>.isDone = <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">this</span>.ackFailures &gt;= <span class="built_in">this</span>.failPeersThreshold) &#123;</span><br><span class="line">        LOG.info(<span class="string">&quot;Reading failed...&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.respBuilder.setSuccess(<span class="literal">false</span>);</span><br><span class="line">        <span class="built_in">this</span>.closure.setResponse(<span class="built_in">this</span>.respBuilder.build());</span><br><span class="line">        <span class="built_in">this</span>.closure.run(Status.OK());</span><br><span class="line">        <span class="built_in">this</span>.isDone = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="KIDDh"></a></p>
+<h3 id="节点如何宣判死亡"><a href="#节点如何宣判死亡" class="headerlink" title="节点如何宣判死亡"></a>节点如何宣判死亡</h3><p>在之前的 Majority 模式下，我们判断节点死亡的方式很简单，只需要根据多数派节点数是否存活即可下决定，或者说参考 Read Quorum。<br />但当我们引入了 Flexible 模式，情况就不同了。因为我们希望在写多读少的场景下，如果死亡节点数即使不再满足 Read Quorum 的数量，仍然不能让leader下线，此时系统是可以继续写的。所以我们的判断逻辑就与之前截然不同了，在最少存活节点数的选择上，我们会选择 Read Quorum&#x2F; Write Quorum 的最小值。下面的源码中 <strong>targetCount</strong> 的计算方式即是兼容两种模式的实现。<br />可能有人会问这会不会影响 Majority 模型呢？答案是不会，因为多数派模式下的 ReadQuorum 和 WriteQuorum 大小是相等的。所以新增的这个判断适配的是灵活排模型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">checkDeadNodes0</span><span class="params">(<span class="keyword">final</span> List&lt;PeerId&gt; peers, <span class="keyword">final</span> <span class="type">long</span> monotonicNowMs, <span class="keyword">final</span> <span class="type">boolean</span> checkReplicator,</span></span><br><span class="line"><span class="params">                                <span class="keyword">final</span> Configuration deadNodes)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> <span class="variable">leaderLeaseTimeoutMs</span> <span class="operator">=</span> <span class="built_in">this</span>.options.getLeaderLeaseTimeoutMs();</span><br><span class="line">    <span class="type">int</span> <span class="variable">aliveCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">long</span> <span class="variable">startLease</span> <span class="operator">=</span> Long.MAX_VALUE;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> PeerId peer : peers) &#123;</span><br><span class="line">        <span class="keyword">if</span> (peer.equals(<span class="built_in">this</span>.serverId)) &#123;</span><br><span class="line">            aliveCount++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (checkReplicator) &#123;</span><br><span class="line">            checkReplicator(peer);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">long</span> <span class="variable">lastRpcSendTimestamp</span> <span class="operator">=</span> <span class="built_in">this</span>.replicatorGroup.getLastRpcSendTimestamp(peer);</span><br><span class="line">        <span class="keyword">if</span> (monotonicNowMs - lastRpcSendTimestamp &lt;= leaderLeaseTimeoutMs) &#123;</span><br><span class="line">            aliveCount++;</span><br><span class="line">            <span class="keyword">if</span> (startLease &gt; lastRpcSendTimestamp) &#123;</span><br><span class="line">                startLease = lastRpcSendTimestamp;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (deadNodes != <span class="literal">null</span>) &#123;</span><br><span class="line">            deadNodes.addPeer(peer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If the writeFactor in a cluster is less than readFactor and the number of nodes</span></span><br><span class="line">    <span class="comment">// is less than r and greater than or equal to w, we hope to still be in a writable state.</span></span><br><span class="line">    <span class="comment">// Therefore, read requests may fail at this time, but the cluster is still available</span></span><br><span class="line">    <span class="type">Quorum</span> <span class="variable">quorum</span> <span class="operator">=</span> <span class="built_in">this</span>.conf.getConf().getQuorum();</span><br><span class="line">    <span class="type">int</span> <span class="variable">targetCount</span> <span class="operator">=</span> <span class="built_in">this</span>.conf.getConf().isEnableFlexible() &amp;&amp; quorum.getW() &lt; quorum.getR() ? quorum.getW()</span><br><span class="line">        : quorum.getR();</span><br><span class="line">    <span class="keyword">if</span> (aliveCount &gt;= targetCount) &#123;</span><br><span class="line">        updateLastLeaderTimestamp(startLease);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="LDxkK"></a></p>
+<h3 id="灵活派属性持久化"><a href="#灵活派属性持久化" class="headerlink" title="灵活派属性持久化"></a>灵活派属性持久化</h3><p>当节点宕机后重启，需要知道下线前节点是 flexible mode 还是 majority mode。设置的 Read Factor 与 Write Factor大小是多少等等一系列参数。所以我们需要对这些参数做一个持久化。<br />在 log.proto 中添加了适配 flexible raft 的新字段：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message </span><span class="title class_">Quorum</span>&#123;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> w = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> r = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">message </span><span class="title class_">PBLogEntry</span> &#123;</span><br><span class="line">  <span class="keyword">required</span> EntryType type = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">int64</span> term = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">int64</span> index = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">repeated</span> <span class="type">bytes</span> peers = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">repeated</span> <span class="type">bytes</span> old_peers = <span class="number">5</span>;</span><br><span class="line">  <span class="keyword">required</span> <span class="type">bytes</span> data = <span class="number">6</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int64</span> checksum = <span class="number">7</span>;</span><br><span class="line">  <span class="keyword">repeated</span> <span class="type">bytes</span> learners = <span class="number">8</span>;</span><br><span class="line">  <span class="keyword">repeated</span> <span class="type">bytes</span> old_learners = <span class="number">9</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> read_factor = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> write_factor = <span class="number">11</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> old_read_factor = <span class="number">12</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">int32</span> old_write_factor = <span class="number">13</span>;</span><br><span class="line">  <span class="keyword">optional</span> <span class="type">bool</span>  is_enable_flexible = <span class="number">14</span>;</span><br><span class="line">  <span class="keyword">optional</span> Quorum quorum = <span class="number">15</span>;</span><br><span class="line">  <span class="keyword">optional</span> Quorum old_quorum = <span class="number">16</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同理的，在 raft.proto 也需要添加适配灵活派新字段：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">message </span><span class="title class_">EntryMeta</span> &#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">int64</span> term = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">required</span> EntryType type = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> peers = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int64</span> data_len = <span class="number">4</span>;</span><br><span class="line">    <span class="comment">// Don&#x27;t change field id of `old_peers&#x27; in the consideration of backward</span></span><br><span class="line">    <span class="comment">// compatibility</span></span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> old_peers = <span class="number">5</span>;</span><br><span class="line">    <span class="comment">// Checksum fot this log entry, since 1.2.6, added by boyan@antfin.com</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int64</span> checksum = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> learners = <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> old_learners = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> read_factor = <span class="number">9</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> write_factor = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> old_read_factor = <span class="number">11</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> old_write_factor = <span class="number">12</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">bool</span>  isEnableFlexible = <span class="number">13</span>;</span><br><span class="line">    <span class="keyword">optional</span> Quorum quorum = <span class="number">14</span>;</span><br><span class="line">    <span class="keyword">optional</span> Quorum old_quorum = <span class="number">15</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">message </span><span class="title class_">SnapshotMeta</span> &#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">int64</span> last_included_index = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">required</span> <span class="type">int64</span> last_included_term = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> peers = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> old_peers = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> learners = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">repeated</span> <span class="type">string</span> old_learners = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> read_factor = <span class="number">7</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> write_factor = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> old_read_factor = <span class="number">9</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">int32</span> old_write_factor = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">optional</span> <span class="type">bool</span> isEnableFlexible = <span class="number">11</span>;</span><br><span class="line">    <span class="keyword">optional</span> Quorum quorum = <span class="number">12</span>;</span><br><span class="line">    <span class="keyword">optional</span> Quorum old_quorum = <span class="number">13</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>V1&#x2F;V2两个版本的编码解码器(encoder&#x2F;decoder)也需要适配新规则，具体代码此处就不贴了。<br><a name="PIXjI"></a></p>
+<h2 id="一致性检测"><a href="#一致性检测" class="headerlink" title="一致性检测"></a>一致性检测</h2><p>我们书写的 Flexible Raft 是否满足线性一致性呢，这需要我们使用 Jepsen 框架去进行校验了。具体的工作我也有形成文档，可以参考我之前这篇博客：<a class="link"   target="_blank" rel="noopener" href="https://1294566108.github.io/2023/09/11/JRaft-jepsen-%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E6%B5%8B%E8%AF%95/" >JRaft-jepsen 线性一致性测试<i class="fas fa-external-link-alt"></i></a>。<br />最终的检测结果已经以PR的形式提交到Jraft-jepsen仓库，详见：<a class="link"   target="_blank" rel="noopener" href="https://github.com/sofastack/sofa-jraft-jepsen/pull/3" >https://github.com/sofastack/sofa-jraft-jepsen/pull/3<i class="fas fa-external-link-alt"></i></a>。<br><a name="FqOno"></a></p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>感谢中科院软件所”开源软件供应链点亮计划”提供这次宝贵的机会，同时也要感谢刘源远导师和 SOFA-Stack 社区在项目开发期间给予的帮助，在这里推荐一本有关分布式共识算法的书籍：<a class="link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%88%86%E5%B8%83%E5%BC%8F%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95" >《深入理解分布式共识算法》<i class="fas fa-external-link-alt"></i></a>，希望它也能帮助大家更好的去理解、学习分布式共识算法。</p>
+
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/"><i class="icon fas fa-hashtag"></i>开源之夏</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/01/21/%E7%A6%BB%E5%BC%80%E9%82%A3%E5%BA%A7%E5%B2%9B%E5%90%8E-%E8%B0%A8%E4%BB%A5%E6%AD%A4%E6%96%87%E7%BA%AA%E5%BF%B5%E6%B6%88%E9%80%9D%E7%9A%842023/"
+                                   title="离开那座岛后--谨以此文纪念消逝的2023"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">离开那座岛后--谨以此文纪念消逝的2023</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/10/26/FlexiblePaxos%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E6%B3%95%E5%AE%9A%E4%BA%BA%E6%95%B0%E4%BA%A4%E9%9B%86%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/"
+                                   title="Flexible Paxos：重新审视法定人数交集-中译"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Flexible Paxos：重新审视法定人数交集-中译</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">分布式一致性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Paxos-%E6%97%A7%E7%BA%A6"><span class="nav-number">3.</span> <span class="nav-text">Paxos 旧约</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Paxos-%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">Basic Paxos 算法过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-Prepare%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.1.</span> <span class="nav-text">第一阶段: Prepare准备阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-Accept%E6%8E%A5%E5%8F%97%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.2.</span> <span class="nav-text">第二阶段: Accept接受阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5-Learn%E5%AD%A6%E4%B9%A0%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.3.</span> <span class="nav-text">第三阶段: Learn学习阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flexible-Paxos"><span class="nav-number">4.</span> <span class="nav-text">Flexible Paxos</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="nav-number">4.1.</span> <span class="nav-text">关于作者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8B%A5%E6%8A%B1FPaxos"><span class="nav-number">4.2.</span> <span class="nav-text">为什么要拥抱FPaxos</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flexible-Raft"><span class="nav-number">5.</span> <span class="nav-text">Flexible Raft</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-number">5.1.</span> <span class="nav-text">使用规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">5.2.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NWR-%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.1.</span> <span class="nav-text">NWR 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Configuration-%E5%8D%87%E7%BA%A7"><span class="nav-number">5.2.2.</span> <span class="nav-text">Configuration 升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quorum-%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99"><span class="nav-number">5.2.3.</span> <span class="nav-text">Quorum 计算规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-%E8%8A%82%E7%82%B9%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.2.4.</span> <span class="nav-text">Node 节点初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E6%93%8D%E4%BD%9C%E7%BA%A6%E6%9D%9F"><span class="nav-number">5.2.5.</span> <span class="nav-text">写操作约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E6%93%8D%E4%BD%9C%E7%BA%A6%E6%9D%9F"><span class="nav-number">5.2.6.</span> <span class="nav-text">读操作约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%A6%82%E4%BD%95%E5%AE%A3%E5%88%A4%E6%AD%BB%E4%BA%A1"><span class="nav-number">5.2.7.</span> <span class="nav-text">节点如何宣判死亡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%81%B5%E6%B4%BB%E6%B4%BE%E5%B1%9E%E6%80%A7%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">5.2.8.</span> <span class="nav-text">灵活派属性持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E6%B5%8B"><span class="nav-number">5.3.</span> <span class="nav-text">一致性检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">6.</span> <span class="nav-text">写在最后</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">分布式一致性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Paxos-%E6%97%A7%E7%BA%A6"><span class="nav-number">3.</span> <span class="nav-text">Paxos 旧约</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Paxos-%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">Basic Paxos 算法过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-Prepare%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.1.</span> <span class="nav-text">第一阶段: Prepare准备阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-Accept%E6%8E%A5%E5%8F%97%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.2.</span> <span class="nav-text">第二阶段: Accept接受阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5-Learn%E5%AD%A6%E4%B9%A0%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.3.</span> <span class="nav-text">第三阶段: Learn学习阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flexible-Paxos"><span class="nav-number">4.</span> <span class="nav-text">Flexible Paxos</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="nav-number">4.1.</span> <span class="nav-text">关于作者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8B%A5%E6%8A%B1FPaxos"><span class="nav-number">4.2.</span> <span class="nav-text">为什么要拥抱FPaxos</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Flexible-Raft"><span class="nav-number">5.</span> <span class="nav-text">Flexible Raft</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-number">5.1.</span> <span class="nav-text">使用规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">5.2.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NWR-%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.2.1.</span> <span class="nav-text">NWR 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Configuration-%E5%8D%87%E7%BA%A7"><span class="nav-number">5.2.2.</span> <span class="nav-text">Configuration 升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quorum-%E8%AE%A1%E7%AE%97%E8%A7%84%E5%88%99"><span class="nav-number">5.2.3.</span> <span class="nav-text">Quorum 计算规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-%E8%8A%82%E7%82%B9%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.2.4.</span> <span class="nav-text">Node 节点初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E6%93%8D%E4%BD%9C%E7%BA%A6%E6%9D%9F"><span class="nav-number">5.2.5.</span> <span class="nav-text">写操作约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E6%93%8D%E4%BD%9C%E7%BA%A6%E6%9D%9F"><span class="nav-number">5.2.6.</span> <span class="nav-text">读操作约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%A6%82%E4%BD%95%E5%AE%A3%E5%88%A4%E6%AD%BB%E4%BA%A1"><span class="nav-number">5.2.7.</span> <span class="nav-text">节点如何宣判死亡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%81%B5%E6%B4%BB%E6%B4%BE%E5%B1%9E%E6%80%A7%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">5.2.8.</span> <span class="nav-text">灵活派属性持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E6%B5%8B"><span class="nav-number">5.3.</span> <span class="nav-text">一致性检测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">6.</span> <span class="nav-text">写在最后</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

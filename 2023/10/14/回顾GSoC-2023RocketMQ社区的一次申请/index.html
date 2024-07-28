@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            GSoC-2023 RocketMQ 社区的申请全过程 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        GSoC-2023 RocketMQ 社区的申请全过程
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-10-14 22:37:03</span>
+                <span class="mobile">2023-10-14 22:37</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Sun Jul 28 2024 16:51:21 GMT+0000">2024-07-28 16:51:21</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/">开源之夏</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <blockquote>
+<p>GSoC-2023：<a class="link"   target="_blank" rel="noopener" href="https://summerofcode.withgoogle.com/" >官网链接<i class="fas fa-external-link-alt"></i></a>  <a class="link"   target="_blank" rel="noopener" href="https://summerofcode.withgoogle.com/programs/2023/organizations" >组织列表<i class="fas fa-external-link-alt"></i></a>  <a class="link"   target="_blank" rel="noopener" href="https://developers.google.com/open-source/gsoc/timeline?hl=zh-cn" >时间列表<i class="fas fa-external-link-alt"></i></a><br>GSoC-2023：Integrate RocketMQ 5.0 client with Spring <a class="link"   target="_blank" rel="noopener" href="https://issues.apache.org/jira/browse/GSOC-122" >选题链接<i class="fas fa-external-link-alt"></i></a><br>本次选题相关 ISSUE：<a class="link"   target="_blank" rel="noopener" href="https://github.com/apache/rocketmq-clients/issues/275" >Rocketmq-Clients Issue<i class="fas fa-external-link-alt"></i></a>  <a class="link"   target="_blank" rel="noopener" href="https://github.com/apache/rocketmq-spring/issues/553" >Rocketmq-Spring Issue<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在 GSoC-2023，我申请的课题是 <strong>RocketMQ-5.0-gRPC 客户端集成 Spring</strong> 这一课题。不过遗憾的是，最后课题并未中选，但是本课题的开发任务还是由我来完成，到目前为止，代码也已经合并到官方仓库 <a class="link"   target="_blank" rel="noopener" href="https://github.com/apache/rocketmq-spring/pull/554" >[PR 链接]<i class="fas fa-external-link-alt"></i></a>。题目虽未能入选，但是仍由我参与开发任务，这与 GSoC 的活动机制有关，在接下来的内容中我会进行详细说明。</p>
+<h2 id="契机"><a href="#契机" class="headerlink" title="契机"></a>契机</h2><p>其实在年初的时候还不知道有这样一个活动，那时候只知道国内的 <strong>开源软件供应链点亮计划（OSPP）</strong> 和 <strong>阿里巴巴编程之夏（ASoC）</strong>，后面在一篇<a class="link"   target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/VDF-yJ267uHczEO7QNeUqg" >公众号推文<i class="fas fa-external-link-alt"></i></a>中，偶然了解到 GSoC。<br>这几个开源活动的申请时间线也比较有趣，GSoC在申请结束并公布中选情况后，差不多就到了 OSPP&#x2F;ASoC 的申请开发时间，OSPP申请截止后，又到了 <strong>GitLink编程夏令营（GLCC）</strong> 的申请时间，所以如果GSoC没用中选也没关系，可以在后面几个活动中继续尝试。<strong>而且某些“落选”的题目，也很可能成为接下来一个活动的题目。</strong></p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li><strong>尽快与导师进行联系。</strong> 当选题公布出来的时候，官网里往往会留下导师的邮箱。如果你熟悉这个社区，甚至可以提前写出你关于选题的一些思考和想法，然后与导师进行邮箱交流，这时导师可能会继续给你提出要求，因此你需要继续去深入了解相关部分的代码。如果你能添加上导师的 WeChat，交流起来显然会更方便。不过这不意味着你一定能入选，但是这对你进行下一步的思考以及写提案会有很大的帮助。</li>
+<li><strong>选题与竞争。</strong> 既然是开源活动，参与者肯定不少，因此打算做这个选题的人也不止一个。所以往往你还需要去 Github 里找到对应 issue，留言表示自己对该选题的兴趣和意愿，希望进一步沟通。如果你想知道目前这个 Task 的潜在参与者有多少，可以根据社区活跃度与留言人数进行粗略的判断。</li>
+<li><strong>进行有思考的对话并大胆提问。</strong> 与导师交流，不管是提问还是回复消息，都需要仔细思考后再行动。如果导师向你进一步提问，你可以不用急着立刻回复他，但是一定要经过深思熟虑后回答。但是这也不意味着你跟导师交流就要怯懦，在某些话题下，例如你好奇目前选题的竞争人数，或者完全不理解题目要求是什么，你可以大胆提问，相信导师会为你释疑。</li>
+<li><strong>不建议同时准备太多选题。</strong> 这样会忙于奔波，最后可能一个社区也入选不了。所以你在根据自我能力与项目难度进行综合评估后，选择一个你觉得最合适的选题，把精力集中在一个选题上，这样能够大大提高入选概率。</li>
+</ol>
+<h1 id="为什么谷歌编程之夏能吸引全球众多开发者"><a href="#为什么谷歌编程之夏能吸引全球众多开发者" class="headerlink" title="为什么谷歌编程之夏能吸引全球众多开发者"></a>为什么谷歌编程之夏能吸引全球众多开发者</h1><p><strong>官网是这样介绍GSoC的：</strong></p>
+<blockquote>
+<p>Google Summer of Code is a global, online program focused on bringing new contributors into open source software development. GSoC Contributors work with an open source organization on a 12+ week programming project under the guidance of mentors.</p>
+</blockquote>
+<p>用中文翻译即是，学生会用大概一个暑假的时间在导师的指导下为开源社区写代码，Google 为你的工作支付报酬。而 GSoC 的报酬很让人心动，例如一个 <strong>Medium Size Projects</strong> 可以获得1800 刀，而一个 <strong>Large Size Projects</strong> 可以获得3600 刀，具体表格可以参照 <a class="link"   target="_blank" rel="noopener" href="https://developers.google.com/open-source/gsoc/help/student-stipends" >2023 年贡献者奖金<i class="fas fa-external-link-alt"></i></a>。所以这也导致了，他的筛选条件十分严格，中选难度很大。</p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/eGkE7bi8XUCBvnw.png"
+                      alt="image.png"
+                ></p>
+<p>另外，自2005年以来，谷歌编程之夏计划已经连接了来自112个国家的19000名新的开源贡献者和来自133个国家的18000名导师。Google Summer of Code已经为800个开源组织生成了超过4300万行代码。</p>
+<h1 id="以学生的视角出发，体悟这次开源活动"><a href="#以学生的视角出发，体悟这次开源活动" class="headerlink" title="以学生的视角出发，体悟这次开源活动"></a>以学生的视角出发，体悟这次开源活动</h1><blockquote>
+<p>其实于我而言，很多时候并不知道自己是基于怎样的考量才开始做一件事。自打挣扎着从高考的棺椁里爬出来，才终于见到一点点粘稠的阳光。想想自己一路走来，在负而前驱的道路上，活得虚伪又狼狈。</p>
+<p>处心积虑想把每一件事都顾虑周全，总会有些左支右绌；然亦步亦趋地跟在人群后面，又总觉得少了些特立独行的影子。但人总是裹挟着平凡在成长，所以我不敢抬头，亦不敢低头，唯有平视才能与自己和解。</p>
+</blockquote>
+<p>大概是今年三月初的时候，偶然得知了 GSoC 这样一个开源活动。但最担心的一个问题是，跟导师和社区都不太熟，给导师发邮件联系不知道他们会不会回复。后面还是鼓起勇气写下了自己对选题不太成熟的理解。迈出第一步，才发现的确是多虑了，社区导师都比较好说话，只要你有想法和思考，他们都愿意和你交流。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/yvP89wTYdh3kUzq.png"
+                      alt="image.png"
+                ></p>
+<p>为了让社区导师更好地了解我的情况，可以附上自己的简历，不用像求职简历那样详尽，但是一定要有自己的基本信息（例如姓名和学校），以及为什么能够胜任这个选题的原因（比如是否具有相关能力、技术栈、经历）。另外，基于当时我自己对 rocketmq 浅显的了解，我又写了篇对课题的思考与实现思路，作为附件和简历一起发给了导师。但这些都不是最重要的事情，因为最后提交到官网的<strong>提案</strong>才是你中选的关键。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/Xk39p1xNdYBjPRH.png"
+                      alt="image _2_.png"
+                ></p>
+<p>在了解大致开发任务之后，可以到 github 上留言，这意味着让社区导师和潜在参与者可以知道你有当前选题的意向。在这里我们可以清楚地看到有多少人打算做这个题目，并且了解他们的background。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/iYl7Fhyurc6ejPJ.png"
+                      alt="image.png"
+                ></p>
+<p>一个比较有意思的点是，我课题的 Issue 下面很是热闹，大多数希望参加是国内的同学，但仍有不少国外的朋友。这也是第一次切身感受到 GSoC 的国际影响力。</p>
+<p>另外，在GSoC官网里面还一个比较抽象的统计，详情如下图所示，GSoC 在全世界录取人数最多的 top12 所学校均来自印度。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/75yY138t2AqhBJg.png"
+                      alt="image.png"
+                ></p>
+<p>接下来还要完成一件重要的事情，就是熟悉社区现有版本代码的使用。在跑通社区提供的用例之后，才来到编码的核心环节。</p>
+<p>总体来说，这次开发任务也并不轻松，因为要同时参考 rocketmq-clients 与 rocketmq-spring 两个仓库的代码。所以在后面将近一个多月的时间里，看着源码反复琢磨着设计思路，之后在完成编码后进行测试用例的覆盖。</p>
+<p>在完成这些事情后，距离提案提交截至还有一两个星期左右，我把代码上传到仓库，然后继续完善提案，并准备一份English-Version提案，所以需要做一个 Translation，把最后的 English-Version 提案最后提交到官网。</p>
+<p>提案的内容详尽程度是越详细越好，不用担心太长会显得臃肿，如果能贴上代码是更好的。</p>
+<p>在提交提案时一定要注意，尽量提前几天提交，不要赶DDL。在截止日期之前，提案是可以被反复修改的。</p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/O8LKHPBbXiuYaWo.png"
+                      alt="image.png"
+                ></p>
+<p>之后，便是一个月的漫长等待时间。因为国际时间的缘故，中国学生收到邮件的时间大概在半夜三点左右。那天一直熬到凌晨三点，并没有消息推送到邮箱。后面实在熬不住睡着了，大概在凌晨五点的时候我突然醒来，收到了GSoC的落选信。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/14/F41iWEaTQkuoKMU.png"
+                      alt="image.png"
+                ></p>
+<p>虽然题目没有中选，但由于我提案的 Ranking 排第一，所以还是有机会继续完成剩下的工作。</p>
+<p>不过谈到 GSoC 中选率也是比较感人的，这里以 Apache RocketMQ 和 Apache Dubbo 两个社区为例：</p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/15/Q9eufKb4G3WpJdl.png"
+                      alt="image.png"
+                ><br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://s2.loli.net/2023/10/15/9Ul5dsxXtgRKcjH.png"
+                      alt="image.png"
+                ><br>上图是 Apache Rocketmq 社区和 Apache Dubbo 社区放置到 GSoC 上的选题，但是今年这两个社区中选的人数都只有2人。</p>
+<p>谷歌官方的评选逻辑是，首先导师对每个题目下的提案进行排序，谷歌会给每个组织&#x2F;社区一个中选名额，题目还会经过谷歌官方的筛选，如果你的题目被谷歌选中了，并且你的排名还在第一，这才意味着中选。但即使最后题目没能被 GSoC 官方选中，如果你的提案被导师认可，仍然可以去完成这个工作，不过就没有 GSOC 的奖金可以拿了。</p>
+<p>今年的 GSoC 之旅就以这样的结局收尾了。第一次尝试去参加全球性的开源活动，也算是 coding 路上一件饶有兴趣的事情。</p>
+<p>月光如水照缁衣，新的生活还要继续。</p>
+
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/%E5%BC%80%E6%BA%90%E4%B9%8B%E5%A4%8F/"><i class="icon fas fa-hashtag"></i>开源之夏</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/10/19/Git-Flow%20%E5%9B%A2%E9%98%9F%E4%BB%A3%E7%A0%81%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B%E5%88%9D%E4%BD%93%E9%AA%8C/"
+                                   title="Git-Flow 团队代码分支管理模型初体验"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Git-Flow 团队代码分支管理模型初体验</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/09/11/JRaft-jepsen-%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E6%B5%8B%E8%AF%95/"
+                                   title="JRaft-jepsen 线性一致性测试"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">JRaft-jepsen 线性一致性测试</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%91%E6%9C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">契机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B0%B7%E6%AD%8C%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%8F%E8%83%BD%E5%90%B8%E5%BC%95%E5%85%A8%E7%90%83%E4%BC%97%E5%A4%9A%E5%BC%80%E5%8F%91%E8%80%85"><span class="nav-number">2.</span> <span class="nav-text">为什么谷歌编程之夏能吸引全球众多开发者</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A5%E5%AD%A6%E7%94%9F%E7%9A%84%E8%A7%86%E8%A7%92%E5%87%BA%E5%8F%91%EF%BC%8C%E4%BD%93%E6%82%9F%E8%BF%99%E6%AC%A1%E5%BC%80%E6%BA%90%E6%B4%BB%E5%8A%A8"><span class="nav-number">3.</span> <span class="nav-text">以学生的视角出发，体悟这次开源活动</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%91%E6%9C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">契机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B0%B7%E6%AD%8C%E7%BC%96%E7%A8%8B%E4%B9%8B%E5%A4%8F%E8%83%BD%E5%90%B8%E5%BC%95%E5%85%A8%E7%90%83%E4%BC%97%E5%A4%9A%E5%BC%80%E5%8F%91%E8%80%85"><span class="nav-number">2.</span> <span class="nav-text">为什么谷歌编程之夏能吸引全球众多开发者</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A5%E5%AD%A6%E7%94%9F%E7%9A%84%E8%A7%86%E8%A7%92%E5%87%BA%E5%8F%91%EF%BC%8C%E4%BD%93%E6%82%9F%E8%BF%99%E6%AC%A1%E5%BC%80%E6%BA%90%E6%B4%BB%E5%8A%A8"><span class="nav-number">3.</span> <span class="nav-text">以学生的视角出发，体悟这次开源活动</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

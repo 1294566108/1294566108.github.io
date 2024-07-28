@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Akai">
+    
+    <title>
+        
+            JRaft-jepsen 线性一致性测试 |
+        
+        Akai&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/logo.svg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#27ae60","logo":"/images/logo.svg","favicon":"/images/logo.svg","avatar":"/images/avatar.svg","first_screen":{"enable":true,"header_transparent":false,"background_img":"/images/bg.png","description":null,"hitokoto":false},"scroll":{"progress_bar":false,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz","appkey":"iWemAUfKcKQ7rjJlZg65tx15","server_urls":null,"placeholder":"欢迎评论"},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.8"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.7.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Akai&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        JRaft-jepsen 线性一致性测试
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Akai</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-09-11 13:47:03</span>
+                <span class="mobile">2023-09-11 13:47</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Sun Jul 28 2024 16:51:21 GMT+0000">2024-07-28 16:51:21</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul>
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul>
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/SOFA-JRaft/">SOFA-JRaft</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <blockquote>
+<p>本文记录了 Jepsen 框架对 SOFA-JRaft 进行一致性检验的环境搭建和部署流程。如今网上并没有 JRaft-Jepsen 一致性检验的环境搭建教程，JRaft 官方仓库也没有给出完整的环境搭建教程。本文所有的部署流程操作是通过试错得来。试错过程遇到了不少坑，于是总结此文，希望以后的 Jraft-Jepsen 检验能有值得参考的文章。</p>
+</blockquote>
+<p><strong>Jepsen前置资料参考：</strong><a class="link"   target="_blank" rel="noopener" href="https://jaydenwen123.gitbook.io/zh_jepsen_doc/" >Jepsen中文官方文档<i class="fas fa-external-link-alt"></i></a>   <a class="link"   target="_blank" rel="noopener" href="https://aphyr.com/" >Jepsen作者博客<i class="fas fa-external-link-alt"></i></a><br><strong>Cloujre前置资料：</strong><a class="link"   target="_blank" rel="noopener" href="https://aphyr.com/posts/301-clojure-from-the-ground-up-welcome" >Clojure入门文章-英文版<i class="fas fa-external-link-alt"></i></a>   <a class="link"   target="_blank" rel="noopener" href="https://siddontang.gitbooks.io/lean-clojure/content/hello-clojure.html" >Clojure中文文档<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="线性一致性概述"><a href="#线性一致性概述" class="headerlink" title="线性一致性概述"></a>线性一致性概述</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>如果说你对线性一致性（Linearizability）概念不太熟，那一定知道强一致性（strong consistency），或者说原子一致性（atomic consistency），也可以理解为的 CAP 理论中的 C。</p>
+<h2 id="Raft线性一致性的实现"><a href="#Raft线性一致性的实现" class="headerlink" title="Raft线性一致性的实现"></a>Raft线性一致性的实现</h2><h3 id="线性一致性写"><a href="#线性一致性写" class="headerlink" title="线性一致性写"></a>线性一致性写</h3><p>所有的 read&#x2F;write 都会来到 Leader，write 会有 Log 被序列化，依次顺序往后 commit，并 apply 然后在返回，那么一旦一个 write 被 committed，那么其前面的 write 的 Log 一定就被 committed 了。 所有的 write 都是有严格的顺序的，一旦被 committed 就可见了，所以 Raft 是线性一致性写。</p>
+<h3 id="线性一致性读"><a href="#线性一致性读" class="headerlink" title="线性一致性读"></a>线性一致性读</h3><p>线性一致性读有很多种方法可以去实现，例如以下介绍了四种实现线性一致性读的办法：</p>
+<ol>
+<li>Raft Log read：每个 read 都有一个对应的 Log，和 write 一样，将非事务请求以事务请求的逻辑去进行处理。在 Read Log 被 Apply 的时候读，那么此时这个 read Log 之前的 write Log 也一定被 applied 了，那么读到的数据一定是最新的。</li>
+<li>ReadIndex：我们知道 Raft log read，会有 Raft read log 的复制和提交的开销，所以出现了 ReadIndex。当 read 请求发送给 Leader 的时候：<strong>（1）首先需要确认 read 必须返回最新 committed 的结果</strong>。但是一个节点刚当选 Leader 的时候并不知道最新的 committed index，这个时候需要提交一个 Noop Log Entry 来提交之前的 Log Entry，然后开始 Read；<strong>（2）确认当前的 Leader 是不是还是 Leader</strong>。可能由于网络分区，这个 Leader 已经被孤立了，所以 Leader 在返回 read 之前，先和 Replica-Group 的其他成员发送 heartbeat 确定自己 Leader 的身份；通过上述两条才可以保证读到的是最新刚被 committed 的数据。</li>
+<li>Lease read：主要是通过 lease 机制维护 Leader 的状态，来减少了 ReadIndex 每次 read 发送 heartheat 的开销。</li>
+<li>Follower read：先去 Leader 查询最新的 committed index，然后拿着 committed Index 去 Follower read，从而保证能从 Follower 中读到最新的数据，当前 Etcd 和 SOFA-Jraft 就实现了 Follower read。</li>
+</ol>
+<p>关于SOFA-JRaft实现线性一致性读可参考文章：<a class="link"   target="_blank" rel="noopener" href="https://www.sofastack.tech/blog/sofa-jraft-linear-consistent-read-implementation/" >SOFAJRaft 线性一致读实现剖析<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="Jepsen-概述"><a href="#Jepsen-概述" class="headerlink" title="Jepsen 概述"></a>Jepsen 概述</h1><p>Jepsen 是由 Kyle Kingsbury 采用函数式编程语言 Clojure 编写的验证分布式系统一致性的测试框架，作者使用它对许多著名的分布式系统（etcd, cockroachdb…）进行了“攻击”（一致性验证），并且帮助其中的部分系统找到了 bug。<br>网上已有文章对其原理进行过简述，此处贴上链接即可：<a class="link"   target="_blank" rel="noopener" href="https://juejin.cn/post/6844903491442327566" >当 TiDB 遇上 Jepsen<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="Jraft-Jepsen-部署验证一致性"><a href="#Jraft-Jepsen-部署验证一致性" class="headerlink" title="Jraft-Jepsen 部署验证一致性"></a>Jraft-Jepsen 部署验证一致性</h1><blockquote>
+<p>下面的内容是作者自己踩坑总结出来的部署流程，介绍了如何手动部署一套Jepsen框架对JRaft代码进行一致性验证。</p>
+</blockquote>
+<h2 id="打开gitpod-linux"><a href="#打开gitpod-linux" class="headerlink" title="打开gitpod&#x2F;linux"></a>打开gitpod&#x2F;linux</h2><p>运行ubuntu容器，其中1个control节点，5个jraft-test节点。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name ubuntu-1 --hostname control --privileged=true ubuntu</span><br><span class="line">docker run -itd --name ubuntu-2 --hostname jraft1 --privileged=true ubuntu</span><br><span class="line">docker run -itd --name ubuntu-3 --hostname jraft2 --privileged=true ubuntu</span><br><span class="line">docker run -itd --name ubuntu-4 --hostname jraft3 --privileged=true ubuntu</span><br><span class="line">docker run -itd --name ubuntu-5 --hostname jraft4 --privileged=true ubuntu</span><br><span class="line">docker run -itd --name ubuntu-6 --hostname jraft5 --privileged=true ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>查找所有容器的ip</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format=&#x27;&#123;&#123;.Name&#125;&#125; - &#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#x27; $(docker ps -aq)</span><br></pre></td></tr></table></figure>
+
+<p>进入容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ubuntu-1 bash</span><br></pre></td></tr></table></figure>
+
+<p>修改hosts文件，添加ip与域名的对应关系</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>此处根据查询出的容器ip对应填写即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">::1     localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0 ip6-localnet</span><br><span class="line">ff00::0 ip6-mcastprefix</span><br><span class="line">ff02::1 ip6-allnodes</span><br><span class="line">ff02::2 ip6-allrouters</span><br><span class="line">172.17.0.2      control</span><br><span class="line">172.17.0.3      jraft1</span><br><span class="line">172.17.0.4      jraft2</span><br><span class="line">172.17.0.5      jraft3</span><br><span class="line">172.17.0.6      jraft4</span><br><span class="line">172.17.0.7      jraft5</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置Docker-SSH免密登录"><a href="#设置Docker-SSH免密登录" class="headerlink" title="设置Docker-SSH免密登录"></a>设置Docker-SSH免密登录</h2><p>安装SSH服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update </span><br><span class="line">apt-get install openssh-server //安装ssh服务</span><br></pre></td></tr></table></figure>
+
+<p>开启SSH服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/ssh start</span><br><span class="line">ps -e | grep ssh  //检查是否开启ssh</span><br></pre></td></tr></table></figure>
+
+<h3 id="jraft-test节点"><a href="#jraft-test节点" class="headerlink" title="jraft-test节点"></a>jraft-test节点</h3><p>在Test-Node的docker容器内，编辑文件&#x2F;etc&#x2F;ssh&#x2F;sshd_config，添加一行PermitRootLogin yes表示ssh允许root登录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;PermitRootLogin yes&quot; &gt;&gt; /etc/ssh/sshd_config</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">或者 vim /etc/ssh/sshd_config 并手敲一行PermitRootLogin <span class="built_in">yes</span></span></span><br></pre></td></tr></table></figure>
+
+<p>随后一定要重启ssh服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+
+<p>设置root密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+
+<h3 id="control节点"><a href="#control节点" class="headerlink" title="control节点"></a>control节点</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen //生成公钥私钥</span><br><span class="line">ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft1</span><br><span class="line">ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft2</span><br><span class="line">ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft3</span><br><span class="line">ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft4</span><br><span class="line">ssh-copy-id -i /root/.ssh/id_rsa.pub root@jraft5</span><br></pre></td></tr></table></figure>
+
+<p>私钥文件格式问题：您需要确保您的SSH私钥文件格式正确，并且Jepsen测试工具可以正确识别它。通常，SSH私钥文件格式为OpenSSH格式。您可以尝试使用以下命令将私钥文件转换为OpenSSH格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -p -f /root/.ssh/id_rsa -m pem -t rsa</span><br></pre></td></tr></table></figure>
+
+<h2 id="Ubuntu工具安装"><a href="#Ubuntu工具安装" class="headerlink" title="Ubuntu工具安装"></a>Ubuntu工具安装</h2><p>control节点安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">apt-get update </span><br><span class="line">apt-get install leiningen</span><br><span class="line">apt-get install wget</span><br><span class="line">apt-get install git</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install sudo</span><br><span class="line">apt-get install iptables</span><br></pre></td></tr></table></figure>
+
+<p>test节点安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">apt-get update </span><br><span class="line">apt-get install leiningen</span><br><span class="line">apt-get install wget</span><br><span class="line">apt-get install vim</span><br><span class="line">apt-get install sudo</span><br><span class="line">apt-get install iptables</span><br></pre></td></tr></table></figure>
+
+<p><strong>ubuntu容器安装jdk-8：</strong><br>进入目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/local/java &amp;&amp; cd /usr/local/java</span><br></pre></td></tr></table></figure>
+
+<p>wget下载jdk8：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-cookies --no-check-certificate --header &quot;Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie&quot; &quot;http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz&quot;</span><br></pre></td></tr></table></figure>
+
+<p>解压：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u141-linux-x64.tar.gz -C /usr/local/java</span><br></pre></td></tr></table></figure>
+
+<p>编辑配置文件：此处需要注意，有可能在安装其他安装包时会自动安装jdk11，此处需要修改两个配置文件才能生效，并且修改为jdk8.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_141</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.8.0_141</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>执行命令使配置文件生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装clojure-control"><a href="#安装clojure-control" class="headerlink" title="安装clojure-control"></a>安装clojure-control</h2><p><strong>此操作在control节点完成：</strong><br>复制链接中的shell脚本：<a class="link"   target="_blank" rel="noopener" href="https://raw.githubusercontent.com/killme2008/clojure-control/master/bin/control" >https://raw.githubusercontent.com/killme2008/clojure-control/master/bin/control<i class="fas fa-external-link-alt"></i></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/bin</span><br><span class="line">vim control</span><br></pre></td></tr></table></figure>
+
+<p>将shell脚本粘贴到control中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 control</span><br></pre></td></tr></table></figure>
+
+<p>设置control系统变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CONTROL_ROOT=1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/bin</span><br></pre></td></tr></table></figure>
+
+<h2 id="下载jraft测试代码"><a href="#下载jraft测试代码" class="headerlink" title="下载jraft测试代码"></a>下载jraft测试代码</h2><p><strong>克隆远程仓库代码：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone jraft仓库（自测仓库/官方仓库）</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装jar到本地仓库：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests=true</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署atomic-server"><a href="#部署atomic-server" class="headerlink" title="部署atomic-server"></a>部署atomic-server</h2><p><strong>此操作在control节点执行：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">control run jraft build</span><br><span class="line">control run jraft deploy</span><br></pre></td></tr></table></figure>
+
+<h2 id="开启测试"><a href="#开启测试" class="headerlink" title="开启测试"></a>开启测试</h2><p><strong>bash开启测试</strong><br>configuration-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn configuration-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>bridge-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn bridge-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>pause-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn pause-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>crash-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn crash-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>partition-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn partition-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>partition-majority-test</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run_test.sh --testfn partition-majority-test --username root --password 123 --ssh-private-key /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试方法</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">configuration-test</span><br><span class="line">bridge-test</span><br><span class="line">pause-test</span><br><span class="line">crash-test</span><br><span class="line">partition-test</span><br><span class="line">partition-majority-test</span><br></pre></td></tr></table></figure>
+
+<h2 id="潜在问题及解决方案"><a href="#潜在问题及解决方案" class="headerlink" title="潜在问题及解决方案"></a>潜在问题及解决方案</h2><p>如果出现报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Could not find artifact apache-codec:commons-codec:jar:1.2 in central (https://repo1.maven.org/maven2/)</span><br><span class="line">Could not find artifact apache-codec:commons-codec:jar:1.2 in clojars (https://repo.clojars.org/)</span><br><span class="line">This could be due to a typo in :dependencies, file system permissions, or network issues.</span><br><span class="line">If you are behind a proxy, try setting the &#x27;http_proxy&#x27; environment variable.</span><br><span class="line">Uberjar aborting because jar failed: Could not resolve dependencies</span><br></pre></td></tr></table></figure>
+
+<p>解决办法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.m2/repository/apache-codec/commons-codec/1.2</span><br></pre></td></tr></table></figure>
+
+<p>可以看到里面是空的，此时拉取远程仓库jar包即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://repo1.maven.org/maven2/commons-codec/commons-codec/1.2/commons-codec-1.2.pom</span><br><span class="line">wget https://repo1.maven.org/maven2/commons-codec/commons-codec/1.2/commons-codec-1.2.jar</span><br></pre></td></tr></table></figure>
+                </div>
+
+                
+
+                
+                    <ul class="post-tags-box">
+                        
+                            <li class="tag-item">
+                                <a href="/tags/SOFA-JRaft/"><i class="icon fas fa-hashtag"></i>SOFA-JRaft</a>&nbsp;
+                            </li>
+                        
+                    </ul>
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/10/14/%E5%9B%9E%E9%A1%BEGSoC-2023RocketMQ%E7%A4%BE%E5%8C%BA%E7%9A%84%E4%B8%80%E6%AC%A1%E7%94%B3%E8%AF%B7/"
+                                   title="GSoC-2023 RocketMQ 社区的申请全过程"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">GSoC-2023 RocketMQ 社区的申请全过程</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container">
+        <div id="comments-anchor"></div>
+        <div class="comment-area-title">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script data-pjax src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'wYLegs6uxJ5OFt0OQshhcfDq-gzGzoHsz',
+              appKey: 'iWemAUfKcKQ7rjJlZg65tx15',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '欢迎评论',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('') {
+              config.serverURLs = ''
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Akai'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('true' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">线性一致性概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">Raft线性一致性的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E5%86%99"><span class="nav-number">1.2.1.</span> <span class="nav-text">线性一致性写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E8%AF%BB"><span class="nav-number">1.2.2.</span> <span class="nav-text">线性一致性读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jepsen-%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">Jepsen 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jraft-Jepsen-%E9%83%A8%E7%BD%B2%E9%AA%8C%E8%AF%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">Jraft-Jepsen 部署验证一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80gitpod-linux"><span class="nav-number">3.1.</span> <span class="nav-text">打开gitpod&#x2F;linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEDocker-SSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="nav-number">3.2.</span> <span class="nav-text">设置Docker-SSH免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jraft-test%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.1.</span> <span class="nav-text">jraft-test节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#control%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">control节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85"><span class="nav-number">3.3.</span> <span class="nav-text">Ubuntu工具安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85clojure-control"><span class="nav-number">3.4.</span> <span class="nav-text">安装clojure-control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDjraft%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">3.5.</span> <span class="nav-text">下载jraft测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2atomic-server"><span class="nav-number">3.6.</span> <span class="nav-text">部署atomic-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E6%B5%8B%E8%AF%95"><span class="nav-number">3.7.</span> <span class="nav-text">开启测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BD%9C%E5%9C%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.8.</span> <span class="nav-text">潜在问题及解决方案</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2023</span>&nbsp;-&nbsp;2024
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Akai</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">线性一致性概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Raft%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">Raft线性一致性的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E5%86%99"><span class="nav-number">1.2.1.</span> <span class="nav-text">线性一致性写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E6%80%A7%E8%AF%BB"><span class="nav-number">1.2.2.</span> <span class="nav-text">线性一致性读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jepsen-%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">Jepsen 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jraft-Jepsen-%E9%83%A8%E7%BD%B2%E9%AA%8C%E8%AF%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">Jraft-Jepsen 部署验证一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80gitpod-linux"><span class="nav-number">3.1.</span> <span class="nav-text">打开gitpod&#x2F;linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEDocker-SSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="nav-number">3.2.</span> <span class="nav-text">设置Docker-SSH免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jraft-test%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.1.</span> <span class="nav-text">jraft-test节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#control%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">control节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85"><span class="nav-number">3.3.</span> <span class="nav-text">Ubuntu工具安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85clojure-control"><span class="nav-number">3.4.</span> <span class="nav-text">安装clojure-control</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDjraft%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="nav-number">3.5.</span> <span class="nav-text">下载jraft测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2atomic-server"><span class="nav-number">3.6.</span> <span class="nav-text">部署atomic-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E6%B5%8B%E8%AF%95"><span class="nav-number">3.7.</span> <span class="nav-text">开启测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BD%9C%E5%9C%A8%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.8.</span> <span class="nav-text">潜在问题及解决方案</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/post-helper.js"></script>
+
+        
+            
+<script src="/js/libs/anime.min.js"></script>
+
+        
+        
+            
+<script src="/js/toc.js"></script>
+
+        
+    
+    
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
