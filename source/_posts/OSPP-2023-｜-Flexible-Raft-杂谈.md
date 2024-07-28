@@ -7,9 +7,9 @@ tags: 开源之夏
 
 # 前言
 
-> 在 OSPP-2023 官方选题中，我最终中选了 SOFA Stack 社区中 [结合 NWR 实现 Flexible Raft ](https://summer-ospp.ac.cn/org/prodetail/2395a0390?list=org&navpage=org)这一选题，最近也收到成功结项的消息。
+> 在 OSPP-2023 官方选题中，我最终中选了 SOFA Stack 社区中 【结合 NWR 实现 Flexible Raft】这一选题，最近也收到成功结项的消息。
 > 关于 Flexible Raft，其实我们最早可以追溯到 Heidi Howard 博士于2016年发布的一篇论文[《改进分布式共识》](https://arxiv.org/pdf/1608.06696v1.pdf)，Howard 是剑桥大学计算机科学与技术系系统研究小组的分布式系统研究员，这篇论文一经发出，受到广泛关注。
-> 截至目前，网络上还并没有找到该篇论文的中文翻译，于是我自己把这件事情给做了，详见：[Flexible Paxos：重新审视法定人数交集-论文中译](https://1294566108.github.io/2023/10/26/FlexiblePaxos%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E6%B3%95%E5%AE%9A%E4%BA%BA%E6%95%B0%E4%BA%A4%E9%9B%86%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/)。中译版最初是通过机译之后，再对不太准确的地方进行手工校验修正，文章格式和文字风格最大限度保持了原样，若仍有不准确的地方读者可以留言斧正。
+> 截至目前，网络上还并没有找到该篇论文的中文翻译，于是我自己把这件事情给做了，详见：[Flexible Paxos：重新审视法定人数交集-论文中译](https://1294566108.github.io/2023/10/26/FlexiblePaxos%EF%BC%9A%E9%87%8D%E6%96%B0%E5%AE%A1%E8%A7%86%E6%B3%95%E5%AE%9A%E4%BA%BA%E6%95%B0%E4%BA%A4%E9%9B%86%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/)。中译版最初是通过机译之后，再对不太准确的地方进行手工校验修正，在格式和文字风格上最大程度维持了原样，若仍有不准确的地方读者可以留言斧正。
 > 该篇论文基于 paxos 算法，提出了一个比 paxos 更 Flexible 的共识协议改进，能够更加灵活的去调整协商和共识效率。而本篇文章将基于 FPaxos 的核心思想进而过渡到 Flexible Raft 的实现思路。
 
 <a name="dko9Q"></a>
@@ -42,22 +42,22 @@ Propser 有两个重要属性，提案编号 N, 提案 V, 简记 Proposer(N, V)�
 
 ### 第二阶段: Accept接受阶段
 
-**Proposer：**Proposer 收到响应后，有两种情况：
+**Proposer：** Proposer 收到响应后，有两种情况：
 
 1. 如果收到了**超过半数**响应 ok , 检查响应中是否有提案，如果有的话，取提案 V= 响应中最大 AcceptN 对应的 AcceptV，如果没有的话，V则有当前 Proposer 自己设定。最后发出 accept 请求，这个请求中携带提案 V。
 2. 如果**没有收到超过半数**响应 ok , 则重新生成提案编号 N，重新回到第一阶段，发起 Prepare 请求。
 
-**Acceptor：**Acceptor 收到 accept 请求后，分为两种情况：
+**Acceptor：** Acceptor 收到 accept 请求后，分为两种情况：
 
 1. 如果发送的提案请求 N **大于**此前保存的 RespN，接受提案，设置 AcceptN = N, AcceptV = V, 并且回复 ok。
 2. 如果发送的提案请求 N **小于等于**此前保存的 RespN，不接受，不回复或者回复 error。
 
-**Proposer：**Proposer 收到 ok 超过半数，则 V 被选定，否则重新发起 Prepare 请求。
+**Proposer：** Proposer 收到 ok 超过半数，则 V 被选定，否则重新发起 Prepare 请求。
 <a name="jW7NP"></a>
 
 ### 第三阶段: Learn学习阶段
 
-**Learner：**Proposer 收到多数 Acceptor 的 Accept 后，决议形成，将形成的决议发送给所有 Learner。
+**Learner：** Proposer 收到多数 Acceptor 的 Accept 后，决议形成，将形成的决议发送给所有 Learner。
 <a name="sDgZM"></a>
 
 # Flexible Paxos

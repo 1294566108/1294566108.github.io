@@ -3,7 +3,7 @@ title: JRaft-jepsen 线性一致性测试
 date: 2023-09-11 13:47:03
 tags: SOFA-JRaft
 ---
-> 本文记录使用 jepsen 框架对 SOFA-JRaft 进行一致性验证时的环境部署。由于市面上并没有现成的 JRaft-Jepsen 一致性检验的环境搭建教程，JRaft-Jepsen 的代码仓库也没给出详细的环境搭建教程。本文所有的部署流程都是通过理解 shell 文件与 jepsen 框架原理的基础上，一步步试错得来的。每一个操作都可能有坑，每一个坑都可能让你异常痛苦。于是痛定思痛，写下此文，作为纪念。
+> 本文记录了 Jepsen 框架对 SOFA-JRaft 进行一致性检验的环境搭建和部署流程。如今网上并没有 JRaft-Jepsen 一致性检验的环境搭建教程，JRaft 官方仓库也没有给出完整的环境搭建教程。本文所有的部署流程操作是通过试错得来。试错过程遇到了不少坑，于是总结此文，希望以后的 Jraft-Jepsen 检验能有值得参考的文章。
 
 **Jepsen前置资料参考：**[Jepsen中文官方文档](https://jaydenwen123.gitbook.io/zh_jepsen_doc/)   [Jepsen作者博客](https://aphyr.com/)
 **Cloujre前置资料：**[Clojure入门文章-英文版](https://aphyr.com/posts/301-clojure-from-the-ground-up-welcome)   [Clojure中文文档](https://siddontang.gitbooks.io/lean-clojure/content/hello-clojure.html)
