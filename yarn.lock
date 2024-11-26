@@ -1784,9 +1784,9 @@ commander@9.2.0:
   version "9.2.0"
   resolved "https://registry.npmmirror.com/commander/-/commander-9.2.0.tgz"
 
-commander@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.npmmirror.com/commander/-/commander-11.0.0.tgz"
+commander@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.npmmirror.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
 
 commander@^2.19.0, commander@^2.2.0, commander@^2.20.3, commander@^2.5.0:
   version "2.20.3"
@@ -5033,11 +5033,11 @@ shelljs@^0.8.5:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shokax-cli@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.npmmirror.com/shokax-cli/-/shokax-cli-0.0.7.tgz"
+shokax-cli@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmmirror.com/shokax-cli/-/shokax-cli-0.0.9.tgz#8321b53598ec3b946649553873fbe53c6fee7244"
   dependencies:
-    commander "^11.0.0"
+    commander "^11.1.0"
     hexo-log "^4.1.0"
     shelljs "^0.8.5"
 
